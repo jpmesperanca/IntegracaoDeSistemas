@@ -25,12 +25,13 @@ public class App {
 
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             // output pretty printed
+
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             
             //jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
             
             // Idk why doesn't this work
-            //jaxbMarshaller.setProperty("com.sun.xml.bind.xmlHeaders", "\n<!-- Generated automatically. Don't change it. -->");
+            jaxbMarshaller.setProperty("jakarta.xml.bind.xmlHeaders", "\n<!-- Generated automatically. Don't change it. -->");
 
             Student obj1 = new Student();
             obj1.setId("201134441110");
@@ -52,7 +53,7 @@ public class App {
             School school = new School();
             school.setStudents(lista);
 
-            jaxbMarshaller.marshal(school, new File("C:\\Users\\Josphze\\Desktop\\IS\\demo\\fruit.xml"));
+            jaxbMarshaller.marshal(school, new File("fruit.xml"));
             
         } catch (JAXBException e) {
             e.printStackTrace();
