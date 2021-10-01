@@ -5,3 +5,6 @@ class Owner:
 		self.birthdate = birthdate
 		self.phone = phone
 		self.address = address
+	
+	def printId(owner):
+		print(f"Hey, my owner id is {owner.id}!") 

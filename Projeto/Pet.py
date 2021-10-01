@@ -8,5 +8,5 @@ class Pet:
 		self.birthdate = birthdate
 		self.description = description
 
-	def getId(pet):
-		print("My pet id is " + pet.id) 
+	def printId(pet):
+		print(f"Hey, my pet id is {pet.id}!") 
