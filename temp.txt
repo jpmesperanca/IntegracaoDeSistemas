@@ -1,0 +1,18 @@
+{
+    "id": 1,
+    "name": "Jospy",
+    "birthdate": "Ago2000",
+    "phone": "912345678",
+    "address": "AvenidaEM",
+    "pets": [
+        {
+            "id": 1,
+            "name": "Kiko",
+            "species": "Cat",
+            "gender": "Male",
+            "weight": 5,
+            "birthdate": "Sept2018",
+            "description": "Gato do Ze"
+        }
+    ]
+}
