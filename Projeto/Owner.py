@@ -8,4 +8,4 @@ class Owner:
         self.pets = pets
 
     def printId(owner):
-        print(f"Hey, my owner id is {owner.id}!")
+        print(f"Hey, my name is {owner.name} and my owner id is {owner.id}!")

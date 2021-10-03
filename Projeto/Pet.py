@@ -1,5 +1,5 @@
 class Pet:
-    def __init__(self, id, name, species, gender, weight, birthdate, description):
+    def __init__(self, id, name, species, gender, weight, birthdate, description, ownerId):
         self.id = id
         self.name = name
         self.species = species
@@ -7,6 +7,7 @@ class Pet:
         self.weight = weight
         self.birthdate = birthdate
         self.description = description
+        self.ownerId = ownerId
 
     def printId(pet):
-        print(f"Hey, my pet id is {pet.id}!")
+        print(f"Hey, my name is {pet.name}, I'm a {pet.species}, my pet id is {pet.id}!")

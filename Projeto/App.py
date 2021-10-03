@@ -1,21 +1,41 @@
 import time, json
 import numpy as np
+from faker import Faker
+import random
 from Owner import Owner
 from Pet import Pet
 
 
-def generateData():
-    pass
+def generateData(nOwners, maxPetsPerOwner):
+    fake = Faker()
+    species = ["Bearded Dragon","Bird","Burro","Cat","Chameleon","Chicken","Chinchilla","Chinese Water Dragon","Cow","Dog","Donkey","Duck","Ferret","Fish","Gecko","Goose","Gerbil","Goat","Guinea Fowl","Guinea Pig","Hamster","Hedgehog","Horse","Iguana","Llama","Lizard","Mice","Mule","Peafowl","Pig","Pigeon","Ponie","Pot Bellied Pig","Rabbit", "Rat","Sheep","Skink","Snake","Stick Insect","Sugar Glider","Tarantula","Turkey","Turtle"]
+    data = []
+    idOwner = 0
+    idPet = 0
+    for i in range(nOwners):
+        newOwner = Owner(idOwner, fake.name_nonbinary(), fake.date(), fake.phone_number(), fake.address(), [])
+        for i in range(random.randint(1, maxPetsPerOwner)):
+            newPet = Pet(idPet, fake.first_name(), random.choice(species), random.choice(["Male", "Female", "Other"]), 
+                         random.randint(1,20), fake.date(), fake.text(max_nb_chars=random.randint(150,500)), idOwner)
+            newOwner.pets.append(newPet)
+            idPet += 1
+            
+        data.append(newOwner)
+        idOwner += 1
+ 
+        
+    return data
+        
 
 
-def getJsonWriteTime(owner, datasetNumber, testNumber):
+def getJsonWriteTime(data, datasetNumber, testNumber):
 
     with open("results.txt", "a") as f:
         with open("temp.json", "w") as temp:
 
             start = time.perf_counter()
 
-            json.dump(owner, temp, indent=4, default=vars)
+            json.dump(data, temp, indent=4, default=vars)
 
             elapsed = time.perf_counter() - start
             f.write(f"W Json\t{datasetNumber}\t{testNumber}\t{elapsed:.7f}\n")
@@ -38,7 +58,7 @@ def getJsonLoadTime(datasetNumber, testNumber):
     return elapsed
 
 
-def getMPackWriteTime(owner, datasetNumber, testNumber):
+def getMPackWriteTime(data, datasetNumber, testNumber):
     pass
 
 
@@ -48,27 +68,35 @@ def getMPackReadTime(datasetNumber, testNumber):
 
 def main():
 
-    pet = Pet(1, "Kiko", "Cat", "Male", 5, "Sept2018", "Gato do Ze")
+    pet = Pet(1, "Kiko", "Cat", "Male", 5, "Sept2018", "Gato do Ze", 1)
     owner = Owner(1, "Jospy", "Ago2000", "912345678", "AvenidaEM", [pet])
 
     with open("stats.txt", "a") as f:
 
         # Correr isto bué vezes tipo num while qq coisa
-        generateData()
-
+        data = generateData(5000, 30)
+        """
+        for o in data:
+            Owner.printId(o)
+            for p in o.pets:
+                print("\t", end="")
+                Pet.printId(p)
+            print("------------------")
+        """
+        
         JsonWriteRes = []
         JsonReadRes = []
         MPackWriteRes = []
         MPackReadRes = []
-
+        
         # Testar várias vezes para o mesmo dataset
         for i in range(1, 11):
 
             # De notar que este 1 seria o counter do while
-            JsonWriteRes.append(getJsonWriteTime(owner, 1, i))
+            JsonWriteRes.append(getJsonWriteTime(data, 1, i))
             JsonReadRes.append(getJsonLoadTime(1, i))
 
-            MPackWriteRes.append(getMPackWriteTime(owner, 1, i))
+            MPackWriteRes.append(getMPackWriteTime(data, 1, i))
             MPackReadRes.append(getMPackReadTime(1, i))
 
         # Estes 1s também
