@@ -1,4 +1,5 @@
 import time, json
+import numpy as np
 from Owner import Owner
 from Pet import Pet
 
@@ -10,7 +11,7 @@ def generateData():
 def getJsonWriteTime(owner, datasetNumber, testNumber):
 
     with open("results.txt", "a") as f:
-        with open("temp.txt", "w") as temp:
+        with open("temp.json", "w") as temp:
 
             start = time.perf_counter()
 
@@ -19,11 +20,13 @@ def getJsonWriteTime(owner, datasetNumber, testNumber):
             elapsed = time.perf_counter() - start
             f.write(f"W Json\t{datasetNumber}\t{testNumber}\t{elapsed:.7f}\n")
 
+    return elapsed
+
 
 def getJsonLoadTime(datasetNumber, testNumber):
 
     with open("results.txt", "a") as f:
-        with open("temp.txt", "r") as temp:
+        with open("temp.json", "r") as temp:
 
             start = time.perf_counter()
 
@@ -31,6 +34,8 @@ def getJsonLoadTime(datasetNumber, testNumber):
 
             elapsed = time.perf_counter() - start
             f.write(f"R Json\t{datasetNumber}\t{testNumber}\t{elapsed:.7f}\n")
+
+    return elapsed
 
 
 def getMPackWriteTime(owner, datasetNumber, testNumber):
@@ -46,18 +51,40 @@ def main():
     pet = Pet(1, "Kiko", "Cat", "Male", 5, "Sept2018", "Gato do Ze")
     owner = Owner(1, "Jospy", "Ago2000", "912345678", "AvenidaEM", [pet])
 
-    # Temos de ver como geramos os dados e que caracteristicas queremos que tenham
-    # E correr isto bué vezes tipo num while qq coisa
-    generateData()
+    with open("stats.txt", "a") as f:
 
-    # Testar várias vezes para o mesmo dataset
-    for i in range(10):
-        # De notar que este 1 seria o counter do while
-        getJsonWriteTime(owner, 1, i)
-        getJsonLoadTime(1, i)
+        # Correr isto bué vezes tipo num while qq coisa
+        generateData()
 
-        getMPackWriteTime(owner, 1, i)
-        getMPackReadTime(1, i)
+        JsonWriteRes = []
+        JsonReadRes = []
+        MPackWriteRes = []
+        MPackReadRes = []
+
+        # Testar várias vezes para o mesmo dataset
+        for i in range(1, 11):
+
+            # De notar que este 1 seria o counter do while
+            JsonWriteRes.append(getJsonWriteTime(owner, 1, i))
+            JsonReadRes.append(getJsonLoadTime(1, i))
+
+            MPackWriteRes.append(getMPackWriteTime(owner, 1, i))
+            MPackReadRes.append(getMPackReadTime(1, i))
+
+        # Estes 1s também
+        f.write(f"Avg W Json time for Dataset 1: {np.average(JsonWriteRes):.9f}\n")
+        f.write(f"Std W Json time for Dataset 1: {np.std(JsonWriteRes):.9f}\n")
+
+        f.write(f"Avg R Json time for Dataset 1: {np.average(JsonReadRes):.9f}\n")
+        f.write(f"Std R Json time for Dataset 1: {np.std(JsonReadRes):.9f}\n")
+
+        # f.write(f"Avg W MPack time for Dataset 1: {np.average(MPackWriteRes)}\n")
+        # f.write(f"Std W MPack time for Dataset 1: {np.std(MPackWriteRes)}\n")
+
+        # f.write(f"Avg R MPack time for Dataset 1: {np.average(MPackReadRes)}\n")
+        # f.write(f"Std R MPack time for Dataset 1: {np.std(MPackReadRes)}\n")
+
+        f.write("\n\n")
 
 
 if __name__ == "__main__":
