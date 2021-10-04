@@ -1,6 +1,20 @@
-Avg W Json time for Dataset 1: 0.000105770
-Std W Json time for Dataset 1: 0.000008896
-Avg R Json time for Dataset 1: 0.000108300
-Std R Json time for Dataset 1: 0.000011352
+Avg W Json time for Dataset 1: 0.046837720
+Std W Json time for Dataset 1: 0.001889193
+Avg R Json time for Dataset 1: 0.007563170
+Std R Json time for Dataset 1: 0.000477066
+Avg W MPck time for Dataset 1: 0.002241360
+Std W MPck time for Dataset 1: 0.000137025
+Avg R MPck time for Dataset 1: 0.002404160
+Std R MPck time for Dataset 1: 0.000200831
+
+
+Avg W Json time for Dataset 1: 0.045971180
+Std W Json time for Dataset 1: 0.000319180
+Avg R Json time for Dataset 1: 0.007879480
+Std R Json time for Dataset 1: 0.000271335
+Avg W MPck time for Dataset 1: 0.002378040
+Std W MPck time for Dataset 1: 0.000256084
+Avg R MPck time for Dataset 1: 0.002583290
+Std R MPck time for Dataset 1: 0.000198616
 
 

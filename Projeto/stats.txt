@@ -1,6 +1,0 @@
-Avg W Json time for Dataset 1: 2.979300580
-Std W Json time for Dataset 1: 0.127942632
-Avg R Json time for Dataset 1: 0.403518910
-Std R Json time for Dataset 1: 0.015453368
-
-
