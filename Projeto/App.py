@@ -154,7 +154,7 @@ def main():
     ownersMultiplier = 100
     maxPetsPerOwner = 10
 
-    for nSet in range(1, 101):
+    for nSet in range(1, 200):
 
         totalOwners = nSet * ownersMultiplier
 
@@ -166,7 +166,7 @@ def main():
         MPackRRes = []
 
         # Testar várias vezes para o mesmo set para diminuir a variância
-        for i in range(1, 11):
+        for i in range(1, 21):
 
             JsonWRes.append(getJsonWriteTime(data, nSet, i))
             JsonRRes.append(getJsonLoadTime(nSet, i))
