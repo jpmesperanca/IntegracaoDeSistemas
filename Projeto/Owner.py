@@ -1,11 +1,10 @@
 class Owner:
-    def __init__(self, id, name, birthdate, phone, address, pets):
+    def __init__(self, id, name, birthdate, phone, address):
         self.id = id
         self.name = name
         self.birthdate = birthdate
         self.phone = phone
         self.address = address
-        self.pets = pets
 
     def printId(owner):
         print(f"Hey, my name is {owner.name} and my owner id is {owner.id}!")

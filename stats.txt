@@ -1,20 +1,80 @@
-Avg W Json time for Dataset 1: 0.046837720
-Std W Json time for Dataset 1: 0.001889193
-Avg R Json time for Dataset 1: 0.007563170
-Std R Json time for Dataset 1: 0.000477066
-Avg W MPck time for Dataset 1: 0.002241360
-Std W MPck time for Dataset 1: 0.000137025
-Avg R MPck time for Dataset 1: 0.002404160
-Std R MPck time for Dataset 1: 0.000200831
+Avg W Json time for Dataset 1: 0.004667830
+Std W Json time for Dataset 1: 0.001389964
+Avg R Json time for Dataset 1: 0.000970430
+Std R Json time for Dataset 1: 0.000214131
+Avg W MPck time for Dataset 1: 0.000405620
+Std W MPck time for Dataset 1: 0.000082078
+Avg R MPck time for Dataset 1: 0.000413160
+Std R MPck time for Dataset 1: 0.000083855
 
 
-Avg W Json time for Dataset 1: 0.045971180
-Std W Json time for Dataset 1: 0.000319180
-Avg R Json time for Dataset 1: 0.007879480
-Std R Json time for Dataset 1: 0.000271335
-Avg W MPck time for Dataset 1: 0.002378040
-Std W MPck time for Dataset 1: 0.000256084
-Avg R MPck time for Dataset 1: 0.002583290
-Std R MPck time for Dataset 1: 0.000198616
+Avg W Json time for Dataset 1: 0.003954970
+Std W Json time for Dataset 1: 0.001126459
+Avg R Json time for Dataset 1: 0.000728240
+Std R Json time for Dataset 1: 0.000179510
+Avg W MPck time for Dataset 1: 0.000365390
+Std W MPck time for Dataset 1: 0.000083286
+Avg R MPck time for Dataset 1: 0.000347890
+Std R MPck time for Dataset 1: 0.000087772
+
+
+Avg W Json time for Dataset 1: 0.004017790
+Std W Json time for Dataset 1: 0.000518653
+Avg R Json time for Dataset 1: 0.038630110
+Std R Json time for Dataset 1: 0.028902592
+Avg W MPck time for Dataset 1: 0.000392640
+Std W MPck time for Dataset 1: 0.000059709
+Avg R MPck time for Dataset 1: 0.000348240
+Std R MPck time for Dataset 1: 0.000068583
+
+
+Avg W Json time for Dataset 1: 0.000350830
+Std W Json time for Dataset 1: 0.000090155
+Avg R Json time for Dataset 1: 0.002573490
+Std R Json time for Dataset 1: 0.000273551
+Avg W MPck time for Dataset 1: 0.000139710
+Std W MPck time for Dataset 1: 0.000035872
+Avg R MPck time for Dataset 1: 0.000127630
+Std R MPck time for Dataset 1: 0.000019457
+
+
+Avg W Json time for Dataset 1: 0.000312900
+Std W Json time for Dataset 1: 0.000170955
+Avg R Json time for Dataset 1: 0.002040220
+Std R Json time for Dataset 1: 0.000363904
+Avg W MPck time for Dataset 1: 0.000123750
+Std W MPck time for Dataset 1: 0.000032315
+Avg R MPck time for Dataset 1: 0.000125560
+Std R MPck time for Dataset 1: 0.000045932
+
+
+Avg W Json time for Dataset 1: 0.000462480
+Std W Json time for Dataset 1: 0.000312175
+Avg R Json time for Dataset 1: 0.000197570
+Std R Json time for Dataset 1: 0.000038164
+Avg W MPck time for Dataset 1: 0.000092150
+Std W MPck time for Dataset 1: 0.000017919
+Avg R MPck time for Dataset 1: 0.002895750
+Std R MPck time for Dataset 1: 0.000596224
+
+
+Avg W Json time for Dataset 1: 0.000364810
+Std W Json time for Dataset 1: 0.000090951
+Avg R Json time for Dataset 1: 0.000168960
+Std R Json time for Dataset 1: 0.000037349
+Avg W MPck time for Dataset 1: 0.000100690
+Std W MPck time for Dataset 1: 0.000018432
+Avg R MPck time for Dataset 1: 0.002569990
+Std R MPck time for Dataset 1: 0.000960067
+
+
+Avg W Json time for Dataset 1: 0.063354900
+Std W Json time for Dataset 1: 0.008106117
+Avg R Json time for Dataset 1: 0.010579340
+Std R Json time for Dataset 1: 0.000564153
+Avg W MPck time for Dataset 1: 0.003006930
+Std W MPck time for Dataset 1: 0.000569598
+Avg R MPck time for Dataset 1: 0.003777310
+Std R MPck time for Dataset 1: 0.000914977
 
 

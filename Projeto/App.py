@@ -1,7 +1,6 @@
-import time, json, msgpack
+import time, json, msgpack, random
 import numpy as np
 from faker import Faker
-import random
 from Owner import Owner
 from Pet import Pet
 
@@ -54,19 +53,22 @@ def generateData(nOwners, maxPetsPerOwner):
         "Turkey",
         "Turtle",
     ]
-    data = []
-    idOwner = 0
+
+    owners = []
+    pets = []
+
     idPet = 0
 
-    for i in range(nOwners):
+    for ownerId in range(nOwners):
         newOwner = Owner(
-            idOwner,
+            ownerId,
             fake.name_nonbinary(),
             fake.date(),
             fake.phone_number(),
             fake.address(),
-            [],
         )
+        owners.append(vars(newOwner))
+
         for i in range(random.randint(1, maxPetsPerOwner)):
             newPet = Pet(
                 idPet,
@@ -76,15 +78,12 @@ def generateData(nOwners, maxPetsPerOwner):
                 random.randint(1, 20),
                 fake.date(),
                 fake.text(max_nb_chars=random.randint(150, 500)),
-                idOwner,
+                ownerId,
             )
-            newOwner.pets.append(vars(newPet))
+            pets.append(vars(newPet))
             idPet += 1
 
-        data.append(vars(newOwner))
-        idOwner += 1
-
-    return data
+    return {"pets": pets, "owners": owners}
 
 
 def getJsonWriteTime(data, datasetNumber, testNumber):
