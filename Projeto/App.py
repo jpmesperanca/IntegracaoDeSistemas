@@ -5,7 +5,7 @@ from Owner import Owner
 from Pet import Pet
 
 
-def generateData(nOwners, maxPetsPerOwner):
+def generateData(nSet, nOwners, maxPetsPerOwner):
 
     fake = Faker()
     species = [
@@ -86,22 +86,22 @@ def generateData(nOwners, maxPetsPerOwner):
     return {"pets": pets, "owners": owners}
 
 
-def getJsonWriteTime(data, datasetNumber, testNumber):
+def getJsonWriteTime(data, nSetNumber, testNumber):
 
     with open("results.txt", "a") as f:
         with open("temp.json", "w") as temp:
 
             start = time.perf_counter()
 
-            json.dump(data, temp, indent=4)
+            json.dump(data, temp)
 
             elapsed = time.perf_counter() - start
-            f.write(f"W Json\t{datasetNumber}\t{testNumber}\t{elapsed:.7f}\n")
+            f.write(f"W Json\t{nSetNumber}\t{testNumber}\t{elapsed:.7f}\n")
 
     return elapsed
 
 
-def getJsonLoadTime(datasetNumber, testNumber):
+def getJsonLoadTime(nSetNumber, testNumber):
 
     with open("results.txt", "a") as f:
         with open("temp.json", "r") as temp:
@@ -111,12 +111,12 @@ def getJsonLoadTime(datasetNumber, testNumber):
             json.load(temp)
 
             elapsed = time.perf_counter() - start
-            f.write(f"R Json\t{datasetNumber}\t{testNumber}\t{elapsed:.7f}\n")
+            f.write(f"R Json\t{nSetNumber}\t{testNumber}\t{elapsed:.7f}\n")
 
     return elapsed
 
 
-def getMPackWriteTime(data, datasetNumber, testNumber):
+def getMPackWriteTime(data, nSetNumber, testNumber):
 
     with open("results.txt", "a") as f:
         with open("temp.msgpack", "wb") as temp:
@@ -127,12 +127,12 @@ def getMPackWriteTime(data, datasetNumber, testNumber):
             temp.write(packed)
 
             elapsed = time.perf_counter() - start
-            f.write(f"W MPck\t{datasetNumber}\t{testNumber}\t{elapsed:.7f}\n")
+            f.write(f"W MPck\t{nSetNumber}\t{testNumber}\t{elapsed:.7f}\n")
 
     return elapsed
 
 
-def getMPackReadTime(datasetNumber, testNumber):
+def getMPackReadTime(nSetNumber, testNumber):
 
     with open("results.txt", "a") as f:
         with open("temp.msgpack", "rb") as temp:
@@ -144,50 +144,55 @@ def getMPackReadTime(datasetNumber, testNumber):
 
             elapsed = time.perf_counter() - start
 
-            f.write(f"R MPck\t{datasetNumber}\t{testNumber}\t{elapsed:.7f}\n")
+            f.write(f"R MPck\t{nSetNumber}\t{testNumber}\t{elapsed:.7f}\n")
 
     return elapsed
 
 
 def main():
 
-    # pet = Pet(1, "Kiko", "Cat", "Male", 5, "Sept2018", "Gato do Ze", 1)
-    # owner = Owner(1, "Jospy", "Ago2000", "912345678", "AvenidaEM", [pet])
+    ownersMultiplier = 100
+    maxPetsPerOwner = 10
 
-    with open("stats.txt", "a") as f:
+    for nSet in range(1, 101):
 
-        # Correr isto bué vezes tipo num while qq coisa
-        data = generateData(200, 10)
+        totalOwners = nSet * ownersMultiplier
 
-        JsonWriteRes = []
-        JsonReadRes = []
-        MPackWriteRes = []
-        MPackReadRes = []
+        data = generateData(nSet, totalOwners, maxPetsPerOwner)
 
-        # Testar várias vezes para o mesmo dataset
+        JsonWRes = []
+        JsonRRes = []
+        MPackWRes = []
+        MPackRRes = []
+
+        # Testar várias vezes para o mesmo set para diminuir a variância
         for i in range(1, 11):
 
-            # De notar que este 1 seria o counter do while
-            JsonWriteRes.append(getJsonWriteTime(data, 1, i))
-            JsonReadRes.append(getJsonLoadTime(1, i))
+            JsonWRes.append(getJsonWriteTime(data, nSet, i))
+            JsonRRes.append(getJsonLoadTime(nSet, i))
 
-            MPackWriteRes.append(getMPackWriteTime(data, 1, i))
-            MPackReadRes.append(getMPackReadTime(1, i))
+            MPackWRes.append(getMPackWriteTime(data, nSet, i))
+            MPackRRes.append(getMPackReadTime(nSet, i))
 
-        # Estes 1s também
-        f.write(f"Avg W Json time for Dataset 1: {np.average(JsonWriteRes):.9f}\n")
-        f.write(f"Std W Json time for Dataset 1: {np.std(JsonWriteRes):.9f}\n")
+            with open("stats.txt", "a") as f:
 
-        f.write(f"Avg R Json time for Dataset 1: {np.average(JsonReadRes):.9f}\n")
-        f.write(f"Std R Json time for Dataset 1: {np.std(JsonReadRes):.9f}\n")
+                f.write(
+                    f"Set {nSet}.{i}: {totalOwners} Owners and {maxPetsPerOwner} Pets\n"
+                )
 
-        f.write(f"Avg W MPck time for Dataset 1: {np.average(MPackWriteRes):.9f}\n")
-        f.write(f"Std W MPck time for Dataset 1: {np.std(MPackWriteRes):.9f}\n")
+                f.write(f"Avg W Json time: {np.average(JsonWRes):.9f}\n")
+                f.write(f"Std W Json time: {np.std(JsonWRes):.9f}\n")
 
-        f.write(f"Avg R MPck time for Dataset 1: {np.average(MPackReadRes):.9f}\n")
-        f.write(f"Std R MPck time for Dataset 1: {np.std(MPackReadRes):.9f}\n")
+                f.write(f"Avg R Json time: {np.average(JsonRRes):.9f}\n")
+                f.write(f"Std R Json time: {np.std(JsonRRes):.9f}\n")
 
-        f.write("\n\n")
+                f.write(f"Avg W MPck time: {np.average(MPackWRes):.9f}\n")
+                f.write(f"Std W MPck time: {np.std(MPackWRes):.9f}\n")
+
+                f.write(f"Avg R MPck time: {np.average(MPackRRes):.9f}\n")
+                f.write(f"Std R MPck time: {np.std(MPackRRes):.9f}\n")
+
+                f.write("\n")
 
 
 if __name__ == "__main__":
