@@ -174,25 +174,23 @@ def main():
             MPackWRes.append(getMPackWriteTime(data, nSet, i))
             MPackRRes.append(getMPackReadTime(nSet, i))
 
-            with open("stats.txt", "a") as f:
+        with open("stats.txt", "a") as f:
 
-                f.write(
-                    f"Set {nSet}.{i}: {totalOwners} Owners and {maxPetsPerOwner} Pets\n"
-                )
+            f.write(f"Set {nSet}: {totalOwners} Owners and {maxPetsPerOwner} Pets\n")
 
-                f.write(f"Avg W Json time: {np.average(JsonWRes):.9f}\n")
-                f.write(f"Std W Json time: {np.std(JsonWRes):.9f}\n")
+            f.write(f"Avg W Json time: {np.average(JsonWRes):.9f}\n")
+            f.write(f"Std W Json time: {np.std(JsonWRes):.9f}\n")
 
-                f.write(f"Avg R Json time: {np.average(JsonRRes):.9f}\n")
-                f.write(f"Std R Json time: {np.std(JsonRRes):.9f}\n")
+            f.write(f"Avg R Json time: {np.average(JsonRRes):.9f}\n")
+            f.write(f"Std R Json time: {np.std(JsonRRes):.9f}\n")
 
-                f.write(f"Avg W MPck time: {np.average(MPackWRes):.9f}\n")
-                f.write(f"Std W MPck time: {np.std(MPackWRes):.9f}\n")
+            f.write(f"Avg W MPck time: {np.average(MPackWRes):.9f}\n")
+            f.write(f"Std W MPck time: {np.std(MPackWRes):.9f}\n")
 
-                f.write(f"Avg R MPck time: {np.average(MPackRRes):.9f}\n")
-                f.write(f"Std R MPck time: {np.std(MPackRRes):.9f}\n")
+            f.write(f"Avg R MPck time: {np.average(MPackRRes):.9f}\n")
+            f.write(f"Std R MPck time: {np.std(MPackRRes):.9f}\n")
 
-                f.write("\n")
+            f.write("\n")
 
 
 if __name__ == "__main__":
