@@ -154,7 +154,7 @@ def main():
     ownersMultiplier = 100
     maxPetsPerOwner = 10
 
-    for nSet in range(1, 101):
+    for nSet in range(1, 201):
 
         totalOwners = nSet * ownersMultiplier
 
