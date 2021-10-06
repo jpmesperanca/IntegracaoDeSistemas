@@ -1,0 +1,1000 @@
+Set 1: 100 Owners and 10 Pets
+Avg W Json time: 0.027859308
+Std W Json time: 0.005720125
+Avg R Json time: 0.004184000
+Std R Json time: 0.000836560
+Avg W MPck time: 0.001622400
+Std W MPck time: 0.000297348
+Avg R MPck time: 0.002305633
+Std R MPck time: 0.000478319
+
+Set 2: 200 Owners and 10 Pets
+Avg W Json time: 0.050986342
+Std W Json time: 0.004771545
+Avg R Json time: 0.008729367
+Std R Json time: 0.001488005
+Avg W MPck time: 0.003128100
+Std W MPck time: 0.000449215
+Avg R MPck time: 0.003981100
+Std R MPck time: 0.000881733
+
+Set 3: 300 Owners and 10 Pets
+Avg W Json time: 0.076954742
+Std W Json time: 0.006241112
+Avg R Json time: 0.013957817
+Std R Json time: 0.002691618
+Avg W MPck time: 0.004351192
+Std W MPck time: 0.000047654
+Avg R MPck time: 0.007215442
+Std R MPck time: 0.003017473
+
+Set 4: 400 Owners and 10 Pets
+Avg W Json time: 0.113176133
+Std W Json time: 0.027055476
+Avg R Json time: 0.019789217
+Std R Json time: 0.004469886
+Avg W MPck time: 0.006488992
+Std W MPck time: 0.001391788
+Avg R MPck time: 0.008216300
+Std R MPck time: 0.001662291
+
+Set 5: 500 Owners and 10 Pets
+Avg W Json time: 0.133623567
+Std W Json time: 0.015735057
+Avg R Json time: 0.022068067
+Std R Json time: 0.004127495
+Avg W MPck time: 0.010648825
+Std W MPck time: 0.010532517
+Avg R MPck time: 0.010182600
+Std R MPck time: 0.002077027
+
+Set 6: 600 Owners and 10 Pets
+Avg W Json time: 0.164866833
+Std W Json time: 0.018541495
+Avg R Json time: 0.028430167
+Std R Json time: 0.006033874
+Avg W MPck time: 0.010074383
+Std W MPck time: 0.001860097
+Avg R MPck time: 0.012915617
+Std R MPck time: 0.002772269
+
+Set 7: 700 Owners and 10 Pets
+Avg W Json time: 0.182643367
+Std W Json time: 0.012157239
+Avg R Json time: 0.033409925
+Std R Json time: 0.006650160
+Avg W MPck time: 0.011199483
+Std W MPck time: 0.001511392
+Avg R MPck time: 0.014052300
+Std R MPck time: 0.002759084
+
+Set 8: 800 Owners and 10 Pets
+Avg W Json time: 0.215758367
+Std W Json time: 0.019590824
+Avg R Json time: 0.038226692
+Std R Json time: 0.006519050
+Avg W MPck time: 0.014782417
+Std W MPck time: 0.007689929
+Avg R MPck time: 0.016176975
+Std R MPck time: 0.003424281
+
+Set 9: 900 Owners and 10 Pets
+Avg W Json time: 0.231592500
+Std W Json time: 0.010308566
+Avg R Json time: 0.040977950
+Std R Json time: 0.007436553
+Avg W MPck time: 0.013975408
+Std W MPck time: 0.001521822
+Avg R MPck time: 0.017240808
+Std R MPck time: 0.002958202
+
+Set 10: 1000 Owners and 10 Pets
+Avg W Json time: 0.267425800
+Std W Json time: 0.032253284
+Avg R Json time: 0.044710708
+Std R Json time: 0.004281969
+Avg W MPck time: 0.016746458
+Std W MPck time: 0.002624179
+Avg R MPck time: 0.020255375
+Std R MPck time: 0.003671061
+
+Set 11: 1100 Owners and 10 Pets
+Avg W Json time: 0.282418467
+Std W Json time: 0.014272401
+Avg R Json time: 0.050606025
+Std R Json time: 0.005581710
+Avg W MPck time: 0.018748825
+Std W MPck time: 0.002399544
+Avg R MPck time: 0.024469250
+Std R MPck time: 0.005486116
+
+Set 12: 1200 Owners and 10 Pets
+Avg W Json time: 0.300065483
+Std W Json time: 0.012654385
+Avg R Json time: 0.051098642
+Std R Json time: 0.002540834
+Avg W MPck time: 0.019383283
+Std W MPck time: 0.002613166
+Avg R MPck time: 0.023479067
+Std R MPck time: 0.003720565
+
+Set 13: 1300 Owners and 10 Pets
+Avg W Json time: 0.328279850
+Std W Json time: 0.015257042
+Avg R Json time: 0.057995700
+Std R Json time: 0.003769377
+Avg W MPck time: 0.022414083
+Std W MPck time: 0.004246373
+Avg R MPck time: 0.030536650
+Std R MPck time: 0.005391590
+
+Set 14: 1400 Owners and 10 Pets
+Avg W Json time: 0.356619133
+Std W Json time: 0.021334266
+Avg R Json time: 0.064265433
+Std R Json time: 0.005786409
+Avg W MPck time: 0.022081525
+Std W MPck time: 0.003072275
+Avg R MPck time: 0.027042567
+Std R MPck time: 0.003512566
+
+Set 15: 1500 Owners and 10 Pets
+Avg W Json time: 0.380246967
+Std W Json time: 0.020462762
+Avg R Json time: 0.070091492
+Std R Json time: 0.006408965
+Avg W MPck time: 0.023487175
+Std W MPck time: 0.003344719
+Avg R MPck time: 0.031102408
+Std R MPck time: 0.004998376
+
+Set 16: 1600 Owners and 10 Pets
+Avg W Json time: 0.417062542
+Std W Json time: 0.012652323
+Avg R Json time: 0.072054875
+Std R Json time: 0.005353864
+Avg W MPck time: 0.026214342
+Std W MPck time: 0.004130027
+Avg R MPck time: 0.035049458
+Std R MPck time: 0.006312843
+
+Set 17: 1700 Owners and 10 Pets
+Avg W Json time: 0.433794358
+Std W Json time: 0.020296712
+Avg R Json time: 0.073272567
+Std R Json time: 0.004294692
+Avg W MPck time: 0.028203067
+Std W MPck time: 0.005403517
+Avg R MPck time: 0.033521267
+Std R MPck time: 0.005382673
+
+Set 18: 1800 Owners and 10 Pets
+Avg W Json time: 0.465350142
+Std W Json time: 0.024903728
+Avg R Json time: 0.080484150
+Std R Json time: 0.004643276
+Avg W MPck time: 0.030585883
+Std W MPck time: 0.006394880
+Avg R MPck time: 0.036502850
+Std R MPck time: 0.005934697
+
+Set 19: 1900 Owners and 10 Pets
+Avg W Json time: 0.500868333
+Std W Json time: 0.035559824
+Avg R Json time: 0.087681242
+Std R Json time: 0.006662848
+Avg W MPck time: 0.029843758
+Std W MPck time: 0.002966812
+Avg R MPck time: 0.037410317
+Std R MPck time: 0.004092174
+
+Set 20: 2000 Owners and 10 Pets
+Avg W Json time: 0.523426958
+Std W Json time: 0.024915899
+Avg R Json time: 0.092674550
+Std R Json time: 0.008015908
+Avg W MPck time: 0.031457583
+Std W MPck time: 0.001756156
+Avg R MPck time: 0.041245625
+Std R MPck time: 0.004499612
+
+Set 21: 2100 Owners and 10 Pets
+Avg W Json time: 0.544498100
+Std W Json time: 0.028592641
+Avg R Json time: 0.092416725
+Std R Json time: 0.004756644
+Avg W MPck time: 0.032913458
+Std W MPck time: 0.002306867
+Avg R MPck time: 0.039520917
+Std R MPck time: 0.004060526
+
+Set 22: 2200 Owners and 10 Pets
+Avg W Json time: 0.569154975
+Std W Json time: 0.024349833
+Avg R Json time: 0.099583808
+Std R Json time: 0.007615213
+Avg W MPck time: 0.036157183
+Std W MPck time: 0.006197084
+Avg R MPck time: 0.043080392
+Std R MPck time: 0.005183250
+
+Set 23: 2300 Owners and 10 Pets
+Avg W Json time: 0.584604958
+Std W Json time: 0.026172929
+Avg R Json time: 0.097942083
+Std R Json time: 0.004924813
+Avg W MPck time: 0.033951950
+Std W MPck time: 0.000736976
+Avg R MPck time: 0.041741000
+Std R MPck time: 0.002469940
+
+Set 24: 2400 Owners and 10 Pets
+Avg W Json time: 0.608936825
+Std W Json time: 0.016315259
+Avg R Json time: 0.108467567
+Std R Json time: 0.007893838
+Avg W MPck time: 0.038488917
+Std W MPck time: 0.004486674
+Avg R MPck time: 0.046248575
+Std R MPck time: 0.004785862
+
+Set 25: 2500 Owners and 10 Pets
+Avg W Json time: 0.657790500
+Std W Json time: 0.043571630
+Avg R Json time: 0.110104958
+Std R Json time: 0.008779205
+Avg W MPck time: 0.037478508
+Std W MPck time: 0.001345231
+Avg R MPck time: 0.050716842
+Std R MPck time: 0.006474837
+
+Set 26: 2600 Owners and 10 Pets
+Avg W Json time: 0.662840792
+Std W Json time: 0.020322233
+Avg R Json time: 0.114956025
+Std R Json time: 0.009922394
+Avg W MPck time: 0.040240133
+Std W MPck time: 0.002817114
+Avg R MPck time: 0.050805517
+Std R MPck time: 0.007328286
+
+Set 27: 2700 Owners and 10 Pets
+Avg W Json time: 0.713871325
+Std W Json time: 0.084770165
+Avg R Json time: 0.119854483
+Std R Json time: 0.007658080
+Avg W MPck time: 0.043016183
+Std W MPck time: 0.008354067
+Avg R MPck time: 0.056306850
+Std R MPck time: 0.007197818
+
+Set 28: 2800 Owners and 10 Pets
+Avg W Json time: 0.724173375
+Std W Json time: 0.046299672
+Avg R Json time: 0.128171450
+Std R Json time: 0.009259004
+Avg W MPck time: 0.041059167
+Std W MPck time: 0.000768890
+Avg R MPck time: 0.053580175
+Std R MPck time: 0.007916238
+
+Set 29: 2900 Owners and 10 Pets
+Avg W Json time: 0.737666083
+Std W Json time: 0.021342394
+Avg R Json time: 0.130627325
+Std R Json time: 0.009305454
+Avg W MPck time: 0.045177142
+Std W MPck time: 0.005945883
+Avg R MPck time: 0.057998408
+Std R MPck time: 0.005179879
+
+Set 30: 3000 Owners and 10 Pets
+Avg W Json time: 0.757851242
+Std W Json time: 0.024327868
+Avg R Json time: 0.130389217
+Std R Json time: 0.005139441
+Avg W MPck time: 0.048021842
+Std W MPck time: 0.005234567
+Avg R MPck time: 0.062627333
+Std R MPck time: 0.010309549
+
+Set 31: 3100 Owners and 10 Pets
+Avg W Json time: 0.778738208
+Std W Json time: 0.034484262
+Avg R Json time: 0.136838842
+Std R Json time: 0.006276041
+Avg W MPck time: 0.049130483
+Std W MPck time: 0.007047434
+Avg R MPck time: 0.062916367
+Std R MPck time: 0.009475006
+
+Set 32: 3200 Owners and 10 Pets
+Avg W Json time: 0.822325033
+Std W Json time: 0.031270132
+Avg R Json time: 0.140331942
+Std R Json time: 0.007376247
+Avg W MPck time: 0.052872292
+Std W MPck time: 0.008943726
+Avg R MPck time: 0.062680783
+Std R MPck time: 0.006370127
+
+Set 33: 3300 Owners and 10 Pets
+Avg W Json time: 0.812177558
+Std W Json time: 0.035482297
+Avg R Json time: 0.141566417
+Std R Json time: 0.010927980
+Avg W MPck time: 0.052491283
+Std W MPck time: 0.006984040
+Avg R MPck time: 0.062840958
+Std R MPck time: 0.005773153
+
+Set 34: 3400 Owners and 10 Pets
+Avg W Json time: 0.862400100
+Std W Json time: 0.030119099
+Avg R Json time: 0.149403158
+Std R Json time: 0.007336785
+Avg W MPck time: 0.052000183
+Std W MPck time: 0.005201663
+Avg R MPck time: 0.064409617
+Std R MPck time: 0.005233150
+
+Set 35: 3500 Owners and 10 Pets
+Avg W Json time: 0.846808333
+Std W Json time: 0.076689723
+Avg R Json time: 0.146795800
+Std R Json time: 0.007836193
+Avg W MPck time: 0.049546700
+Std W MPck time: 0.005200977
+Avg R MPck time: 0.069971450
+Std R MPck time: 0.008923731
+
+Set 36: 3600 Owners and 10 Pets
+Avg W Json time: 0.827569242
+Std W Json time: 0.117670837
+Avg R Json time: 0.145456742
+Std R Json time: 0.018986577
+Avg W MPck time: 0.049373983
+Std W MPck time: 0.004537036
+Avg R MPck time: 0.065087142
+Std R MPck time: 0.007962690
+
+Set 37: 3700 Owners and 10 Pets
+Avg W Json time: 0.941902017
+Std W Json time: 0.029380721
+Avg R Json time: 0.160828283
+Std R Json time: 0.007191691
+Avg W MPck time: 0.059626783
+Std W MPck time: 0.011244292
+Avg R MPck time: 0.071630933
+Std R MPck time: 0.005694330
+
+Set 38: 3800 Owners and 10 Pets
+Avg W Json time: 0.976157658
+Std W Json time: 0.053052592
+Avg R Json time: 0.170174983
+Std R Json time: 0.011104399
+Avg W MPck time: 0.057935000
+Std W MPck time: 0.004185169
+Avg R MPck time: 0.080112858
+Std R MPck time: 0.010287039
+
+Set 39: 3900 Owners and 10 Pets
+Avg W Json time: 0.995154625
+Std W Json time: 0.027393332
+Avg R Json time: 0.161726133
+Std R Json time: 0.005492942
+Avg W MPck time: 0.061390817
+Std W MPck time: 0.004859805
+Avg R MPck time: 0.074638883
+Std R MPck time: 0.006682229
+
+Set 40: 4000 Owners and 10 Pets
+Avg W Json time: 0.998153325
+Std W Json time: 0.096389087
+Avg R Json time: 0.173146850
+Std R Json time: 0.019209815
+Avg W MPck time: 0.060728375
+Std W MPck time: 0.005835402
+Avg R MPck time: 0.074798025
+Std R MPck time: 0.010802199
+
+Set 41: 4100 Owners and 10 Pets
+Avg W Json time: 1.045614858
+Std W Json time: 0.028288114
+Avg R Json time: 0.178069033
+Std R Json time: 0.011200352
+Avg W MPck time: 0.063545842
+Std W MPck time: 0.004986150
+Avg R MPck time: 0.081410258
+Std R MPck time: 0.007169538
+
+Set 42: 4200 Owners and 10 Pets
+Avg W Json time: 1.020283358
+Std W Json time: 0.099031847
+Avg R Json time: 0.176110233
+Std R Json time: 0.019206921
+Avg W MPck time: 0.064148850
+Std W MPck time: 0.009511538
+Avg R MPck time: 0.083980342
+Std R MPck time: 0.009183926
+
+Set 43: 4300 Owners and 10 Pets
+Avg W Json time: 0.978635983
+Std W Json time: 0.168059223
+Avg R Json time: 0.172651183
+Std R Json time: 0.027443143
+Avg W MPck time: 0.066275833
+Std W MPck time: 0.007341809
+Avg R MPck time: 0.083290217
+Std R MPck time: 0.008632570
+
+Set 44: 4400 Owners and 10 Pets
+Avg W Json time: 1.111123392
+Std W Json time: 0.034318879
+Avg R Json time: 0.185495592
+Std R Json time: 0.008423590
+Avg W MPck time: 0.068543525
+Std W MPck time: 0.004396609
+Avg R MPck time: 0.084936983
+Std R MPck time: 0.009171819
+
+Set 45: 4500 Owners and 10 Pets
+Avg W Json time: 0.985591317
+Std W Json time: 0.174605216
+Avg R Json time: 0.181995083
+Std R Json time: 0.021050559
+Avg W MPck time: 0.070752250
+Std W MPck time: 0.004502320
+Avg R MPck time: 0.084395042
+Std R MPck time: 0.011212865
+
+Set 46: 4600 Owners and 10 Pets
+Avg W Json time: 1.101768050
+Std W Json time: 0.147929465
+Avg R Json time: 0.192099600
+Std R Json time: 0.024628080
+Avg W MPck time: 0.072664500
+Std W MPck time: 0.008720030
+Avg R MPck time: 0.084429067
+Std R MPck time: 0.009622538
+
+Set 47: 4700 Owners and 10 Pets
+Avg W Json time: 1.209092317
+Std W Json time: 0.046887357
+Avg R Json time: 0.203764050
+Std R Json time: 0.006085570
+Avg W MPck time: 0.073889283
+Std W MPck time: 0.007325101
+Avg R MPck time: 0.090779125
+Std R MPck time: 0.008574298
+
+Set 48: 4800 Owners and 10 Pets
+Avg W Json time: 1.241828450
+Std W Json time: 0.069231168
+Avg R Json time: 0.212174442
+Std R Json time: 0.023490180
+Avg W MPck time: 0.078547975
+Std W MPck time: 0.011514582
+Avg R MPck time: 0.096019592
+Std R MPck time: 0.006735012
+
+Set 49: 4900 Owners and 10 Pets
+Avg W Json time: 1.323690708
+Std W Json time: 0.052504864
+Avg R Json time: 0.218108017
+Std R Json time: 0.019941599
+Avg W MPck time: 0.079800325
+Std W MPck time: 0.006157674
+Avg R MPck time: 0.094674067
+Std R MPck time: 0.005475047
+
+Set 50: 5000 Owners and 10 Pets
+Avg W Json time: 1.469137417
+Std W Json time: 0.189097740
+Avg R Json time: 0.229560750
+Std R Json time: 0.023646755
+Avg W MPck time: 0.089783942
+Std W MPck time: 0.010263965
+Avg R MPck time: 0.112580733
+Std R MPck time: 0.020845722
+
+Set 51: 5100 Owners and 10 Pets
+Avg W Json time: 1.415183258
+Std W Json time: 0.118700022
+Avg R Json time: 0.224639108
+Std R Json time: 0.013909706
+Avg W MPck time: 0.086626033
+Std W MPck time: 0.012947488
+Avg R MPck time: 0.102309442
+Std R MPck time: 0.012873865
+
+Set 52: 5200 Owners and 10 Pets
+Avg W Json time: 1.370746575
+Std W Json time: 0.035395165
+Avg R Json time: 0.221916050
+Std R Json time: 0.011994856
+Avg W MPck time: 0.080318117
+Std W MPck time: 0.002818104
+Avg R MPck time: 0.100025808
+Std R MPck time: 0.007200270
+
+Set 53: 5300 Owners and 10 Pets
+Avg W Json time: 1.327075875
+Std W Json time: 0.106273614
+Avg R Json time: 0.229234883
+Std R Json time: 0.012345797
+Avg W MPck time: 0.080988500
+Std W MPck time: 0.002966894
+Avg R MPck time: 0.104100200
+Std R MPck time: 0.005922190
+
+Set 54: 5400 Owners and 10 Pets
+Avg W Json time: 1.374217367
+Std W Json time: 0.048215190
+Avg R Json time: 0.228693242
+Std R Json time: 0.007826167
+Avg W MPck time: 0.085467950
+Std W MPck time: 0.006577716
+Avg R MPck time: 0.103854617
+Std R MPck time: 0.009058727
+
+Set 55: 5500 Owners and 10 Pets
+Avg W Json time: 1.348511183
+Std W Json time: 0.151336950
+Avg R Json time: 0.224048000
+Std R Json time: 0.014755871
+Avg W MPck time: 0.083742875
+Std W MPck time: 0.005398223
+Avg R MPck time: 0.103807067
+Std R MPck time: 0.007071848
+
+Set 56: 5600 Owners and 10 Pets
+Avg W Json time: 1.259334925
+Std W Json time: 0.288961093
+Avg R Json time: 0.212711333
+Std R Json time: 0.051871815
+Avg W MPck time: 0.085930525
+Std W MPck time: 0.025944954
+Avg R MPck time: 0.170261417
+Std R MPck time: 0.235617250
+
+Set 57: 5700 Owners and 10 Pets
+Avg W Json time: 0.833282142
+Std W Json time: 0.020105103
+Avg R Json time: 0.150005125
+Std R Json time: 0.003032327
+Avg W MPck time: 0.054628633
+Std W MPck time: 0.001234244
+Avg R MPck time: 0.067412692
+Std R MPck time: 0.002299089
+
+Set 58: 5800 Owners and 10 Pets
+Avg W Json time: 0.849849083
+Std W Json time: 0.015048969
+Avg R Json time: 0.151111850
+Std R Json time: 0.002204204
+Avg W MPck time: 0.055776875
+Std W MPck time: 0.002522712
+Avg R MPck time: 0.067996350
+Std R MPck time: 0.001436276
+
+Set 59: 5900 Owners and 10 Pets
+Avg W Json time: 0.866899117
+Std W Json time: 0.009608027
+Avg R Json time: 0.156499750
+Std R Json time: 0.003794496
+Avg W MPck time: 0.056771817
+Std W MPck time: 0.001376453
+Avg R MPck time: 0.070010933
+Std R MPck time: 0.001456348
+
+Set 60: 6000 Owners and 10 Pets
+Avg W Json time: 0.877157692
+Std W Json time: 0.013704159
+Avg R Json time: 0.158332617
+Std R Json time: 0.002187583
+Avg W MPck time: 0.057060200
+Std W MPck time: 0.000986976
+Avg R MPck time: 0.072045133
+Std R MPck time: 0.002564265
+
+Set 61: 6100 Owners and 10 Pets
+Avg W Json time: 0.895851242
+Std W Json time: 0.012424065
+Avg R Json time: 0.159668358
+Std R Json time: 0.002976148
+Avg W MPck time: 0.057698058
+Std W MPck time: 0.000892434
+Avg R MPck time: 0.072233333
+Std R MPck time: 0.001443639
+
+Set 62: 6200 Owners and 10 Pets
+Avg W Json time: 0.906657625
+Std W Json time: 0.011516127
+Avg R Json time: 0.162869325
+Std R Json time: 0.004199415
+Avg W MPck time: 0.058990825
+Std W MPck time: 0.001551802
+Avg R MPck time: 0.074060100
+Std R MPck time: 0.000982447
+
+Set 63: 6300 Owners and 10 Pets
+Avg W Json time: 0.945564692
+Std W Json time: 0.072217643
+Avg R Json time: 0.170369208
+Std R Json time: 0.009206146
+Avg W MPck time: 0.060746192
+Std W MPck time: 0.001705345
+Avg R MPck time: 0.075027750
+Std R MPck time: 0.003276559
+
+Set 64: 6400 Owners and 10 Pets
+Avg W Json time: 0.935041400
+Std W Json time: 0.012141803
+Avg R Json time: 0.168021733
+Std R Json time: 0.003456011
+Avg W MPck time: 0.060611642
+Std W MPck time: 0.001245099
+Avg R MPck time: 0.074748625
+Std R MPck time: 0.001384262
+
+Set 65: 6500 Owners and 10 Pets
+Avg W Json time: 0.944910433
+Std W Json time: 0.008319156
+Avg R Json time: 0.169237758
+Std R Json time: 0.002194400
+Avg W MPck time: 0.061331850
+Std W MPck time: 0.000997791
+Avg R MPck time: 0.075681908
+Std R MPck time: 0.001087126
+
+Set 66: 6600 Owners and 10 Pets
+Avg W Json time: 0.954581975
+Std W Json time: 0.014959424
+Avg R Json time: 0.169818417
+Std R Json time: 0.001666250
+Avg W MPck time: 0.062304500
+Std W MPck time: 0.001642789
+Avg R MPck time: 0.076539275
+Std R MPck time: 0.002127688
+
+Set 67: 6700 Owners and 10 Pets
+Avg W Json time: 0.972662942
+Std W Json time: 0.023661126
+Avg R Json time: 0.174484767
+Std R Json time: 0.001758981
+Avg W MPck time: 0.063175633
+Std W MPck time: 0.001051536
+Avg R MPck time: 0.077441600
+Std R MPck time: 0.000737991
+
+Set 68: 6800 Owners and 10 Pets
+Avg W Json time: 0.984808275
+Std W Json time: 0.013259728
+Avg R Json time: 0.177140050
+Std R Json time: 0.002299978
+Avg W MPck time: 0.064591217
+Std W MPck time: 0.002335706
+Avg R MPck time: 0.079242492
+Std R MPck time: 0.001628385
+
+Set 69: 6900 Owners and 10 Pets
+Avg W Json time: 0.997416658
+Std W Json time: 0.008355865
+Avg R Json time: 0.178390792
+Std R Json time: 0.001566734
+Avg W MPck time: 0.064470892
+Std W MPck time: 0.000656260
+Avg R MPck time: 0.079768208
+Std R MPck time: 0.001079847
+
+Set 70: 7000 Owners and 10 Pets
+Avg W Json time: 1.013606683
+Std W Json time: 0.010399337
+Avg R Json time: 0.181595092
+Std R Json time: 0.001189743
+Avg W MPck time: 0.065682692
+Std W MPck time: 0.000809869
+Avg R MPck time: 0.081384858
+Std R MPck time: 0.001289172
+
+Set 71: 7100 Owners and 10 Pets
+Avg W Json time: 1.020697600
+Std W Json time: 0.010311138
+Avg R Json time: 0.184030467
+Std R Json time: 0.001764553
+Avg W MPck time: 0.066389200
+Std W MPck time: 0.001279881
+Avg R MPck time: 0.082193267
+Std R MPck time: 0.001697867
+
+Set 72: 7200 Owners and 10 Pets
+Avg W Json time: 1.043094792
+Std W Json time: 0.012896165
+Avg R Json time: 0.184776317
+Std R Json time: 0.004270057
+Avg W MPck time: 0.067351100
+Std W MPck time: 0.001831615
+Avg R MPck time: 0.083269775
+Std R MPck time: 0.001400824
+
+Set 73: 7300 Owners and 10 Pets
+Avg W Json time: 1.058577875
+Std W Json time: 0.015036237
+Avg R Json time: 0.192044250
+Std R Json time: 0.007305949
+Avg W MPck time: 0.068369842
+Std W MPck time: 0.001599037
+Avg R MPck time: 0.084776642
+Std R MPck time: 0.002493495
+
+Set 74: 7400 Owners and 10 Pets
+Avg W Json time: 1.079982575
+Std W Json time: 0.010005733
+Avg R Json time: 0.191757417
+Std R Json time: 0.003327435
+Avg W MPck time: 0.071333325
+Std W MPck time: 0.004059787
+Avg R MPck time: 0.088436683
+Std R MPck time: 0.005712031
+
+Set 75: 7500 Owners and 10 Pets
+Avg W Json time: 1.089521142
+Std W Json time: 0.019200742
+Avg R Json time: 0.193993200
+Std R Json time: 0.001617512
+Avg W MPck time: 0.070254158
+Std W MPck time: 0.001124214
+Avg R MPck time: 0.086898992
+Std R MPck time: 0.000765201
+
+Set 76: 7600 Owners and 10 Pets
+Avg W Json time: 1.098890875
+Std W Json time: 0.015003699
+Avg R Json time: 0.195749392
+Std R Json time: 0.003590898
+Avg W MPck time: 0.070945142
+Std W MPck time: 0.001099181
+Avg R MPck time: 0.087394200
+Std R MPck time: 0.000923846
+
+Set 77: 7700 Owners and 10 Pets
+Avg W Json time: 1.115187842
+Std W Json time: 0.023498293
+Avg R Json time: 0.198120633
+Std R Json time: 0.003577699
+Avg W MPck time: 0.082172850
+Std W MPck time: 0.006637332
+Avg R MPck time: 0.089253417
+Std R MPck time: 0.002060457
+
+Set 78: 7800 Owners and 10 Pets
+Avg W Json time: 1.124256083
+Std W Json time: 0.015756436
+Avg R Json time: 0.200414175
+Std R Json time: 0.001203510
+Avg W MPck time: 0.083834817
+Std W MPck time: 0.004200241
+Avg R MPck time: 0.089690700
+Std R MPck time: 0.001261463
+
+Set 79: 7900 Owners and 10 Pets
+Avg W Json time: 1.145943067
+Std W Json time: 0.011188741
+Avg R Json time: 0.203850425
+Std R Json time: 0.002434101
+Avg W MPck time: 0.086711458
+Std W MPck time: 0.004303278
+Avg R MPck time: 0.091489233
+Std R MPck time: 0.001421642
+
+Set 80: 8000 Owners and 10 Pets
+Avg W Json time: 1.169891108
+Std W Json time: 0.023661331
+Avg R Json time: 0.213656783
+Std R Json time: 0.012981848
+Avg W MPck time: 0.088250658
+Std W MPck time: 0.004743162
+Avg R MPck time: 0.099097800
+Std R MPck time: 0.017353816
+
+Set 81: 8100 Owners and 10 Pets
+Avg W Json time: 1.182071683
+Std W Json time: 0.019412237
+Avg R Json time: 0.209096500
+Std R Json time: 0.003492135
+Avg W MPck time: 0.088921550
+Std W MPck time: 0.002759371
+Avg R MPck time: 0.095096483
+Std R MPck time: 0.002175908
+
+Set 82: 8200 Owners and 10 Pets
+Avg W Json time: 1.227488567
+Std W Json time: 0.058485018
+Avg R Json time: 0.220208650
+Std R Json time: 0.014310470
+Avg W MPck time: 0.094449842
+Std W MPck time: 0.006542264
+Avg R MPck time: 0.099322075
+Std R MPck time: 0.003506948
+
+Set 83: 8300 Owners and 10 Pets
+Avg W Json time: 1.231019825
+Std W Json time: 0.021285876
+Avg R Json time: 0.216784075
+Std R Json time: 0.003648788
+Avg W MPck time: 0.092681442
+Std W MPck time: 0.005060273
+Avg R MPck time: 0.101165067
+Std R MPck time: 0.005449407
+
+Set 84: 8400 Owners and 10 Pets
+Avg W Json time: 1.250761267
+Std W Json time: 0.064019534
+Avg R Json time: 0.223872567
+Std R Json time: 0.014413546
+Avg W MPck time: 0.094865892
+Std W MPck time: 0.005654071
+Avg R MPck time: 0.100729067
+Std R MPck time: 0.008613446
+
+Set 85: 8500 Owners and 10 Pets
+Avg W Json time: 1.242951225
+Std W Json time: 0.019898691
+Avg R Json time: 0.222032983
+Std R Json time: 0.007838074
+Avg W MPck time: 0.098700600
+Std W MPck time: 0.003898482
+Avg R MPck time: 0.100378117
+Std R MPck time: 0.002530557
+
+Set 86: 8600 Owners and 10 Pets
+Avg W Json time: 1.250264625
+Std W Json time: 0.011779984
+Avg R Json time: 0.223803625
+Std R Json time: 0.004007794
+Avg W MPck time: 0.094363867
+Std W MPck time: 0.005863499
+Avg R MPck time: 0.101560333
+Std R MPck time: 0.003169540
+
+Set 87: 8700 Owners and 10 Pets
+Avg W Json time: 1.277843733
+Std W Json time: 0.022422664
+Avg R Json time: 0.226183258
+Std R Json time: 0.002951918
+Avg W MPck time: 0.097490383
+Std W MPck time: 0.003342699
+Avg R MPck time: 0.105009725
+Std R MPck time: 0.004111979
+
+Set 88: 8800 Owners and 10 Pets
+Avg W Json time: 1.295547025
+Std W Json time: 0.026730102
+Avg R Json time: 0.230598542
+Std R Json time: 0.002671472
+Avg W MPck time: 0.098193450
+Std W MPck time: 0.004176703
+Avg R MPck time: 0.103273858
+Std R MPck time: 0.003465872
+
+Set 89: 8900 Owners and 10 Pets
+Avg W Json time: 1.334707508
+Std W Json time: 0.093023033
+Avg R Json time: 0.235675625
+Std R Json time: 0.015302295
+Avg W MPck time: 0.098284758
+Std W MPck time: 0.003911836
+Avg R MPck time: 0.104988017
+Std R MPck time: 0.006116196
+
+Set 90: 9000 Owners and 10 Pets
+Avg W Json time: 1.315967617
+Std W Json time: 0.017264346
+Avg R Json time: 0.232993650
+Std R Json time: 0.002456699
+Avg W MPck time: 0.098465167
+Std W MPck time: 0.004876573
+Avg R MPck time: 0.104707483
+Std R MPck time: 0.003392150
+
+Set 91: 9100 Owners and 10 Pets
+Avg W Json time: 1.328649700
+Std W Json time: 0.016665788
+Avg R Json time: 0.235011783
+Std R Json time: 0.003049348
+Avg W MPck time: 0.098118233
+Std W MPck time: 0.005479795
+Avg R MPck time: 0.104797083
+Std R MPck time: 0.001820932
+
+Set 92: 9200 Owners and 10 Pets
+Avg W Json time: 1.392929342
+Std W Json time: 0.075845674
+Avg R Json time: 0.247161908
+Std R Json time: 0.013102752
+Avg W MPck time: 0.104268842
+Std W MPck time: 0.005351733
+Avg R MPck time: 0.109887675
+Std R MPck time: 0.005008015
+
+Set 93: 9300 Owners and 10 Pets
+Avg W Json time: 1.386236625
+Std W Json time: 0.047904959
+Avg R Json time: 0.241679442
+Std R Json time: 0.003170408
+Avg W MPck time: 0.101606092
+Std W MPck time: 0.005510442
+Avg R MPck time: 0.108735225
+Std R MPck time: 0.002030733
+
+Set 94: 9400 Owners and 10 Pets
+Avg W Json time: 1.379237400
+Std W Json time: 0.012386532
+Avg R Json time: 0.245670017
+Std R Json time: 0.005504068
+Avg W MPck time: 0.103462658
+Std W MPck time: 0.005315095
+Avg R MPck time: 0.110750667
+Std R MPck time: 0.002858556
+
+Set 95: 9500 Owners and 10 Pets
+Avg W Json time: 1.394792033
+Std W Json time: 0.016444117
+Avg R Json time: 0.248197725
+Std R Json time: 0.006614232
+Avg W MPck time: 0.104872492
+Std W MPck time: 0.004828936
+Avg R MPck time: 0.113150108
+Std R MPck time: 0.004718499
+
+Set 96: 9600 Owners and 10 Pets
+Avg W Json time: 1.412411425
+Std W Json time: 0.034594683
+Avg R Json time: 0.250801617
+Std R Json time: 0.005974243
+Avg W MPck time: 0.104703508
+Std W MPck time: 0.005070863
+Avg R MPck time: 0.117382975
+Std R MPck time: 0.009666987
+
+Set 97: 9700 Owners and 10 Pets
+Avg W Json time: 1.405682717
+Std W Json time: 0.018891935
+Avg R Json time: 0.249368608
+Std R Json time: 0.002469316
+Avg W MPck time: 0.102854158
+Std W MPck time: 0.004627281
+Avg R MPck time: 0.111548125
+Std R MPck time: 0.001981591
+
+Set 98: 9800 Owners and 10 Pets
+Avg W Json time: 1.472124783
+Std W Json time: 0.097937919
+Avg R Json time: 0.260887267
+Std R Json time: 0.011878312
+Avg W MPck time: 0.110141958
+Std W MPck time: 0.006238799
+Avg R MPck time: 0.115852917
+Std R MPck time: 0.004419819
+
+Set 99: 9900 Owners and 10 Pets
+Avg W Json time: 1.494915633
+Std W Json time: 0.082141828
+Avg R Json time: 0.265096600
+Std R Json time: 0.011969868
+Avg W MPck time: 0.110579400
+Std W MPck time: 0.004951659
+Avg R MPck time: 0.119452050
+Std R MPck time: 0.006724895
+
+Set 100: 10000 Owners and 10 Pets
+Avg W Json time: 1.472565550
+Std W Json time: 0.026265990
+Avg R Json time: 0.265845308
+Std R Json time: 0.012876957
+Avg W MPck time: 0.109977708
+Std W MPck time: 0.006485403
+Avg R MPck time: 0.117840333
+Std R MPck time: 0.003623556
+
