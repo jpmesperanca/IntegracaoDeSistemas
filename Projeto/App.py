@@ -154,25 +154,29 @@ def main():
     ownersMultiplier = 100
     maxPetsPerOwner = 10
 
-    for nSet in range(1, 200):
+    for nSet in range(1, 101):
 
         totalOwners = nSet * ownersMultiplier
-
-        data = generateData(nSet, totalOwners, maxPetsPerOwner)
 
         JsonWRes = []
         JsonRRes = []
         MPackWRes = []
         MPackRRes = []
 
-        # Testar várias vezes para o mesmo set para diminuir a variância
-        for i in range(1, 21):
+        # Para o mesmo número de Owners e de maxPets,
+        # testar para 5 datasets diferentes e
+        # repetir cada dataset 3 vezes
+        for i in range(1, 5):
 
-            JsonWRes.append(getJsonWriteTime(data, nSet, i))
-            JsonRRes.append(getJsonLoadTime(nSet, i))
+            data = generateData(nSet, totalOwners, maxPetsPerOwner)
 
-            MPackWRes.append(getMPackWriteTime(data, nSet, i))
-            MPackRRes.append(getMPackReadTime(nSet, i))
+            for j in range(3):
+
+                JsonWRes.append(getJsonWriteTime(data, nSet, i))
+                JsonRRes.append(getJsonLoadTime(nSet, i))
+
+                MPackWRes.append(getMPackWriteTime(data, nSet, i))
+                MPackRRes.append(getMPackReadTime(nSet, i))
 
         with open("stats.txt", "a") as f:
 
