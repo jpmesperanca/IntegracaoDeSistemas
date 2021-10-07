@@ -54,7 +54,8 @@ def main():
         
         
 
-    plt.plot(JSONAvgWList, nOwnersList)
+    plt.plot(JSONAvgWList)
+    plt.legend()
     plt.show()
             
         
