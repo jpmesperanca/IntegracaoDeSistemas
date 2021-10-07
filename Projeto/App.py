@@ -5,7 +5,7 @@ from Owner import Owner
 from Pet import Pet
 
 
-def generateData(nSet, nOwners, maxPetsPerOwner):
+def generateData(nOwners, maxPetsPerOwner):
 
     fake = Faker()
     species = [
@@ -168,7 +168,7 @@ def main():
         # repetir cada dataset 3 vezes
         for i in range(1, 5):
 
-            data = generateData(nSet, totalOwners, maxPetsPerOwner)
+            data = generateData(totalOwners, maxPetsPerOwner)
 
             for j in range(3):
 
