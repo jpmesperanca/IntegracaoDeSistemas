@@ -166,7 +166,7 @@ def main():
         # Para o mesmo número de Owners e de maxPets,
         # testar para 5 datasets diferentes e
         # repetir cada dataset 3 vezes
-        for i in range(1, 5):
+        for i in range(5):
 
             data = generateData(totalOwners, maxPetsPerOwner)
 
