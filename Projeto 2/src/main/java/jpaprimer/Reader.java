@@ -14,12 +14,12 @@ public class Reader {
         EntityManager em = emf.createEntityManager();
         Query q = em.createQuery("from Professor p");
 
-        List<Professor> lp = q.getResultList();
+        /* List<Professor> lp = q.getResultList();
         for (Professor p : lp) {
             System.out.println(p);
             for (Student s : p.getStudents())
                 System.out.println(s);
-        }
+        }*/
     }
     
 }

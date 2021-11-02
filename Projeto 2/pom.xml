@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>jpaprimer</groupId>
-  <artifactId>ProfStudents</artifactId>
+  <artifactId>Trips</artifactId>
   <version>1</version>
 
-  <name>ProfStudents</name>
+  <name>Trips</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
