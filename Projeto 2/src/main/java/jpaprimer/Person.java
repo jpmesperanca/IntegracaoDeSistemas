@@ -24,6 +24,8 @@ public class Person {
     @OneToMany(mappedBy = "person")
     private List<Ticket> tickets;
 
+    public Person () {}
+    
     public Person(String email, String password, String name, String phoneNumber, int balance, boolean is_manager) {
         this.email = email;
         this.password = password;
@@ -87,5 +89,13 @@ public class Person {
 
     public void setIs_manager(boolean is_manager) {
         this.is_manager = is_manager;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 }

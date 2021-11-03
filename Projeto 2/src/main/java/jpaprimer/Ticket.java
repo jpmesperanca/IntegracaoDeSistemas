@@ -18,6 +18,8 @@ public class Ticket {
     @ManyToOne
     private Trip trip;
 
+    public Ticket() {}
+    
     public Ticket(Person person, Trip trip) {
         this.person = person;
         this.trip = trip;

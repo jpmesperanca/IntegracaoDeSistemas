@@ -24,6 +24,8 @@ public class Trip {
     @OneToMany(mappedBy = "trip")
     private List<Ticket> tickets;
 
+    public Trip() {}
+    
     public Trip(GregorianCalendar departureDate, String departurePoint, String destinationPoint, int capacity, Double ticketPrice) {
         this.departureDate = departureDate;
         this.departurePoint = departurePoint;
