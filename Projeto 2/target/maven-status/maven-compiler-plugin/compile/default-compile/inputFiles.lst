@@ -1,5 +1,7 @@
-/workspace/src/main/java/EJBs/NotBean.java
 /workspace/src/main/java/jpaprimer/Person.java
+/workspace/src/main/java/Client/Client.java
 /workspace/src/main/java/jpaprimer/Ticket.java
+/workspace/src/main/java/EJBs/StatelessBean.java
 /workspace/src/main/java/jpaprimer/Trip.java
+/workspace/src/main/java/EJBs/StatelessBeanInterface.java
 /workspace/src/main/java/jpaprimer/GenerateData.java
