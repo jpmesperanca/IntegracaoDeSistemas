@@ -18,11 +18,10 @@
   </modules>
 
   <distributionManagement>
-    <site>
-      <id>site</id>
-      <name>project website</name>
-      <url>scp://local.company.com/websites/project.company.com/</url>
-    </site>
+    <repository>
+      <id>lch</id>
+      <url>http://127.0.0.1:9993/</url>
+    </repository>
   </distributionManagement>
 
   <properties>

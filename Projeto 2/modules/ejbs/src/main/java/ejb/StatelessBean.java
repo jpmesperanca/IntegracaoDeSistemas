@@ -1,10 +1,8 @@
 package ejb;
 
 import javax.ejb.Stateless;
-//import javax.ejb.PostActivate;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import jpa.*;
@@ -15,18 +13,11 @@ import jpa.*;
 @Stateless(mappedName = "slb")
 public class StatelessBean implements StatelessBeanInterface {
 
+    @PersistenceContext(name = "TripDB")
     EntityManager em;
 
     public StatelessBean() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("TripDB");
-        em = emf.createEntityManager();
     }
-
-    /*
-     * @PostActivate public void connectToDB() { EntityManagerFactory emf =
-     * Persistence.createEntityManagerFactory("TripDB"); em =
-     * emf.createEntityManager(); }
-     */
 
     public String getName(int id) {
 
@@ -34,6 +25,9 @@ public class StatelessBean implements StatelessBeanInterface {
 
         q.setParameter("id", id);
 
-        return q.getSingleResult().getName();
+        Person p = q.getSingleResult();
+        // Person p = em.find(Person.class, id); -> este funciona pq é por id
+
+        return p.getName();
     }
 }
