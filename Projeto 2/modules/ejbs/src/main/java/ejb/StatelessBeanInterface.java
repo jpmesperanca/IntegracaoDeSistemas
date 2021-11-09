@@ -5,5 +5,13 @@ import javax.ejb.Remote;
 
 @Remote
 public interface StatelessBeanInterface {
-    public String getName(int id);
+    public int getPassengerByEmail(String email);
+
+    public void addPassenger(String email, String password, String name, String phoneNumber);
+
+    public void addManager(String email, String password, String name, String phoneNumber);
+
+    public void editPassenger(int id, String email, String password, String name, String phoneNumber);
+
+    public void deletePassenger(int id);
 }

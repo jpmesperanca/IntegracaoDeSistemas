@@ -14,7 +14,7 @@ public class Ticket {
     private int id;
 
     @ManyToOne
-    private Person person;
+    private Passenger passenger;
 
     @ManyToOne
     private Trip trip;
@@ -22,8 +22,8 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Person person, Trip trip) {
-        this.person = person;
+    public Ticket(Passenger passenger, Trip trip) {
+        this.passenger = passenger;
         this.trip = trip;
     }
 
@@ -35,12 +35,12 @@ public class Ticket {
         this.id = id;
     }
 
-    public Person getPerson() {
-        return person;
+    public Passenger getPassenger() {
+        return passenger;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
     }
 
     public Trip getTrip() {
