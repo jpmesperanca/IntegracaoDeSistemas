@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import beans.ManageStudents;
-import data.Student;
+import beans.StatelessBean;
+
+import data.Manager;
+import data.Passenger;
+import data.Ticket;
+import data.Trip;
 
 @WebServlet("/webaccess")
 public class MyServlet extends HttpServlet {
@@ -20,14 +24,13 @@ public class MyServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @EJB
-    private ManageStudents manageStudents;
+    private StatelessBean slb;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        List<String> field1List = manageStudents.listStudents().stream().map(Student::getName)
-                .collect(Collectors.toList());
-        String result = "Students list: " + field1List;
+        List<String> field1List = slb.listPassengers().stream().collect(Collectors.toList());
+        String result = "Passenger test list: " + field1List;
         System.out.println(result);
         response.getWriter().print(result);
     }

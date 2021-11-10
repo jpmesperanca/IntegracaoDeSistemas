@@ -15,11 +15,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <name>enterprise java beans</name>
   
   <dependencies>
-  <dependency>
-  <groupId>book</groupId>
-  <artifactId>jpa</artifactId>
+    <dependency>
+      <groupId>book</groupId>
+      <artifactId>jpa</artifactId>
+    </dependency>
 
-  </dependency>
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.32</version>
+    </dependency>
+
     <dependency>
       <groupId>jakarta.platform</groupId>
       <artifactId>jakarta.jakartaee-api</artifactId>
