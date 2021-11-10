@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import beans.StatelessBean;
 
-import data.Manager;
 import data.Passenger;
-import data.Ticket;
-import data.Trip;
 
 @WebServlet("/webaccess")
 public class MyServlet extends HttpServlet {
@@ -29,8 +26,12 @@ public class MyServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        List<String> field1List = slb.listPassengers().stream().collect(Collectors.toList());
+        slb.createData();
+
+        List<String> field1List = slb.listPassengers().stream().map(Passenger::getName).collect(Collectors.toList());
+
         String result = "Passenger test list: " + field1List;
+
         System.out.println(result);
         response.getWriter().print(result);
     }
