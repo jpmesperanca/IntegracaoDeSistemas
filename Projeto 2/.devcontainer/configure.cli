@@ -8,7 +8,7 @@ batch
 deploy --force --url=https://jdbc.postgresql.org/download/postgresql-42.2.24.jar
 
 # Deploy the data source
-data-source add --name=PostgresDS --driver-name=postgresql-42.2.24.jar  --driver-class=org.postgresql.Driver --jndi-name=java:/PostgresDS --connection-url=jdbc:postgresql://database:5432/TripDB  --user-name=postgres --password=My01pass
+data-source add --name=PostgresDS --driver-name=postgresql-42.2.24.jar  --driver-class=org.postgresql.Driver --jndi-name=java:/PostgresDS --connection-url=jdbc:postgresql://database:5432/school  --user-name=postgres --password=My01pass
 
 # Add security domain mapping in the EJB3 subsystem to enable elytron for the quickstart EJBs
 /subsystem=ejb3/application-security-domain=other:add(security-domain=ApplicationDomain)

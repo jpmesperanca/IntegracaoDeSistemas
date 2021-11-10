@@ -1,4 +1,0 @@
-Como associar o EM ao Bean? (mostrar statelessBean)
-Como chamar o Bean do client? (pode ser que tenha a ver com o jndi.properties que não existe e eu não o sei criar)
-É possível usar o logger do Wildfly?
-A JPA é apenas para gerar dados e ter as classes? (penso que sim nesta mas might aswell)
