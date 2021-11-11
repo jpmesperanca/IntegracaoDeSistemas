@@ -112,7 +112,7 @@ public class StatelessBean {
         em.remove(em.find(Passenger.class, id));
     }
 
-    public List<Integer> listTrips(GregorianCalendar start, GregorianCalendar end) {
+    public List<Integer> listTripsBetweenStartEndDate(GregorianCalendar start, GregorianCalendar end) {
 
         TypedQuery<Integer> q = em.createQuery(
                 "select t.id from Trip t where t.departureDate >= :start and t.departureDate <= :end", Integer.class);
@@ -158,7 +158,7 @@ public class StatelessBean {
         em.remove(t);
     }
 
-    public List<Integer> listTrips(int passengerId) {
+    public List<Integer> listTripsByPassengerId(int passengerId) {
 
         Passenger p = em.find(Passenger.class, passengerId);
 
@@ -171,4 +171,63 @@ public class StatelessBean {
         return t;
     }
 
+    public void addTrip(GregorianCalendar departureDate, String departurePoint, String destinationPoint, int capacity,
+            Double ticketPrice) {
+        Trip t = new Trip(departureDate, departurePoint, destinationPoint, capacity, ticketPrice);
+        em.persist(t);
+    }
+
+    public void deleteTrip(int id) {
+        Trip t = em.find(Trip.class, id);
+
+        List<Ticket> tickets = t.getTickets();
+        int pId;
+
+        for (Ticket ticket : tickets) {
+            pId = ticket.getPassenger().getId();
+            refundTicket(pId, ticket.getId());
+            em.remove(ticket);
+        }
+        em.remove(t);
+    }
+
+    public List<Integer> listTop5Passengers() {
+        TypedQuery<Integer> q = em.createQuery(
+                "select t.passenger_id from Ticket t group by (t.passenger_id) order by count(t.passenger_id) DESC LIMIT 5",
+                Integer.class);
+
+        return q.getResultList();
+    }
+
+    public List<Integer> listTripsByDepartureDate(GregorianCalendar departureDate) {
+
+        TypedQuery<Integer> q = em.createQuery("select t.id from Trip t where t.departureDate = :departureDate",
+                Integer.class);
+
+        q.setParameter("departureDate", departureDate);
+
+        return q.getResultList();
+    }
+
+    public List<Integer> listPassengersByTripId(int tripId) {
+        /*
+         * Trip t = em.find(Trip.class, tripId); List<Ticket> allTripTickets =
+         * t.getTickets();
+         * 
+         * List<Integer> passengerIds = new ArrayList<Integer>();
+         * 
+         * for (Ticket ticket : allTripTickets)
+         * passengerIds.add(ticket.getPassenger().getId());
+         */
+
+        // Same thing, less lines. O de cima é mais readable mas o de baixo tem menos
+        // linhas a inuteis
+
+        List<Integer> passengerIds = new ArrayList<Integer>();
+
+        for (Ticket ticket : em.find(Trip.class, tripId).getTickets())
+            passengerIds.add(ticket.getPassenger().getId());
+
+        return passengerIds;
+    }
 }
