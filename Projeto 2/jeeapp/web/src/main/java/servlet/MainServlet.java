@@ -24,7 +24,7 @@ public class MainServlet extends HttpServlet {
 
             if (auth) {
                 request.getSession(true).setAttribute("auth", name);
-                destination = "/secured/passenger.jsp";
+                destination = "/secured/manager.jsp";
             } else {
                 request.getSession(true).removeAttribute("auth");
             }

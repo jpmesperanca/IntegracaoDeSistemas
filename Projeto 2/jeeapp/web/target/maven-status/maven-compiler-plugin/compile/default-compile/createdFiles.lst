@@ -1,3 +1,2 @@
 servlet/MainServlet.class
 filter/SecurityFilter.class
-servlet/GreetingServlet.class
