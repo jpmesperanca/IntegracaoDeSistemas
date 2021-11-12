@@ -82,9 +82,48 @@ public class StatelessBean {
         em.persist(m);
     }
 
+    public String authenticate(String email, String password) {
+
+        TypedQuery<Integer> q = em.createQuery(
+                "select p.id from Passenger p where p.email = :email and p.password = :password", Integer.class);
+
+        q.setParameter("email", email);
+        q.setParameter("password", password);
+
+        try {
+            q.getSingleResult();
+            return "passenger";
+
+        } catch (Exception e) {
+            try {
+                q = em.createQuery("select m.id from Manager m where m.email = :email and m.password = :password",
+                        Integer.class);
+
+                q.setParameter("email", email);
+                q.setParameter("password", password);
+
+                q.getSingleResult();
+
+                return "manager";
+
+            } catch (Exception ex) {
+                return "";
+            }
+        }
+    }
+
     public int getPassengerByEmail(String email) {
 
         TypedQuery<Passenger> q = em.createQuery("from Passenger p where p.email = :email", Passenger.class);
+
+        q.setParameter("email", email);
+
+        return q.getSingleResult().getId();
+    }
+
+    public int getManagerByEmail(String email) {
+
+        TypedQuery<Manager> q = em.createQuery("from Manager m where m.email = :email", Manager.class);
 
         q.setParameter("email", email);
 
