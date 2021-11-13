@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Insert title here</title>
+    <title>Passenger Webpage</title>
 </head>
 <body>
     <strong>
@@ -18,5 +18,11 @@
     <c:forEach var="item" items="${myListOfNumbers}">
         <div>Content is ${item}</div>
     </c:forEach>
+    &nbsp;
+    <div>
+        <form action="main" method="get">
+            <input type="submit" name="logout" value="Logout" />
+        </form>
+    </div>  
 </body>
 </html>

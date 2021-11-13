@@ -4,9 +4,15 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Insert title here</title>
+    <title>Manager Webpage</title>
 </head>
 <body>
     <strong>Current logged user is ${role}</strong>
+    &nbsp;
+    <div>
+        <form action="main" method="get">
+            <input type="submit" name="logout" value="Logout" />
+        </form>
+    </div>  
 </body>
 </html>

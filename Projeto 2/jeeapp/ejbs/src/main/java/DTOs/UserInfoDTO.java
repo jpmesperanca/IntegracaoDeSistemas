@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class UserInfoDTO implements Serializable {
 
     private String email;
+    private String password;
     private String name;
     private String phoneNumber;
     private Double balance;
@@ -17,6 +18,13 @@ public class UserInfoDTO implements Serializable {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.balance = balance;
+    }
+
+    public UserInfoDTO(String email, String name, String phoneNumber, String password) {
+        this.email = email;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -49,6 +57,14 @@ public class UserInfoDTO implements Serializable {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
