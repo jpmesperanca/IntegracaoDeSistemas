@@ -22,7 +22,7 @@ import data.Passenger;
 import data.Ticket;
 import data.Trip;
 
-@Stateless(mappedName = "slb")
+@Stateless
 public class StatelessBean {
 
     @PersistenceContext(name = "TripDB")
@@ -38,7 +38,7 @@ public class StatelessBean {
      * https://howtodoinjava.com/java/java-security/how-to-generate-secure-password-
      * hash-md5-sha-pbkdf2-bcrypt-examples/
      */
-    public String hashPassword(String password) {
+    private String hashPassword(String password) {
 
         try {
             // Create MessageDigest instance for MD5
@@ -78,7 +78,7 @@ public class StatelessBean {
 
         Manager[] managers = { new Manager("4@jospy.com", hashPassword("123"), "Admin1", "933333333"),
                 new Manager("5@jospy.com", hashPassword("123"), "Admin2", "933333334"),
-                new Manager("6@jospy.com", hashPassword("123"), "Admin3", "933333335") };
+                new Manager("6@jospy.com", hashPassword("admin"), "Admin3", "933333335") };
 
         Ticket[] tickets = { new Ticket(passengers[0], trips[0]), new Ticket(passengers[1], trips[1]),
                 new Ticket(passengers[2], trips[2]) };
