@@ -12,62 +12,68 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.StatelessBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet("/main")
 public class MainServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-
+    Logger logger = LoggerFactory.getLogger(MainServlet.class);
     @EJB
     private StatelessBean slb;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (request.getParameter("login") != null) {
-            String email = request.getParameter("email");
-            String key = request.getParameter("key");
-
-            String destination = "/error.html";
-            String hashedPw = hashPassword(key);
-
-            // Credentials: admin@admin.com - admin
-            if (email.equals("admin@admin.com") && hashedPw.equals("21232f297a57a5a743894a0e4a801fc3")) {
-                request.getSession(true).setAttribute("role", "admin");
-                destination = "/secured/admin.jsp";
-            }
-
-            else {
-                String role = slb.authenticate(email, hashedPw);
-                if (role.equals("passenger")) {
-                    request.getSession(true).setAttribute("role", "passenger");
-                    request.getSession(true).setAttribute("uId", slb.getPassengerByEmail(email));
-                    destination = "/secured/passenger.jsp";
-                }
-
-                else if (role.equals("manager")) {
-                    request.getSession(true).setAttribute("role", "manager");
-                    request.getSession(true).setAttribute("uId", slb.getManagerByEmail(email));
-                    destination = "/secured/manager.jsp";
-                }
-
-                else {
-                    request.getSession(true).removeAttribute("role");
-                    request.getSession(true).removeAttribute("uId");
-                }
-            }
-            request.getRequestDispatcher(destination).forward(request, response);
-        }
-
-        else if (request.getParameter("createData") != null) {
+        if (request.getParameter("createData") != null) {
             slb.createData();
-            request.getRequestDispatcher("/admin.jsp").forward(request, response);
+            request.getRequestDispatcher("/secured/admin.jsp").forward(request, response);
         }
 
         else if (request.getParameter("eraseData") != null) {
             slb.eraseAllData();
-            request.getRequestDispatcher("/admin.jsp").forward(request, response);
+            request.getRequestDispatcher("/secured/admin.jsp").forward(request, response);
         }
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String email = request.getParameter("email");
+        String key = request.getParameter("key");
+
+        String destination = "/error.html";
+        String hashedPw = hashPassword(key);
+
+        // Credentials: admin@admin.com - admin
+        if (email.equals("admin@admin.com") && hashedPw.equals("21232f297a57a5a743894a0e4a801fc3")) {
+            request.getSession(true).setAttribute("role", "admin");
+            destination = "/secured/admin.jsp";
+        }
+
+        else {
+            String role = slb.authenticate(email, hashedPw);
+            if (role.equals("passenger")) {
+                logger.info("ENTROU NO PASSENGER");
+                request.getSession(true).setAttribute("role", "passenger");
+                request.getSession(true).setAttribute("uId", slb.getPassengerByEmail(email));
+                destination = "/secured/passenger.jsp";
+            }
+
+            else if (role.equals("manager")) {
+                request.getSession(true).setAttribute("role", "manager");
+                request.getSession(true).setAttribute("uId", slb.getManagerByEmail(email));
+                destination = "/secured/manager.jsp";
+            }
+
+            else {
+                request.getSession(true).removeAttribute("role");
+                request.getSession(true).removeAttribute("uId");
+            }
+        }
+        request.getRequestDispatcher(destination).forward(request, response);
     }
 
     /*

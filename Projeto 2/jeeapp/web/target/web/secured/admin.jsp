@@ -9,11 +9,11 @@
 <body>
     <strong>Super secret ${role} page</strong>
 
-    <form action="main" method="get">
+    <form action="main" method="post">
         <input type="submit" name="createData" value="Create Data" />
     </form>
 
-    <form action="main" method="get">
+    <form action="main" method="post">
         <input type="submit" name="eraseData" value="Erase Data" />
     </form>
 </body>
