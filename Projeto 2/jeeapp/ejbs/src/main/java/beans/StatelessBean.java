@@ -9,13 +9,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import DTOs.TripInfoDTO;
+import DTOs.UserInfoDTO;
 import data.Manager;
 import data.Passenger;
 import data.Ticket;
 import data.Trip;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Stateless(mappedName = "slb")
 public class StatelessBean {
@@ -60,6 +62,20 @@ public class StatelessBean {
             em.persist(t);
     }
 
+    public void eraseAllData() {
+
+        for (Integer tId : em.createQuery("select t.id from Trip t", Integer.class).getResultList())
+            deleteTrip(tId);
+
+        for (Integer pId : em.createQuery("select p.id from Passenger p", Integer.class).getResultList())
+            deletePassenger(pId);
+
+        for (Integer mId : em.createQuery("select m.id from Manager m", Integer.class).getResultList())
+            deleteManager(mId);
+
+        logger.info("Dados apagados!");
+    }
+
     public List<Passenger> listPassengers() {
 
         logger.info("O LOGGER ESTA A FUNCIONAR!");
@@ -91,6 +107,18 @@ public class StatelessBean {
         return q.getSingleResult().getId();
     }
 
+    public UserInfoDTO getPassengerInfoById(Integer id) {
+
+        TypedQuery<Passenger> q = em.createQuery("from Passenger p where p.id = :id", Passenger.class);
+
+        q.setParameter("id", id);
+
+        Passenger p = q.getSingleResult();
+
+        return new UserInfoDTO(p.getEmail(), p.getName(), p.getPhoneNumber());
+
+    }
+
     public void editPassenger(int id, String email, String password, String name, String phoneNumber) {
 
         Passenger p = em.find(Passenger.class, id);
@@ -112,6 +140,10 @@ public class StatelessBean {
         em.remove(em.find(Passenger.class, id));
     }
 
+    public void deleteManager(int id) {
+        em.remove(em.find(Manager.class, id));
+    }
+
     public List<Integer> listTripsBetweenStartEndDate(GregorianCalendar start, GregorianCalendar end) {
 
         TypedQuery<Integer> q = em.createQuery(
@@ -121,6 +153,34 @@ public class StatelessBean {
         q.setParameter("end", end);
 
         return q.getResultList();
+    }
+
+    public TripInfoDTO getTripInfo(Integer id) {
+
+        TypedQuery<Trip> q = em.createQuery("from Trip t where t.id :id", Trip.class);
+
+        q.setParameter("id", id);
+
+        Trip t = q.getSingleResult();
+
+        return new TripInfoDTO(t.getDepartureDate(), t.getDeparturePoint(), t.getDestinationPoint(), t.getCapacity(),
+                t.getTicketPrice());
+    }
+
+    public List<TripInfoDTO> listTripInfoBetweenStartEndDate(GregorianCalendar start, GregorianCalendar end) {
+        TypedQuery<Trip> q = em.createQuery("from Trip t where t.departureDate >= :start and t.departureDate <= :end",
+                Trip.class);
+
+        q.setParameter("start", start);
+        q.setParameter("end", end);
+
+        List<Trip> trips = q.getResultList();
+        List<TripInfoDTO> tripsDTO = new ArrayList<TripInfoDTO>();
+        for (Trip t : trips)
+            tripsDTO.add(new TripInfoDTO(t.getDepartureDate(), t.getDeparturePoint(), t.getDestinationPoint(),
+                    t.getCapacity(), t.getTicketPrice()));
+
+        return tripsDTO;
     }
 
     public void chargeWallet(int id, Double amount) {
