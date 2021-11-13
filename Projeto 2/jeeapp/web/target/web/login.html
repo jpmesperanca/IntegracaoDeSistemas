@@ -4,12 +4,25 @@
     <meta charset="UTF-8"><head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
-<body>
-    <strong>Authentication example</strong>
-    <form action="main" method="get">
-        <input name="email" type="text" placeholder="email..." />
-        <input name="key" type="password" placeholder="password..." />
-        <input type="submit" name="login">
-    </form>
+<body> 
+    <div>
+        <strong>Login</strong>
+        <form action="main" method="get">
+            <input name="email" type="text" placeholder="email..." />
+            <input name="key" type="password" placeholder="password..." />
+            <input type="submit" name="login" value="Login">
+        </form>
+    </div>
+    &nbsp;
+    <div>
+        <strong>Register</strong>
+        <form action="main" method="post">
+            <input name="email" type="text" placeholder="email..." />
+            <input name="key" type="password" placeholder="password..." />
+            <input name="name" type="text" placeholder="name..." />
+            <input name="phone" type="text" placeholder="phone..." />
+            <input type="submit" name="register" value="Register">
+        </form>
+    </div>
 </body>
 </html>

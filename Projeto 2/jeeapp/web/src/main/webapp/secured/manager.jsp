@@ -8,5 +8,11 @@
 </head>
 <body>
     <strong>Current logged user is ${role}</strong>
+    &nbsp;
+    <div>
+        <form action="main" method="get">
+            <input type="submit" name="logout" value="Logout" />
+        </form>
+    </div>  
 </body>
 </html>

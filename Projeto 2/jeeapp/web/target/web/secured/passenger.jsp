@@ -18,5 +18,11 @@
     <c:forEach var="item" items="${myListOfNumbers}">
         <div>Content is ${item}</div>
     </c:forEach>
+    &nbsp;
+    <div>
+        <form action="main" method="get">
+            <input type="submit" name="logout" value="Logout" />
+        </form>
+    </div>  
 </body>
 </html>

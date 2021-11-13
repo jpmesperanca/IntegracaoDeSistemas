@@ -120,9 +120,10 @@ public class StatelessBean {
         return l;
     }
 
-    public void addPassenger(String email, String password, String name, String phoneNumber) {
+    public void addPassenger(UserInfoDTO userInfo) {
 
-        Passenger p = new Passenger(email, password, name, phoneNumber, 0.0);
+        Passenger p = new Passenger(userInfo.getEmail(), userInfo.getPassword(), userInfo.getName(),
+                userInfo.getPhoneNumber(), 0.0);
         em.persist(p);
     }
 
