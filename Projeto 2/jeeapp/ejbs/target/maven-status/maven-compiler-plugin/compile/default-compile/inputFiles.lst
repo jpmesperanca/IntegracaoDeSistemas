@@ -1,4 +1,5 @@
 /workspace/jeeapp/ejbs/src/main/java/DTOs/GregorianCalendarDTO.java
 /workspace/jeeapp/ejbs/src/main/java/beans/StatelessBean.java
+/workspace/jeeapp/ejbs/src/main/java/DTOs/TicketInfoDTO.java
 /workspace/jeeapp/ejbs/src/main/java/DTOs/TripInfoDTO.java
 /workspace/jeeapp/ejbs/src/main/java/DTOs/UserInfoDTO.java

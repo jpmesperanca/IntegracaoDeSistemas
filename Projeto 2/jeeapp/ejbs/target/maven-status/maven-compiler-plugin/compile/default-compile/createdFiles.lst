@@ -1,4 +1,5 @@
 DTOs/GregorianCalendarDTO.class
 DTOs/UserInfoDTO.class
 beans/StatelessBean.class
+DTOs/TicketInfoDTO.class
 DTOs/TripInfoDTO.class

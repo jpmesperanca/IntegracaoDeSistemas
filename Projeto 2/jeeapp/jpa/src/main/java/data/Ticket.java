@@ -52,4 +52,5 @@ public class Ticket implements Serializable {
     public void setTrip(Trip trip) {
         this.trip = trip;
     }
+
 }

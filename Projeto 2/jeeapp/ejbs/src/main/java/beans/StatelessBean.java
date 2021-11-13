@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import DTOs.GregorianCalendarDTO;
+import DTOs.TicketInfoDTO;
 import DTOs.TripInfoDTO;
 import DTOs.UserInfoDTO;
 import data.Manager;
@@ -179,7 +180,7 @@ public class StatelessBean {
 
         Passenger p = q.getSingleResult();
 
-        return new UserInfoDTO(p.getEmail(), p.getName(), p.getPhoneNumber());
+        return new UserInfoDTO(p.getEmail(), p.getName(), p.getPhoneNumber(), p.getBalance());
     }
 
     public int getManagerByEmail(String email) {
@@ -206,6 +207,7 @@ public class StatelessBean {
 
         if (phoneNumber != null)
             p.setPhoneNumber(phoneNumber);
+
     }
 
     public void deletePassenger(int id) {
@@ -229,7 +231,7 @@ public class StatelessBean {
 
     public TripInfoDTO getTripInfo(Integer id) {
 
-        TypedQuery<Trip> q = em.createQuery("from Trip t where t.id :id", Trip.class);
+        TypedQuery<Trip> q = em.createQuery("from Trip t where t.id = :id", Trip.class);
 
         q.setParameter("id", id);
 
@@ -239,11 +241,12 @@ public class StatelessBean {
                 new GregorianCalendarDTO(t.getDepartureDate().get(GregorianCalendar.YEAR),
                         t.getDepartureDate().get(GregorianCalendar.MONTH),
                         t.getDepartureDate().get(GregorianCalendar.DAY_OF_MONTH)),
-                t.getDeparturePoint(), t.getDestinationPoint(), t.getCapacity(), t.getTicketPrice());
+                t.getDeparturePoint(), t.getDestinationPoint(), t.getCapacity(), t.getTicketPrice(), t.getId());
     }
 
     public List<TripInfoDTO> listTripInfoBetweenStartEndDate(GregorianCalendarDTO start, GregorianCalendarDTO end) {
-        TypedQuery<Trip> q = em.createQuery("from Trip t where t.departureDate >= :start and t.departureDate <= :end",
+        TypedQuery<Trip> q = em.createQuery(
+                "from Trip t where t.departureDate >= :start and t.departureDate <= :end order by t.departureDate asc",
                 Trip.class);
 
         GregorianCalendar startGreg = new GregorianCalendar(start.getYear(), start.getMonth(), start.getDay());
@@ -260,7 +263,7 @@ public class StatelessBean {
                     departureDateGreg.get(GregorianCalendar.YEAR), departureDateGreg.get(GregorianCalendar.MONTH),
                     departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH));
             tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
-                    t.getCapacity(), t.getTicketPrice()));
+                    t.getCapacity(), t.getTicketPrice(), t.getId()));
         }
 
         return tripsDTO;
@@ -336,8 +339,8 @@ public class StatelessBean {
 
     public List<Integer> listTop5Passengers() {
         TypedQuery<Integer> q = em.createQuery(
-                "select t.passenger_id from Ticket t group by (t.passenger_id) order by count(t.passenger_id) DESC LIMIT 5",
-                Integer.class);
+                "select t.passenger.id from Ticket t group by (t.passenger.id) order by count(t.passenger.id) DESC",
+                Integer.class).setMaxResults(5);
 
         return q.getResultList();
     }
@@ -350,6 +353,28 @@ public class StatelessBean {
         q.setParameter("departureDate", departureDate);
 
         return q.getResultList();
+    }
+
+    public List<TripInfoDTO> listTripInfoByDepartureDate(GregorianCalendarDTO departureDate) {
+
+        TypedQuery<Trip> q = em.createQuery("from Trip t where t.departureDate = :departureDate", Trip.class);
+
+        GregorianCalendar departureDateGregorian = new GregorianCalendar(departureDate.getYear(),
+                departureDate.getMonth(), departureDate.getDay());
+        q.setParameter("departureDate", departureDateGregorian);
+
+        List<Trip> trips = q.getResultList();
+        List<TripInfoDTO> tripsDTO = new ArrayList<TripInfoDTO>();
+        for (Trip t : trips) {
+            GregorianCalendar departureDateGreg = t.getDepartureDate();
+            GregorianCalendarDTO departureDateDTO = new GregorianCalendarDTO(
+                    departureDateGreg.get(GregorianCalendar.YEAR), departureDateGreg.get(GregorianCalendar.MONTH),
+                    departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH));
+            tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
+                    t.getCapacity(), t.getTicketPrice(), t.getId()));
+        }
+
+        return tripsDTO;
     }
 
     public List<Integer> listPassengersByTripId(int tripId) {
@@ -373,4 +398,37 @@ public class StatelessBean {
 
         return passengerIds;
     }
+
+    public List<TripInfoDTO> listTripsByPassengerId(Integer id) {
+        TypedQuery<Trip> q = em.createQuery(
+                "Select tr FROM Trip tr INNER JOIN Ticket ti ON ti.trip.id = tr.id WHERE ti.passenger.id = :id",
+                Trip.class);
+        q.setParameter("id", id);
+
+        List<Trip> trips = q.getResultList();
+        List<TripInfoDTO> tripsDTO = new ArrayList<TripInfoDTO>();
+        for (Trip t : trips) {
+            GregorianCalendar departureDateGreg = t.getDepartureDate();
+            GregorianCalendarDTO departureDateDTO = new GregorianCalendarDTO(
+                    departureDateGreg.get(GregorianCalendar.YEAR), departureDateGreg.get(GregorianCalendar.MONTH),
+                    departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH));
+            tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
+                    t.getCapacity(), t.getTicketPrice(), t.getId()));
+        }
+        return tripsDTO;
+    }
+
+    public List<TicketInfoDTO> listTicketsByPassengerId(Integer id) {
+        TypedQuery<Ticket> q = em.createQuery("FROM Ticket t WHERE t.passenger.id = :id", Ticket.class);
+        q.setParameter("id", id);
+
+        List<Ticket> tickets = q.getResultList();
+        List<TicketInfoDTO> ticketsDTO = new ArrayList<TicketInfoDTO>();
+
+        for (Ticket t : tickets)
+            ticketsDTO.add(new TicketInfoDTO(t.getId(), t.getTrip().getId(), t.getPassenger().getId()));
+
+        return ticketsDTO;
+    }
+
 }
