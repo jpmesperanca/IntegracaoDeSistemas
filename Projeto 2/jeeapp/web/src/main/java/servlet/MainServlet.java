@@ -1,9 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -14,12 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import DTOs.TripInfoDTO;
-import DTOs.UserInfoDTO;
-import beans.StatelessBean;
-import data.*;
-
-@WebServlet("/webaccess")
 import beans.StatelessBean;
 
 @WebServlet("/main")
@@ -31,24 +22,7 @@ public class MainServlet extends HttpServlet {
     private StatelessBean slb;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-
-        slb.createData();
-
-        response.getWriter().print("Dados criados!\n");
-
-        List<Integer> field1List = slb.listPassengers().stream().map(Passenger::getId).collect(Collectors.toList());
-        String result = "Passenger list: " + field1List + "\n";
-        System.out.println(result);
-        response.getWriter().print(result);
-
-        // -------------------- 6 --------------------
-        // As a user, I want to edit my personal information.
-        response.getWriter().print("-------------------- 6 --------------------\n");
-        response.getWriter().print("\"As a user, I want to edit my personal information.\"\n\n");
-
-        // ir buscar dados iniciais deste user
-        UserInfoDTO uInfo = slb.getPassengerInfoById(field1List.get(0));
+            throws ServletException, IOException {
 
         String email = request.getParameter("email");
         String key = request.getParameter("key");

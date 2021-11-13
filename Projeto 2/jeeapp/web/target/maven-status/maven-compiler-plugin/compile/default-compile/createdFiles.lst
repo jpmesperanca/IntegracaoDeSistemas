@@ -1,3 +1,4 @@
+servlet/TestServlet.class
+filter/SecurityFilterM.class
 servlet/MainServlet.class
 filter/SecurityFilterP.class
-filter/SecurityFilterM.class

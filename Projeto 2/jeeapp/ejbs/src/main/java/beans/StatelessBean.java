@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import DTOs.GregorianCalendarDTO;
 import DTOs.TripInfoDTO;
 import DTOs.UserInfoDTO;
 import data.Manager;
@@ -179,6 +180,7 @@ public class StatelessBean {
         Passenger p = q.getSingleResult();
 
         return new UserInfoDTO(p.getEmail(), p.getName(), p.getPhoneNumber());
+    }
 
     public int getManagerByEmail(String email) {
 
@@ -233,22 +235,33 @@ public class StatelessBean {
 
         Trip t = q.getSingleResult();
 
-        return new TripInfoDTO(t.getDepartureDate(), t.getDeparturePoint(), t.getDestinationPoint(), t.getCapacity(),
-                t.getTicketPrice());
+        return new TripInfoDTO(
+                new GregorianCalendarDTO(t.getDepartureDate().get(GregorianCalendar.YEAR),
+                        t.getDepartureDate().get(GregorianCalendar.MONTH),
+                        t.getDepartureDate().get(GregorianCalendar.DAY_OF_MONTH)),
+                t.getDeparturePoint(), t.getDestinationPoint(), t.getCapacity(), t.getTicketPrice());
     }
 
-    public List<TripInfoDTO> listTripInfoBetweenStartEndDate(GregorianCalendar start, GregorianCalendar end) {
+    public List<TripInfoDTO> listTripInfoBetweenStartEndDate(GregorianCalendarDTO start, GregorianCalendarDTO end) {
         TypedQuery<Trip> q = em.createQuery("from Trip t where t.departureDate >= :start and t.departureDate <= :end",
                 Trip.class);
 
-        q.setParameter("start", start);
-        q.setParameter("end", end);
+        GregorianCalendar startGreg = new GregorianCalendar(start.getYear(), start.getMonth(), start.getDay());
+        GregorianCalendar endGreg = new GregorianCalendar(end.getYear(), end.getMonth(), end.getDay());
+
+        q.setParameter("start", startGreg);
+        q.setParameter("end", endGreg);
 
         List<Trip> trips = q.getResultList();
         List<TripInfoDTO> tripsDTO = new ArrayList<TripInfoDTO>();
-        for (Trip t : trips)
-            tripsDTO.add(new TripInfoDTO(t.getDepartureDate(), t.getDeparturePoint(), t.getDestinationPoint(),
+        for (Trip t : trips) {
+            GregorianCalendar departureDateGreg = t.getDepartureDate();
+            GregorianCalendarDTO departureDateDTO = new GregorianCalendarDTO(
+                    departureDateGreg.get(GregorianCalendar.YEAR), departureDateGreg.get(GregorianCalendar.MONTH),
+                    departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH));
+            tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
                     t.getCapacity(), t.getTicketPrice()));
+        }
 
         return tripsDTO;
     }

@@ -1,11 +1,10 @@
 package DTOs;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 
 public class TripInfoDTO implements Serializable {
 
-    private GregorianCalendar departureDate;
+    private GregorianCalendarDTO departureDate;
     private String departurePoint;
     private String destinationPoint;
     private int capacity;
@@ -14,7 +13,7 @@ public class TripInfoDTO implements Serializable {
     public TripInfoDTO() {
     }
 
-    public TripInfoDTO(GregorianCalendar departureDate, String departurePoint, String destinationPoint, int capacity,
+    public TripInfoDTO(GregorianCalendarDTO departureDate, String departurePoint, String destinationPoint, int capacity,
             Double ticketPrice) {
         this.departureDate = departureDate;
         this.departurePoint = departurePoint;
@@ -23,7 +22,7 @@ public class TripInfoDTO implements Serializable {
         this.ticketPrice = ticketPrice;
     }
 
-    public GregorianCalendar getDepartureDate() {
+    public GregorianCalendarDTO getDepartureDate() {
         return departureDate;
     }
 
@@ -43,7 +42,7 @@ public class TripInfoDTO implements Serializable {
         return ticketPrice;
     }
 
-    public void setDepartureDate(GregorianCalendar departureDate) {
+    public void setDepartureDate(GregorianCalendarDTO departureDate) {
         this.departureDate = departureDate;
     }
 
