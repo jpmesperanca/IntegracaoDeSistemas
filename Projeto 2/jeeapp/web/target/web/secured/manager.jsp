@@ -7,6 +7,6 @@
     <title>Insert title here</title>
 </head>
 <body>
-    <strong>Current logged user is ${auth}</strong>
+    <strong>Current logged user is ${role}</strong>
 </body>
 </html>

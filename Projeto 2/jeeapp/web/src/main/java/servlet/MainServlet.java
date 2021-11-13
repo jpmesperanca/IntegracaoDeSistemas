@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -18,6 +20,9 @@ import beans.StatelessBean;
 import data.*;
 
 @WebServlet("/webaccess")
+import beans.StatelessBean;
+
+@WebServlet("/main")
 public class MainServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -45,55 +50,60 @@ public class MainServlet extends HttpServlet {
         // ir buscar dados iniciais deste user
         UserInfoDTO uInfo = slb.getPassengerInfoById(field1List.get(0));
 
-        response.getWriter().print("Passenger ID  [" + field1List.get(0) + "].\nName: " + uInfo.getName() + "\nEmail: "
-                + uInfo.getEmail() + "\nPhone Number: " + uInfo.getPhoneNumber() + "\n\n");
+        String email = request.getParameter("email");
+        String key = request.getParameter("key");
 
-        // alterar o mail e nome
-        slb.editPassenger(field1List.get(0), "novo@email.com", null, "Jose II", null);
+        String destination = "/error.html";
+        String role = slb.authenticate(email, hashPassword(key));
 
-        // ir buscar a info outra vez para ver se mudou
-        uInfo = slb.getPassengerInfoById(field1List.get(0));
-        response.getWriter().print("Did it work?\nPassenger ID  [" + field1List.get(0) + "].\nName: " + uInfo.getName()
-                + "\nEmail: " + uInfo.getEmail() + "\nPhone Number: " + uInfo.getPhoneNumber() + "\n\n");
-
-        // -------------------- 7 --------------------
-        // As a user, I want to delete my account, thus erasing all traces of my
-        // existence fromthe system, including my available items.
-
-        response.getWriter().print("-------------------- 7 --------------------\n");
-        response.getWriter().print(
-                "\"As a user, I want to delete my account, thus erasing all traces of my existence from the system, including my available items.\"\n\n");
-
-        // mostrar a atual lista de passengers
-        response.getWriter().print("Passenger list: " + field1List + "\n");
-
-        // apagar o primeiro passenger
-        slb.deletePassenger(field1List.get(0));
-        response.getWriter().print("Deleted user with ID = " + field1List.get(0) + "\n");
-
-        // voltar a ir buscar e mostrar a lista de passengers
-        field1List = slb.listPassengers().stream().map(Passenger::getId).collect(Collectors.toList());
-        response.getWriter().print("Updated Passenger list: " + field1List + "\n\n");
-
-        // -------------------- 8 --------------------
-        // As a user, I want to list the available trips, providing date intervals.
-        response.getWriter().print("-------------------- 8 --------------------\n");
-        response.getWriter().print("\"As a user, I want to list the available trips, providing date intervals.\"\n\n");
-
-        response.getWriter().print("Listing Available Trips between 1999 and 2001");
-        List<TripInfoDTO> availableTrips = slb.listTripInfoBetweenStartEndDate(new GregorianCalendar(1999, 0, 1),
-                new GregorianCalendar(2001, 0, 1));
-
-        for (TripInfoDTO t : availableTrips) {
-            response.getWriter().print("\n----------\n");
-            response.getWriter()
-                    .print("Departure Date: " + t.getDepartureDate() + "\nDeparture Point: " + t.getDeparturePoint()
-                            + "\nDestination Point: " + t.getDestinationPoint() + "\nCapacity: " + t.getCapacity()
-                            + "\nTicket Price: " + t.getTicketPrice());
+        if (role.equals("passenger")) {
+            request.getSession(true).setAttribute("role", "passenger");
+            request.getSession(true).setAttribute("uId", slb.getPassengerByEmail(email));
+            destination = "/secured/passenger.jsp";
         }
-        response.getWriter().print("\n----------\n");
 
-        slb.eraseAllData();
-        response.getWriter().print("\n\nDados apagados!\n");
+        else if (role.equals("manager")) {
+            request.getSession(true).setAttribute("role", "manager");
+            request.getSession(true).setAttribute("uId", slb.getManagerByEmail(email));
+            destination = "/secured/manager.jsp";
+        }
+
+        else {
+            request.getSession(true).removeAttribute("role");
+            request.getSession(true).removeAttribute("uId");
+        }
+
+        request.getRequestDispatcher(destination).forward(request, response);
+    }
+
+    /*
+     * Password hashing adapted from
+     * https://howtodoinjava.com/java/java-security/how-to-generate-secure-password-
+     * hash-md5-sha-pbkdf2-bcrypt-examples/
+     */
+    private String hashPassword(String password) {
+
+        try {
+            // Create MessageDigest instance for MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // Add password bytes to digest
+            md.update(password.getBytes());
+
+            // Get the hash's bytes
+            byte[] bytes = md.digest();
+
+            // This bytes[] has bytes in decimal format. Convert it to hexadecimal format
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+
+            return sb.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

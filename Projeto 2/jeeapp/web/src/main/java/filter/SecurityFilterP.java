@@ -11,17 +11,23 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-@WebFilter("/secured/*")
-public class SecurityFilter implements Filter {
+@WebFilter("/secured/passenger.jsp")
+public class SecurityFilterP implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
         HttpServletRequest httpReq = (HttpServletRequest) request;
         HttpSession session = httpReq.getSession(false);
 
-        if (session != null && session.getAttribute("auth") != null) {
-            chain.doFilter(request, response);
-        } else {
+        if (session != null && !(session.getAttribute("role").equals(""))) {
+
+            if (session.getAttribute("role").equals("passenger"))
+                chain.doFilter(request, response);
+            else
+                request.getRequestDispatcher("/error.html").forward(request, response);
+        }
+
+        else {
             request.getRequestDispatcher("/error.html").forward(request, response);
         }
     }

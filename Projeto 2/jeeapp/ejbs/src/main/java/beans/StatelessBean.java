@@ -1,5 +1,7 @@
 package beans;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -30,6 +32,37 @@ public class StatelessBean {
     public StatelessBean() {
     }
 
+    /*
+     * Password hashing adapted from
+     * https://howtodoinjava.com/java/java-security/how-to-generate-secure-password-
+     * hash-md5-sha-pbkdf2-bcrypt-examples/
+     */
+    public String hashPassword(String password) {
+
+        try {
+            // Create MessageDigest instance for MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // Add password bytes to digest
+            md.update(password.getBytes());
+
+            // Get the hash's bytes
+            byte[] bytes = md.digest();
+
+            // This bytes[] has bytes in decimal format. Convert it to hexadecimal format
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+
+            return sb.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public void createData() {
 
         Trip[] trips = {
@@ -38,13 +71,13 @@ public class StatelessBean {
                 new Trip(new GregorianCalendar(1995, 5, 15), "Lisboa", "Porto", 100, 19.99),
                 new Trip(new GregorianCalendar(2000, 11, 1), "Faro", "Berlim", 30, 39.99) };
 
-        Passenger[] passengers = { new Passenger("1@jospy.com", "123", "NotAdmin1", "933333331", 100.0),
-                new Passenger("2@jospy.com", "123", "NotAdmin2", "933333332", 100.0),
-                new Passenger("3@jospy.com", "123", "NotAdmin3", "933333333", 0.0) };
+        Passenger[] passengers = { new Passenger("1@jospy.com", hashPassword("123"), "NotAdmin1", "933333331", 100.0),
+                new Passenger("2@jospy.com", hashPassword("123"), "NotAdmin2", "933333332", 100.0),
+                new Passenger("3@jospy.com", hashPassword("123"), "NotAdmin3", "933333333", 0.0) };
 
-        Manager[] managers = { new Manager("4@jospy.com", "123", "Admin1", "933333333"),
-                new Manager("5@jospy.com", "123", "Admin2", "933333334"),
-                new Manager("6@jospy.com", "123", "Admin3", "933333335") };
+        Manager[] managers = { new Manager("4@jospy.com", hashPassword("123"), "Admin1", "933333333"),
+                new Manager("5@jospy.com", hashPassword("123"), "Admin2", "933333334"),
+                new Manager("6@jospy.com", hashPassword("123"), "Admin3", "933333335") };
 
         Ticket[] tickets = { new Ticket(passengers[0], trips[0]), new Ticket(passengers[1], trips[1]),
                 new Ticket(passengers[2], trips[2]) };
@@ -98,6 +131,36 @@ public class StatelessBean {
         em.persist(m);
     }
 
+    public String authenticate(String email, String password) {
+
+        TypedQuery<Integer> q = em.createQuery(
+                "select p.id from Passenger p where p.email = :email and p.password = :password", Integer.class);
+
+        q.setParameter("email", email);
+        q.setParameter("password", password);
+
+        try {
+            q.getSingleResult();
+            return "passenger";
+
+        } catch (Exception e) {
+            try {
+                q = em.createQuery("select m.id from Manager m where m.email = :email and m.password = :password",
+                        Integer.class);
+
+                q.setParameter("email", email);
+                q.setParameter("password", password);
+
+                q.getSingleResult();
+
+                return "manager";
+
+            } catch (Exception ex) {
+                return "";
+            }
+        }
+    }
+
     public int getPassengerByEmail(String email) {
 
         TypedQuery<Passenger> q = em.createQuery("from Passenger p where p.email = :email", Passenger.class);
@@ -117,6 +180,13 @@ public class StatelessBean {
 
         return new UserInfoDTO(p.getEmail(), p.getName(), p.getPhoneNumber());
 
+    public int getManagerByEmail(String email) {
+
+        TypedQuery<Manager> q = em.createQuery("from Manager m where m.email = :email", Manager.class);
+
+        q.setParameter("email", email);
+
+        return q.getSingleResult().getId();
     }
 
     public void editPassenger(int id, String email, String password, String name, String phoneNumber) {
