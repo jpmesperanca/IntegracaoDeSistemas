@@ -6,7 +6,15 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -28,6 +36,11 @@ public class StatelessBean {
 
     @PersistenceContext(name = "TripDB")
     EntityManager em;
+
+    @Resource(lookup = "java:jboss/mail/gmail") // Nome do Recurso que criamos no Wildfly
+
+    private Session mailSession;
+    private String emailFrom = "integracaodesistemas2021@gmail.com";
 
     Logger logger = LoggerFactory.getLogger(StatelessBean.class);
 
@@ -74,7 +87,7 @@ public class StatelessBean {
                 new Trip(new GregorianCalendar(2000, 11, 1), "Faro", "Berlim", 30, 39.99) };
 
         Passenger[] passengers = { new Passenger("1@jospy.com", hashPassword("123"), "NotAdmin1", "933333331", 100.0),
-                new Passenger("2@jospy.com", hashPassword("123"), "NotAdmin2", "933333332", 100.0),
+                new Passenger("goncalomarcos@hotmail.com", hashPassword("123"), "NotAdmin2", "933333332", 100.0),
                 new Passenger("3@jospy.com", hashPassword("123"), "NotAdmin3", "933333333", 0.0) };
 
         Manager[] managers = { new Manager("4@jospy.com", hashPassword("123"), "Admin1", "933333333"),
@@ -100,7 +113,7 @@ public class StatelessBean {
     public void eraseAllData() {
 
         for (Integer tId : em.createQuery("select t.id from Trip t", Integer.class).getResultList())
-            deleteTrip(tId);
+            deleteTripForEraseAllData(tId);
 
         for (Integer pId : em.createQuery("select p.id from Passenger p", Integer.class).getResultList())
             deletePassenger(pId);
@@ -334,10 +347,37 @@ public class StatelessBean {
 
         List<Ticket> tickets = t.getTickets();
         int pId;
+        String emailSubject, emailContent;
+        Passenger p;
 
         for (Ticket ticket : tickets) {
             pId = ticket.getPassenger().getId();
             refundTicket(pId, ticket.getId());
+
+            // send email
+            p = em.find(Passenger.class, pId);
+            emailSubject = "IS2021 Refund Ticket ->  " + t.getDeparturePoint() + " to " + t.getDestinationPoint();
+            emailContent = "Greetings " + p.getName().split(" ")[0]
+                    + ",\n\nA manager has just deleted a future bus trip you had planned. Here's the info about the trip:\n"
+                    + t.toString() + "\nYou will be refunded with " + t.getTicketPrice()
+                    + " EUR.\nSorry for the inconvenience.\n\nBest Regards,\nIS2021 Team";
+            sendEmail(p.getEmail(), this.emailFrom, emailSubject, emailContent);
+
+            em.remove(ticket);
+        }
+        em.remove(t);
+    }
+
+    public void deleteTripForEraseAllData(int id) {
+        Trip t = em.find(Trip.class, id);
+
+        List<Ticket> tickets = t.getTickets();
+        int pId;
+
+        for (Ticket ticket : tickets) {
+            pId = ticket.getPassenger().getId();
+            refundTicket(pId, ticket.getId());
+
             em.remove(ticket);
         }
         em.remove(t);
@@ -435,6 +475,33 @@ public class StatelessBean {
             ticketsDTO.add(new TicketInfoDTO(t.getId(), t.getTrip().getId(), t.getPassenger().getId()));
 
         return ticketsDTO;
+    }
+
+    /*
+     * Código adaptado de
+     * http://bhtecnonerd.blogspot.com/2014/12/configuracao-de-servico-de-email-no.
+     * html
+     */
+    @Asynchronous
+    public void sendEmail(String to, String from, String subject, String content) {
+
+        logger.info("Email enviado por " + from + " para " + to + " : " + subject);
+        try {
+            // Criação de uma mensagem simples
+            Message message = new MimeMessage(mailSession);
+            // Cabeçalho do Email
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setSubject(subject);
+            // Corpo do email
+            message.setText(content);
+
+            // Envio da mensagem
+            Transport.send(message);
+            logger.debug("Email enviado");
+        } catch (MessagingException e) {
+            logger.error("Erro a enviar o email : " + e.getMessage());
+        }
     }
 
 }
