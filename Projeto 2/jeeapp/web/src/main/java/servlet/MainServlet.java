@@ -16,13 +16,16 @@ import DTOs.GregorianCalendarDTO;
 import DTOs.TripInfoDTO;
 import DTOs.UserInfoDTO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import beans.StatelessBean;
 
 @WebServlet("/main")
 public class MainServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-
+    Logger logger = LoggerFactory.getLogger(StatelessBean.class);
     @EJB
     private StatelessBean slb;
 
@@ -128,6 +131,41 @@ public class MainServlet extends HttpServlet {
 
             request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
         }
+
+        else if (request.getParameter("purchase") != null) {
+
+            Integer tripId = Integer.parseInt(request.getParameter("tripToBuy"));
+            Integer userId = (Integer) request.getSession(false).getAttribute("uId");
+
+            slb.purchaseTicket(userId, tripId);
+
+            UserInfoDTO uInfo = slb.getPassengerInfoById(userId);
+            request.getSession(true).setAttribute("balance", uInfo.getBalance());
+
+            List<TripInfoDTO> myTrips = slb.listTripsByPassengerId(userId);
+            request.getSession(true).setAttribute("myTrips", myTrips);
+
+            request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("tripToRefund") != null) {
+
+            Integer tripId = Integer.parseInt(request.getParameter("tripToRefund"));
+
+            Integer userId = (Integer) request.getSession(false).getAttribute("uId");
+
+            slb.refundTicket(userId, slb.getTicketFromTrip(userId, tripId));
+
+            // Update balance and trips
+            UserInfoDTO uInfo = slb.getPassengerInfoById(userId);
+            request.getSession(true).setAttribute("balance", uInfo.getBalance());
+
+            List<TripInfoDTO> myTrips = slb.listTripsByPassengerId(userId);
+            request.getSession(true).setAttribute("myTrips", myTrips);
+
+            request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
+        }
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -157,11 +195,14 @@ public class MainServlet extends HttpServlet {
 
                     // Get and set display variables from DTO
                     UserInfoDTO uInfo = slb.getPassengerInfoById(uId);
+                    List<TripInfoDTO> myTrips = slb.listTripsByPassengerId(uId);
 
                     request.getSession(true).setAttribute("email", uInfo.getEmail());
                     request.getSession(true).setAttribute("name", uInfo.getName());
                     request.getSession(true).setAttribute("phone", uInfo.getPhoneNumber());
                     request.getSession(true).setAttribute("balance", uInfo.getBalance());
+
+                    request.getSession(true).setAttribute("myTrips", myTrips);
 
                     destination = "/secured/passenger.jsp";
                 }

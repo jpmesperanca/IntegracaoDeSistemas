@@ -437,4 +437,15 @@ public class StatelessBean {
         return ticketsDTO;
     }
 
+    public Integer getTicketFromTrip(Integer userId, Integer tripId) {
+
+        TypedQuery<Integer> q = em.createQuery(
+                "SELECT t.id FROM Ticket t WHERE t.passenger.id = :userId and t.trip.id = :tripId", Integer.class);
+
+        q.setMaxResults(1);
+        q.setParameter("userId", userId);
+        q.setParameter("tripId", tripId);
+
+        return q.getSingleResult();
+    }
 }
