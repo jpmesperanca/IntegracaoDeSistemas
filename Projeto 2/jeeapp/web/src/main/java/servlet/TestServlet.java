@@ -218,7 +218,7 @@ public class TestServlet extends HttpServlet {
 		response.getWriter().print(">> These are all the available trips: \n");
 
 		availableTrips = slb.listTripInfoBetweenStartEndDate(new GregorianCalendarDTO(1990, 0, 1),
-				new GregorianCalendarDTO(2020, 0, 1));
+				new GregorianCalendarDTO(2022, 0, 1));
 
 		for (TripInfoDTO t : availableTrips) {
 			response.getWriter().print("\n----------\n");
@@ -263,7 +263,7 @@ public class TestServlet extends HttpServlet {
 		response.getWriter().print(">> These are all the available trips: \n");
 
 		availableTrips = slb.listTripInfoBetweenStartEndDate(new GregorianCalendarDTO(1990, 0, 1),
-				new GregorianCalendarDTO(2020, 0, 1));
+				new GregorianCalendarDTO(2022, 0, 1));
 
 		for (TripInfoDTO t : availableTrips) {
 			response.getWriter().print("\n----------\n");
@@ -320,7 +320,7 @@ public class TestServlet extends HttpServlet {
 		response.getWriter().print(">> These are all the available trips: \n");
 
 		availableTrips = slb.listTripInfoBetweenStartEndDate(new GregorianCalendarDTO(1990, 0, 1),
-				new GregorianCalendarDTO(2020, 0, 1));
+				new GregorianCalendarDTO(2022, 0, 1));
 
 		for (TripInfoDTO t : availableTrips) {
 			response.getWriter().print("\n----------\n");
@@ -351,7 +351,7 @@ public class TestServlet extends HttpServlet {
 				"\"As a company manager I want to list all passengers on a given trip listed during one of the previous searches.\"\n\n");
 
 		availableTrips = slb.listTripInfoBetweenStartEndDate(new GregorianCalendarDTO(1990, 0, 1),
-				new GregorianCalendarDTO(2020, 0, 1));
+				new GregorianCalendarDTO(2022, 0, 1));
 		List<Integer> passengers = slb.listPassengersByTripId(availableTrips.get(1).getTripId());
 
 		for (Integer pId : passengers) {

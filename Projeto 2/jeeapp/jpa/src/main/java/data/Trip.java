@@ -93,4 +93,14 @@ public class Trip implements Serializable {
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
+
+    @Override
+    public String toString() {
+        Integer m = this.getDepartureDate().get(GregorianCalendar.MONTH) + 1;
+        return "Trip ID [" + this.getId() + "]\nDeparture Date: "
+                + this.getDepartureDate().get(GregorianCalendar.DAY_OF_MONTH) + "/" + m + "/"
+                + this.getDepartureDate().get(GregorianCalendar.YEAR) + "\nDeparture Point: " + this.getDeparturePoint()
+                + "\nDestination Point: " + this.getDestinationPoint() + "\nCapacity: " + this.getCapacity()
+                + "px\nTicket Price: " + this.getTicketPrice() + " EUR\n";
+    }
 }

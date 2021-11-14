@@ -2,5 +2,5 @@ Manifest-Version: 1.0
 Created-By: Apache Maven 3.8.3
 Built-By: main
 Build-Jdk: 16.0.2
-Class-Path: lib/jpa.jar lib/slf4j-api.jar
+Class-Path: lib/jpa.jar lib/slf4j-api.jar lib/javax.mail-api.jar
 
