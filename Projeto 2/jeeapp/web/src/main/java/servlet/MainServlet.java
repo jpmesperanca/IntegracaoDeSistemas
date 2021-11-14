@@ -16,13 +16,16 @@ import DTOs.GregorianCalendarDTO;
 import DTOs.TripInfoDTO;
 import DTOs.UserInfoDTO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import beans.StatelessBean;
 
 @WebServlet("/main")
 public class MainServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-
+    Logger logger = LoggerFactory.getLogger(StatelessBean.class);
     @EJB
     private StatelessBean slb;
 
@@ -99,17 +102,27 @@ public class MainServlet extends HttpServlet {
 
         else if (request.getParameter("tripsBetweenDates") != null) {
 
-            String[] startDate = request.getParameter("startDate").split("-");
-            String[] endDate = request.getParameter("endDate").split("-");
+            String s = request.getParameter("startDate");
+            String e = request.getParameter("endDate");
 
-            GregorianCalendarDTO startCal = new GregorianCalendarDTO(Integer.parseInt(startDate[0]),
-                    Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[2]));
-            GregorianCalendarDTO endCal = new GregorianCalendarDTO(Integer.parseInt(endDate[0]),
-                    Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[2]));
+            if (!s.equals("") && !e.equals("")) {
 
-            List<TripInfoDTO> trips = slb.listTripInfoBetweenStartEndDate(startCal, endCal);
+                String[] startDate = s.split("-");
+                String[] endDate = e.split("-");
 
-            request.getSession(true).setAttribute("searchTrips", trips);
+                GregorianCalendarDTO startCal = new GregorianCalendarDTO(Integer.parseInt(startDate[0]),
+                        Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[2]));
+                GregorianCalendarDTO endCal = new GregorianCalendarDTO(Integer.parseInt(endDate[0]),
+                        Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[2]));
+
+                List<TripInfoDTO> trips = slb.listFutureTripInfoBetweenStartEndDate(startCal, endCal);
+
+                request.getSession(true).setAttribute("searchTrips", trips);
+            }
+
+            else
+                request.getSession().setAttribute("errorMessage",
+                        "Invalid search, make sure you have selected both dates.");
 
             request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
         }
@@ -128,6 +141,50 @@ public class MainServlet extends HttpServlet {
 
             request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
         }
+
+        else if (request.getParameter("purchase") != null) {
+
+            Integer tripId = Integer.parseInt(request.getParameter("tripToBuy"));
+            Integer userId = (Integer) request.getSession(false).getAttribute("uId");
+
+            if (slb.purchaseTicket(userId, tripId) == 0) {
+
+                UserInfoDTO uInfo = slb.getPassengerInfoById(userId);
+                request.getSession(true).setAttribute("balance", uInfo.getBalance());
+
+                List<TripInfoDTO> myTrips = slb.listTripsByPassengerId(userId);
+                request.getSession(true).setAttribute("myTrips", myTrips);
+            }
+
+            else
+                request.getSession().setAttribute("errorMessage",
+                        "Invalid purchase, make sure you have enough money and that you're purchasing a future trip's ticket.");
+
+            request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("tripToRefund") != null) {
+
+            Integer tripId = Integer.parseInt(request.getParameter("tripToRefund"));
+
+            Integer userId = (Integer) request.getSession(false).getAttribute("uId");
+
+            if (slb.refundTicket(userId, slb.getTicketFromTrip(userId, tripId)) == 0) {
+
+                // Update balance and trips
+                UserInfoDTO uInfo = slb.getPassengerInfoById(userId);
+                request.getSession(true).setAttribute("balance", uInfo.getBalance());
+
+                List<TripInfoDTO> myTrips = slb.listTripsByPassengerId(userId);
+                request.getSession(true).setAttribute("myTrips", myTrips);
+            }
+
+            else
+                request.getSession().setAttribute("errorMessage",
+                        "Invalid refund, make sure you are refunding a future trip's ticket.");
+            request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
+        }
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -157,11 +214,14 @@ public class MainServlet extends HttpServlet {
 
                     // Get and set display variables from DTO
                     UserInfoDTO uInfo = slb.getPassengerInfoById(uId);
+                    List<TripInfoDTO> myTrips = slb.listTripsByPassengerId(uId);
 
                     request.getSession(true).setAttribute("email", uInfo.getEmail());
                     request.getSession(true).setAttribute("name", uInfo.getName());
                     request.getSession(true).setAttribute("phone", uInfo.getPhoneNumber());
                     request.getSession(true).setAttribute("balance", uInfo.getBalance());
+
+                    request.getSession(true).setAttribute("myTrips", myTrips);
 
                     destination = "/secured/passenger.jsp";
                 }

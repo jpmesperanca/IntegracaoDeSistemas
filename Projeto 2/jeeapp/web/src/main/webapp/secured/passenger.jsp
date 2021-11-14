@@ -8,6 +8,12 @@
     <title>Passenger Webpage</title>
 </head>
 <body>
+
+    <c:if test="${not empty errorMessage}">
+        <p>${errorMessage}</p>
+        <c:remove var="errorMessage" scope="session" /> 
+    </c:if>
+
     <strong>PERSONAL INFORMATION</strong>
     <div>
         <div>
@@ -63,6 +69,7 @@
                 <p></p>
             </c:when>
             <c:otherwise>
+                <p></p>
                 <strong>-- Trips Found --</strong>
                 <c:forEach var="item" items="${searchTrips}">
                     <p></p>
@@ -90,6 +97,66 @@
                     <p></p>
                     <p>-------------</p>
                 </c:forEach>
+
+                <strong>CHOOSE TRIP TO BUY</strong>
+                <form action="main" method="post">
+                    <select name="tripToBuy">
+                        <c:forEach var="item" items="${searchTrips}">
+                        <option value="${item.getTripId()}">${item.getDestinationPoint()}</option>
+                        </c:forEach>
+                    </select>
+                    <input type="submit" name="purchase" value="Buy Ticket" />
+                </form>
+
+            </c:otherwise>
+        </c:choose>
+    </div>
+    &nbsp;
+    <div>
+        <strong>MY TRIPS</strong>
+        <c:choose>
+            <c:when test="${empty myTrips}">
+                <p>No trips found</p>
+            </c:when>
+            <c:otherwise>
+                <p></p>
+                <c:forEach var="item" items="${myTrips}">
+                    <p></p>
+
+                    <strong style="display:inline" >Departure Date: </strong>
+                    <div style="display:inline">${item.getDepartureDate().getDay()} / </div>
+                    <div style="display:inline">${item.getDepartureDate().getMonth() + 1} / </div>
+                    <div style="display:inline">${item.getDepartureDate().getYear()}</div>
+                    <p></p>
+
+                    <strong style="display:inline" >Departure Point: </strong>
+                    <div style="display:inline">${item.getDeparturePoint()} </div>
+                    <p></p>
+
+                    <strong style="display:inline" >DestinationPoint: </strong>
+                    <div style="display:inline">${item.getDestinationPoint()} </div>
+                    <p></p>
+                
+                    <strong style="display:inline" >Capacity: </strong>
+                    <div style="display:inline">${item.getCapacity()} </div>
+                    <p></p>
+                
+                    <strong style="display:inline" >Ticket price: </strong>
+                    <div style="display:inline">${item.getTicketPrice()} EUR</div>
+                    <p></p>
+                    <p>-------------</p>
+                </c:forEach>
+
+                <strong>CHOOSE TRIP TO REFUND</strong>
+                <form action="main" method="post">
+                    <select name="tripToRefund">
+                        <c:forEach var="item" items="${myTrips}">
+                            <option value="${item.getTripId()}">${item.getDestinationPoint()}</option>
+                        </c:forEach>
+                    </select>
+                    <input type="submit" name="refundMyTrip" value="Refund" />
+                </form>
+
             </c:otherwise>
         </c:choose>
     </div>

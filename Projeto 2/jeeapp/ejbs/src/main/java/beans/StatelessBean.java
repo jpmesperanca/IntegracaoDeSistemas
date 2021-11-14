@@ -3,6 +3,7 @@ package beans;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class StatelessBean {
 
         Trip[] trips = {
                 // meses de 0 - 11
-                new Trip(new GregorianCalendar(2000, 1, 10), "Coimbra", "Ponta Delgada", 30, 29.99),
+                new Trip(new GregorianCalendar(2021, 11, 1), "Coimbra", "Ponta Delgada", 30, 29.99),
                 new Trip(new GregorianCalendar(1995, 5, 15), "Lisboa", "Porto", 100, 19.99),
                 new Trip(new GregorianCalendar(2000, 11, 1), "Faro", "Berlim", 30, 39.99) };
 
@@ -288,6 +289,37 @@ public class StatelessBean {
         return tripsDTO;
     }
 
+    public List<TripInfoDTO> listFutureTripInfoBetweenStartEndDate(GregorianCalendarDTO start,
+            GregorianCalendarDTO end) {
+        TypedQuery<Trip> q = em.createQuery(
+                "from Trip t where t.departureDate >= :start and t.departureDate <= :end order by t.departureDate asc",
+                Trip.class);
+
+        GregorianCalendar startGreg = new GregorianCalendar(start.getYear(), start.getMonth(), start.getDay());
+        GregorianCalendar endGreg = new GregorianCalendar(end.getYear(), end.getMonth(), end.getDay());
+
+        q.setParameter("start", startGreg);
+        q.setParameter("end", endGreg);
+
+        List<Trip> trips = q.getResultList();
+        List<TripInfoDTO> tripsDTO = new ArrayList<TripInfoDTO>();
+        Calendar nowCal = new GregorianCalendar();
+
+        for (Trip t : trips) {
+
+            if (t.getDepartureDate().compareTo(nowCal) > 0) {
+                GregorianCalendar departureDateGreg = t.getDepartureDate();
+                GregorianCalendarDTO departureDateDTO = new GregorianCalendarDTO(
+                        departureDateGreg.get(GregorianCalendar.YEAR), departureDateGreg.get(GregorianCalendar.MONTH),
+                        departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH));
+                tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
+                        t.getCapacity(), t.getTicketPrice(), t.getId()));
+            }
+        }
+
+        return tripsDTO;
+    }
+
     public void chargeWallet(int id, Double amount) {
 
         Passenger p = em.find(Passenger.class, id);
@@ -301,8 +333,9 @@ public class StatelessBean {
         Trip trip = em.find(Trip.class, tripId);
 
         Double ticketPrice = trip.getTicketPrice();
+        Calendar nowCal = new GregorianCalendar();
 
-        if (p.getBalance() > ticketPrice) {
+        if (p.getBalance() > ticketPrice && trip.getDepartureDate().compareTo(nowCal) > 0) {
 
             p.addBalance(ticketPrice * -1);
             Ticket t = new Ticket(p, trip);
@@ -314,13 +347,21 @@ public class StatelessBean {
         return 1;
     }
 
-    public void refundTicket(int passengerId, int ticketId) {
+    public int refundTicket(int passengerId, int ticketId) {
 
         Passenger p = em.find(Passenger.class, passengerId);
         Ticket t = em.find(Ticket.class, ticketId);
 
-        p.addBalance(t.getTrip().getTicketPrice());
-        em.remove(t);
+        Trip trip = t.getTrip();
+        Calendar nowCal = new GregorianCalendar();
+
+        if (trip.getDepartureDate().compareTo(nowCal) > 0) {
+            p.addBalance(t.getTrip().getTicketPrice());
+            em.remove(t);
+            return 0;
+        }
+
+        return 1;
     }
 
     public List<Integer> listTripsByPassengerId(int passengerId) {
@@ -475,6 +516,18 @@ public class StatelessBean {
             ticketsDTO.add(new TicketInfoDTO(t.getId(), t.getTrip().getId(), t.getPassenger().getId()));
 
         return ticketsDTO;
+    }
+
+    public Integer getTicketFromTrip(Integer userId, Integer tripId) {
+
+        TypedQuery<Integer> q = em.createQuery(
+                "SELECT t.id FROM Ticket t WHERE t.passenger.id = :userId and t.trip.id = :tripId", Integer.class);
+
+        q.setMaxResults(1);
+        q.setParameter("userId", userId);
+        q.setParameter("tripId", tripId);
+
+        return q.getSingleResult();
     }
 
     /*
