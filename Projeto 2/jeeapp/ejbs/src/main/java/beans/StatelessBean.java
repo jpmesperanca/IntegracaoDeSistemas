@@ -193,7 +193,12 @@ public class StatelessBean {
         return q.getSingleResult().getId();
     }
 
-    public void editPassenger(int id, String email, String password, String name, String phoneNumber) {
+    public void editPassenger(Integer id, UserInfoDTO userInfo) {
+
+        String email = userInfo.getEmail();
+        String password = userInfo.getPassword();
+        String name = userInfo.getName();
+        String phoneNumber = userInfo.getPhoneNumber();
 
         Passenger p = em.find(Passenger.class, id);
 

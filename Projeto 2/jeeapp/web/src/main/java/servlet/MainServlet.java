@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import DTOs.GregorianCalendarDTO;
+import DTOs.TripInfoDTO;
 import DTOs.UserInfoDTO;
 
 import beans.StatelessBean;
@@ -33,11 +36,20 @@ public class MainServlet extends HttpServlet {
             String name = request.getParameter("name");
             String phone = request.getParameter("phone");
 
+            // Add passenger to database
             UserInfoDTO userInfo = new UserInfoDTO(email, name, phone, hashPassword(key));
             slb.addPassenger(userInfo);
 
+            Integer uId = slb.getPassengerByEmail(email);
+
             request.getSession(true).setAttribute("role", "passenger");
-            request.getSession(true).setAttribute("uId", slb.getPassengerByEmail(email));
+            request.getSession(true).setAttribute("uId", uId);
+
+            // Set display variables
+            request.getSession(true).setAttribute("email", email);
+            request.getSession(true).setAttribute("name", name);
+            request.getSession(true).setAttribute("phone", phone);
+            request.getSession(true).setAttribute("balance", 0.0);
 
             request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
         }
@@ -52,11 +64,70 @@ public class MainServlet extends HttpServlet {
             request.getRequestDispatcher("/secured/admin.jsp").forward(request, response);
         }
 
-        else if (request.getParameter("eraseData") != null) {
-            slb.eraseAllData();
-            request.getRequestDispatcher("/secured/admin.jsp").forward(request, response);
+        else if (request.getParameter("changeInfo") != null) {
+
+            String email = request.getParameter("email");
+            String key = request.getParameter("key");
+            String name = request.getParameter("name");
+            String phone = request.getParameter("phone");
+
+            if (email.equals(""))
+                email = null;
+            else
+                request.getSession(true).setAttribute("email", email);
+
+            if (key.equals(""))
+                key = null;
+
+            if (name.equals(""))
+                name = null;
+            else
+                request.getSession(true).setAttribute("name", name);
+
+            if (phone.equals(""))
+                phone = null;
+            else
+                request.getSession(true).setAttribute("phone", phone);
+
+            UserInfoDTO userInfo = new UserInfoDTO(email, name, phone, hashPassword(key));
+            Integer userId = (Integer) request.getSession(false).getAttribute("uId");
+
+            slb.editPassenger(userId, userInfo);
+
+            request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
         }
 
+        else if (request.getParameter("tripsBetweenDates") != null) {
+
+            String[] startDate = request.getParameter("startDate").split("-");
+            String[] endDate = request.getParameter("endDate").split("-");
+
+            GregorianCalendarDTO startCal = new GregorianCalendarDTO(Integer.parseInt(startDate[0]),
+                    Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[2]));
+            GregorianCalendarDTO endCal = new GregorianCalendarDTO(Integer.parseInt(endDate[0]),
+                    Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[2]));
+
+            List<TripInfoDTO> trips = slb.listTripInfoBetweenStartEndDate(startCal, endCal);
+
+            request.getSession(true).setAttribute("searchTrips", trips);
+
+            request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("charge") != null) {
+
+            double amount = Double.parseDouble(request.getParameter("chargeAmount"));
+
+            Integer userId = (Integer) request.getSession(false).getAttribute("uId");
+
+            slb.chargeWallet(userId, amount);
+
+            // Refresh local display data
+            UserInfoDTO uInfo = slb.getPassengerInfoById(userId);
+            request.getSession(true).setAttribute("balance", uInfo.getBalance());
+
+            request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -78,8 +149,20 @@ public class MainServlet extends HttpServlet {
             else {
                 String role = slb.authenticate(email, hashedPw);
                 if (role.equals("passenger")) {
+
+                    Integer uId = slb.getPassengerByEmail(email);
+
                     request.getSession(true).setAttribute("role", "passenger");
-                    request.getSession(true).setAttribute("uId", slb.getPassengerByEmail(email));
+                    request.getSession(true).setAttribute("uId", uId);
+
+                    // Get and set display variables from DTO
+                    UserInfoDTO uInfo = slb.getPassengerInfoById(uId);
+
+                    request.getSession(true).setAttribute("email", uInfo.getEmail());
+                    request.getSession(true).setAttribute("name", uInfo.getName());
+                    request.getSession(true).setAttribute("phone", uInfo.getPhoneNumber());
+                    request.getSession(true).setAttribute("balance", uInfo.getBalance());
+
                     destination = "/secured/passenger.jsp";
                 }
 
@@ -101,6 +184,16 @@ public class MainServlet extends HttpServlet {
             request.getSession().invalidate();
             request.getRequestDispatcher("/login.html").forward(request, response);
         }
+
+        else if (request.getParameter("delete") != null) {
+
+            Integer userId = (Integer) request.getSession(false).getAttribute("uId");
+            slb.deletePassenger(userId);
+
+            // Logout after deletion
+            request.getSession().invalidate();
+            request.getRequestDispatcher("/login.html").forward(request, response);
+        }
     }
 
     /*
@@ -109,6 +202,9 @@ public class MainServlet extends HttpServlet {
      * hash-md5-sha-pbkdf2-bcrypt-examples/
      */
     private String hashPassword(String password) {
+
+        if (password == null)
+            return null;
 
         try {
             // Create MessageDigest instance for MD5
