@@ -8,6 +8,12 @@
     <title>Passenger Webpage</title>
 </head>
 <body>
+
+    <c:if test="${not empty errorMessage}">
+        <p>${errorMessage}</p>
+        <c:remove var="errorMessage" scope="session" /> 
+    </c:if>
+
     <strong>PERSONAL INFORMATION</strong>
     <div>
         <div>

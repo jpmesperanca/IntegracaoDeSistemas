@@ -1,6 +1,8 @@
 package data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -85,7 +87,7 @@ public class Passenger implements Serializable {
     }
 
     public void addBalance(Double amount) {
-        this.balance += amount;
+        this.balance = round(this.balance + amount, 2);
     }
 
     public List<Ticket> getTickets() {
@@ -94,5 +96,11 @@ public class Passenger implements Serializable {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public double round(double d, int places) {
+        BigDecimal bd = BigDecimal.valueOf(d);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
