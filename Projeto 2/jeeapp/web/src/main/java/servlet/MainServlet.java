@@ -182,7 +182,39 @@ public class MainServlet extends HttpServlet {
             else
                 request.getSession().setAttribute("errorMessage",
                         "Invalid refund, make sure you are refunding a future trip's ticket.");
+
             request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("createTrip") != null) {
+
+            String departureDate = request.getParameter("departureDate");
+            String departurePoint = request.getParameter("departurePoint");
+            String destination = request.getParameter("destination");
+            String capacity = request.getParameter("capacity");
+            String ticketPrice = request.getParameter("price");
+
+            if (!departureDate.equals("") && !departurePoint.equals("") && !destination.equals("")
+                    && !capacity.equals("") && !ticketPrice.equals("")) {
+
+                String[] d = departureDate.split("-");
+
+                GregorianCalendarDTO dateDTO = new GregorianCalendarDTO(Integer.parseInt(d[0]),
+                        Integer.parseInt(d[1]) - 1, Integer.parseInt(d[2]));
+
+                TripInfoDTO newTrip = new TripInfoDTO(dateDTO, departurePoint, destination, Integer.parseInt(capacity),
+                        Double.parseDouble(ticketPrice));
+
+                if (slb.addTrip(newTrip) == 1)
+                    request.getSession().setAttribute("errorMessage",
+                            "Invalid trip, make sure you filled in all fields correctly.");
+            }
+
+            else
+                request.getSession().setAttribute("errorMessage",
+                        "Invalid trip, make sure you filled in all fields correctly.");
+
+            request.getRequestDispatcher("/secured/manager.jsp").forward(request, response);
         }
 
     }

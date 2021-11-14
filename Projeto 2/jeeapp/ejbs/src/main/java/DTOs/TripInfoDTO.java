@@ -15,6 +15,15 @@ public class TripInfoDTO implements Serializable {
     }
 
     public TripInfoDTO(GregorianCalendarDTO departureDate, String departurePoint, String destinationPoint, int capacity,
+            Double ticketPrice) {
+        this.departureDate = departureDate;
+        this.departurePoint = departurePoint;
+        this.destinationPoint = destinationPoint;
+        this.capacity = capacity;
+        this.ticketPrice = ticketPrice;
+    }
+
+    public TripInfoDTO(GregorianCalendarDTO departureDate, String departurePoint, String destinationPoint, int capacity,
             Double ticketPrice, int tripId) {
         this.departureDate = departureDate;
         this.departurePoint = departurePoint;

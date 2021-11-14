@@ -7,6 +7,8 @@ public class GregorianCalendarDTO implements Serializable {
     private Integer year;
     private Integer month;
     private Integer day;
+    private Integer hours;
+    private Integer minutes;
 
     public GregorianCalendarDTO() {
     }
@@ -15,6 +17,14 @@ public class GregorianCalendarDTO implements Serializable {
         this.year = year;
         this.month = month;
         this.day = day;
+    }
+
+    public GregorianCalendarDTO(Integer year, Integer month, Integer day, Integer hours, Integer minutes) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.hours = hours;
+        this.minutes = minutes;
     }
 
     public Integer getYear() {
@@ -39,5 +49,21 @@ public class GregorianCalendarDTO implements Serializable {
 
     public void setDay(Integer day) {
         this.day = day;
+    }
+
+    public Integer getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(Integer minutes) {
+        this.minutes = minutes;
+    }
+
+    public Integer getHours() {
+        return hours;
+    }
+
+    public void setHours(Integer hours) {
+        this.hours = hours;
     }
 }

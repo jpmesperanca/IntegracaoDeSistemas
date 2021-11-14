@@ -364,10 +364,24 @@ public class StatelessBean {
         return t;
     }
 
-    public void addTrip(GregorianCalendar departureDate, String departurePoint, String destinationPoint, int capacity,
-            Double ticketPrice) {
-        Trip t = new Trip(departureDate, departurePoint, destinationPoint, capacity, ticketPrice);
-        em.persist(t);
+    public int addTrip(TripInfoDTO tripInfo) {
+
+        GregorianCalendarDTO depCal = tripInfo.getDepartureDate();
+        String departurePoint = tripInfo.getDeparturePoint();
+        String destinationPoint = tripInfo.getDestinationPoint();
+        int capacity = tripInfo.getCapacity();
+        double ticketPrice = tripInfo.getTicketPrice();
+
+        GregorianCalendar g = new GregorianCalendar(depCal.getYear(), depCal.getMonth(), depCal.getDay());
+        Calendar nowCal = new GregorianCalendar();
+
+        if (g.compareTo(nowCal) > 0) {
+            Trip t = new Trip(g, departurePoint, destinationPoint, capacity, ticketPrice);
+            em.persist(t);
+            return 0;
+        }
+
+        return 1;
     }
 
     public void deleteTrip(int id) {
