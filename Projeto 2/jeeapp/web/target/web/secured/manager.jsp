@@ -103,6 +103,8 @@
                     <input type="submit" name="deleteTrip" value="Delete" />
                 </form>
 
+                <p></p>
+                
                 <strong>CHOOSE TRIP TO SHOW PASSENGERS</strong>
                 <form action="main" method="post">
                     <select name="trip">
@@ -195,7 +197,9 @@
                     </select>
                     <input type="submit" name="deleteTripSpecific" value="Delete" />
                 </form>
-                
+
+                <p></p>
+
                 <strong>CHOOSE TRIP TO SHOW PASSENGERS</strong>
                 <form action="main" method="post">
                     <select name="trip">
