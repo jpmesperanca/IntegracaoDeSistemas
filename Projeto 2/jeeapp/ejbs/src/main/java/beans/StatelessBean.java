@@ -2,6 +2,8 @@ package beans;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -9,6 +11,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.Asynchronous;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -19,6 +22,7 @@ import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -341,7 +345,7 @@ public class StatelessBean {
         Double ticketPrice = trip.getTicketPrice();
         Calendar nowCal = new GregorianCalendar();
 
-        if (p.getBalance() > ticketPrice && trip.getDepartureDate().compareTo(nowCal) >= 0) {
+        if (p.getBalance() >= ticketPrice && trip.getDepartureDate().compareTo(nowCal) > 0) {
 
             p.addBalance(ticketPrice * -1);
             Ticket t = new Ticket(p, trip);
@@ -624,6 +628,75 @@ public class StatelessBean {
         } catch (MessagingException e) {
             logger.error("Erro a enviar o email : " + e.getMessage());
         }
+    }
+
+    @Schedule(hour = "3", minute = "15", second = "0")
+    public void dailyRevenueReport() {
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime today = LocalDateTime.now();
+        GregorianCalendar today00 = new GregorianCalendar(today.getYear(), today.getMonthValue() - 1,
+                today.getDayOfMonth(), 00, 00);
+        GregorianCalendar tomorrow00 = new GregorianCalendar(today.getYear(), today.getMonthValue() - 1,
+                today.getDayOfMonth() + 1, 23, 59);
+
+        TypedQuery<Manager> q1 = em.createQuery("from Manager m", Manager.class);
+        List<Manager> managers = q1.getResultList();
+
+        Query q2 = em.createQuery(
+                "SELECT SUM(tr.ticketPrice) FROM Ticket ti INNER JOIN Trip tr ON tr.id = ti.trip.id WHERE tr.departureDate >= :today and tr.departureDate <= :tomorrow");
+
+        q2.setParameter("today", today00);
+        q2.setParameter("tomorrow", tomorrow00);
+
+        Number totalRevenue = (Number) q2.getSingleResult();
+
+        if (totalRevenue == null)
+            totalRevenue = 0;
+
+        String emailSubject, emailContent;
+        emailSubject = "Daily Revenue Report -> " + dtf.format(today);
+
+        for (Manager m : managers) {
+            emailContent = "Greetings " + m.getName().split(" ")[0] + ",\n\nToday's total revenue was: " + totalRevenue
+                    + "EUR.\n\nBest Regards,\nIS2021 Team";
+            sendEmail(m.getEmail(), "integracaodesistemas2021@gmail.com", emailSubject, emailContent);
+        }
+
+    }
+
+    public void dailyRevenueReportNonScheduled() {
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime today = LocalDateTime.now();
+        GregorianCalendar today00 = new GregorianCalendar(today.getYear(), today.getMonthValue() - 1,
+                today.getDayOfMonth(), 00, 00);
+        GregorianCalendar tomorrow00 = new GregorianCalendar(today.getYear(), today.getMonthValue() - 1,
+                today.getDayOfMonth() + 1, 23, 59);
+
+        TypedQuery<Manager> q1 = em.createQuery("from Manager m", Manager.class);
+        List<Manager> managers = q1.getResultList();
+
+        Query q2 = em.createQuery(
+                "SELECT SUM(tr.ticketPrice) FROM Ticket ti INNER JOIN Trip tr ON tr.id = ti.trip.id WHERE tr.departureDate >= :today and tr.departureDate <= :tomorrow");
+
+        q2.setParameter("today", today00);
+        q2.setParameter("tomorrow", tomorrow00);
+
+        Number totalRevenue = (Number) q2.getSingleResult();
+
+        if (totalRevenue == null)
+            totalRevenue = 0;
+
+        String emailSubject, emailContent;
+        emailSubject = "Daily Revenue Report -> " + dtf.format(today);
+
+        for (Manager m : managers) {
+            emailContent = "Greetings " + m.getName().split(" ")[0] + ",\n\nToday's total revenue was: " + totalRevenue
+                    + "EUR.\n\nBest Regards,\nIS2021 Team";
+            sendEmail(m.getEmail(), "integracaodesistemas2021@gmail.com", emailSubject, emailContent);
+        }
+
     }
 
 }
