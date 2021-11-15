@@ -21,6 +21,10 @@ jms-queue add --queue-address=playQueue --entries=java:jboss/exported/jms/queue/
 jms-topic add --topic-address=playTopic --entries=java:jboss/exported/jms/topic/playTopic
 /subsystem=messaging-activemq/server=default/security-setting=#/role=guest:remove()
 /subsystem=messaging-activemq/server=default/security-setting=#/role=guest:add(consume=true,create-durable-queue=true,delete-durable-queue=true,create-non-durable-queue=true,delete-non-durable-queue=true,send=true)
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=MyMailSMTP:add( host=smtp.gmail.com, port=465)
+/subsystem=mail/mail-session=MyMail:add(jndi-name="java:jboss/mail/gmail", from="integracaodesistemas2021@gmail.com", debug=true)
+/subsystem=mail/mail-session=MyMail/server=smtp:add( outbound-socket-binding-ref=MyMailSMTP, ssl=true, username=integracaodesistemas2021@gmail.com, password=Integracaodesistemas2021!)
+
 
 # Run the batch commands
 run-batch
