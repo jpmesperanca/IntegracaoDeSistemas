@@ -59,14 +59,20 @@
             <strong style="display:inline" >Start Date: </strong>
             <input type="date" name="startDate">
 
+            <strong style="display:inline" >Start Time: </strong>
+            <input type="time" name="startTime">
+
             <strong style="display:inline" >End Date: </strong>
             <input type="date" name="endDate">
+
+            <strong style="display:inline" >End Time: </strong>
+            <input type="time" name="endTime">
 
             <input type="submit" name="tripsBetweenDates" value="Search">
         </form>
         <c:choose>
             <c:when test="${empty searchTrips}">
-                <p></p>
+                <p>No trips were found</p>
             </c:when>
             <c:otherwise>
                 <p></p>
@@ -77,14 +83,16 @@
                     <strong style="display:inline" >Departure Date: </strong>
                     <div style="display:inline">${item.getDepartureDate().getDay()} / </div>
                     <div style="display:inline">${item.getDepartureDate().getMonth() + 1} / </div>
-                    <div style="display:inline">${item.getDepartureDate().getYear()}</div>
+                    <div style="display:inline">${item.getDepartureDate().getYear()} @ </div>
+                    <div style="display:inline">${item.getDepartureDate().getHours()} :</div>
+                    <div style="display:inline">${item.getDepartureDate().getMinutes()}</div>
                     <p></p>
 
                     <strong style="display:inline" >Departure Point: </strong>
                     <div style="display:inline">${item.getDeparturePoint()} </div>
                     <p></p>
 
-                    <strong style="display:inline" >DestinationPoint: </strong>
+                    <strong style="display:inline" >Destination Point: </strong>
                     <div style="display:inline">${item.getDestinationPoint()} </div>
                     <p></p>
                 
@@ -126,14 +134,16 @@
                     <strong style="display:inline" >Departure Date: </strong>
                     <div style="display:inline">${item.getDepartureDate().getDay()} / </div>
                     <div style="display:inline">${item.getDepartureDate().getMonth() + 1} / </div>
-                    <div style="display:inline">${item.getDepartureDate().getYear()}</div>
+                    <div style="display:inline">${item.getDepartureDate().getYear()} @ </div>
+                    <div style="display:inline">${item.getDepartureDate().getHours()} :</div>
+                    <div style="display:inline">${item.getDepartureDate().getMinutes()}</div>
                     <p></p>
 
                     <strong style="display:inline" >Departure Point: </strong>
                     <div style="display:inline">${item.getDeparturePoint()} </div>
                     <p></p>
 
-                    <strong style="display:inline" >DestinationPoint: </strong>
+                    <strong style="display:inline" >Destination Point: </strong>
                     <div style="display:inline">${item.getDestinationPoint()} </div>
                     <p></p>
                 

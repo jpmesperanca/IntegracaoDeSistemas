@@ -15,17 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import DTOs.GregorianCalendarDTO;
 import DTOs.TripInfoDTO;
 import DTOs.UserInfoDTO;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import beans.StatelessBean;
 
 @WebServlet("/main")
 public class MainServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    Logger logger = LoggerFactory.getLogger(StatelessBean.class);
+
     @EJB
     private StatelessBean slb;
 
@@ -103,17 +99,23 @@ public class MainServlet extends HttpServlet {
         else if (request.getParameter("tripsBetweenDates") != null) {
 
             String s = request.getParameter("startDate");
+            String st = request.getParameter("startTime");
             String e = request.getParameter("endDate");
+            String et = request.getParameter("endTime");
 
-            if (!s.equals("") && !e.equals("")) {
+            if (!s.equals("") && !e.equals("") && !st.equals("") && !et.equals("")) {
 
                 String[] startDate = s.split("-");
                 String[] endDate = e.split("-");
+                String[] startTime = st.split(":");
+                String[] endTime = et.split(":");
 
                 GregorianCalendarDTO startCal = new GregorianCalendarDTO(Integer.parseInt(startDate[0]),
-                        Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[2]));
+                        Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[2]),
+                        Integer.parseInt(startTime[0]), Integer.parseInt(startTime[1]));
                 GregorianCalendarDTO endCal = new GregorianCalendarDTO(Integer.parseInt(endDate[0]),
-                        Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[2]));
+                        Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[2]), Integer.parseInt(endTime[0]),
+                        Integer.parseInt(endTime[1]));
 
                 List<TripInfoDTO> trips = slb.listFutureTripInfoBetweenStartEndDate(startCal, endCal);
 
@@ -189,18 +191,21 @@ public class MainServlet extends HttpServlet {
         else if (request.getParameter("createTrip") != null) {
 
             String departureDate = request.getParameter("departureDate");
+            String departureTime = request.getParameter("departureTime");
             String departurePoint = request.getParameter("departurePoint");
             String destination = request.getParameter("destination");
             String capacity = request.getParameter("capacity");
             String ticketPrice = request.getParameter("price");
 
             if (!departureDate.equals("") && !departurePoint.equals("") && !destination.equals("")
-                    && !capacity.equals("") && !ticketPrice.equals("")) {
+                    && !capacity.equals("") && !ticketPrice.equals("") && !departureTime.equals("")) {
 
                 String[] d = departureDate.split("-");
+                String[] t = departureTime.split(":");
 
                 GregorianCalendarDTO dateDTO = new GregorianCalendarDTO(Integer.parseInt(d[0]),
-                        Integer.parseInt(d[1]) - 1, Integer.parseInt(d[2]));
+                        Integer.parseInt(d[1]) - 1, Integer.parseInt(d[2]), Integer.parseInt(t[0]),
+                        Integer.parseInt(t[1]));
 
                 TripInfoDTO newTrip = new TripInfoDTO(dateDTO, departurePoint, destination, Integer.parseInt(capacity),
                         Double.parseDouble(ticketPrice));
@@ -217,6 +222,118 @@ public class MainServlet extends HttpServlet {
             request.getRequestDispatcher("/secured/manager.jsp").forward(request, response);
         }
 
+        else if (request.getParameter("tripsBetweenDatesM") != null) {
+
+            String s = request.getParameter("startDate");
+            String st = request.getParameter("startTime");
+            String e = request.getParameter("endDate");
+            String et = request.getParameter("endTime");
+
+            if (!s.equals("") && !e.equals("") && !st.equals("") && !et.equals("")) {
+
+                String[] startDate = s.split("-");
+                String[] endDate = e.split("-");
+                String[] startTime = st.split(":");
+                String[] endTime = et.split(":");
+
+                GregorianCalendarDTO startCal = new GregorianCalendarDTO(Integer.parseInt(startDate[0]),
+                        Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[2]),
+                        Integer.parseInt(startTime[0]), Integer.parseInt(startTime[1]));
+                GregorianCalendarDTO endCal = new GregorianCalendarDTO(Integer.parseInt(endDate[0]),
+                        Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[2]), Integer.parseInt(endTime[0]),
+                        Integer.parseInt(endTime[1]));
+
+                List<TripInfoDTO> trips = slb.listTripInfoBetweenStartEndDate(startCal, endCal);
+
+                request.getSession(true).setAttribute("searchTrips", trips);
+            }
+
+            else
+                request.getSession().setAttribute("errorMessage",
+                        "Invalid search, make sure you have selected both dates.");
+
+            request.getRequestDispatcher("/secured/manager.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("tripsSpecificDateM") != null) {
+
+            String s = request.getParameter("date");
+
+            if (!s.equals("")) {
+
+                String[] startDate = s.split("-");
+
+                GregorianCalendarDTO startCal = new GregorianCalendarDTO(Integer.parseInt(startDate[0]),
+                        Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[2]));
+
+                List<TripInfoDTO> trips = slb.listTripInfoByDepartureDate(startCal);
+
+                request.getSession(true).setAttribute("specificSearchTrips", trips);
+            }
+
+            else
+                request.getSession().setAttribute("errorMessage",
+                        "Invalid search, make sure you have selected a date.");
+
+            request.getRequestDispatcher("/secured/manager.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("deleteTrip") != null) {
+
+            Integer tripId = Integer.parseInt(request.getParameter("tripToDelete"));
+
+            if (slb.deleteTrip(tripId) == 0)
+                request.getSession().removeAttribute("searchTrips");
+            else
+                request.getSession().setAttribute("errorMessage",
+                        "Invalid deletion, make sure you are deleting a future trip.");
+
+            request.getRequestDispatcher("/secured/manager.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("deleteTripSpecific") != null) {
+
+            Integer tripId = Integer.parseInt(request.getParameter("tripToDelete"));
+
+            if (slb.deleteTrip(tripId) == 0)
+                request.getSession().removeAttribute("specificSearchTrips");
+            else
+                request.getSession().setAttribute("errorMessage",
+                        "Invalid deletion, make sure you are deleting a future trip.");
+
+            request.getRequestDispatcher("/secured/manager.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("listTop") != null) {
+
+            List<UserInfoDTO> top = slb.listTop5Passengers();
+
+            request.getSession().setAttribute("top", top);
+
+            request.getRequestDispatcher("/secured/manager.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("showTripPassengers") != null) {
+
+            Integer tripId = Integer.parseInt(request.getParameter("trip"));
+
+            List<UserInfoDTO> passengers = slb.listPassengersByTripId(tripId);
+
+            request.getSession().setAttribute("passengers", passengers);
+
+            request.getRequestDispatcher("/secured/manager.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("showTripPassengersSpecific") != null) {
+
+            Integer tripId = Integer.parseInt(request.getParameter("trip"));
+
+            List<UserInfoDTO> passengers = slb.listPassengersByTripId(tripId);
+
+            request.getSession().setAttribute("passengersSpecific", passengers);
+
+            request.getRequestDispatcher("/secured/manager.jsp").forward(request, response);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -273,16 +390,6 @@ public class MainServlet extends HttpServlet {
         }
 
         else if (request.getParameter("logout") != null) {
-            request.getSession().invalidate();
-            request.getRequestDispatcher("/login.html").forward(request, response);
-        }
-
-        else if (request.getParameter("delete") != null) {
-
-            Integer userId = (Integer) request.getSession(false).getAttribute("uId");
-            slb.deletePassenger(userId);
-
-            // Logout after deletion
             request.getSession().invalidate();
             request.getRequestDispatcher("/login.html").forward(request, response);
         }

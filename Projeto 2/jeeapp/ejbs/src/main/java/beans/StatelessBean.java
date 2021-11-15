@@ -83,9 +83,9 @@ public class StatelessBean {
 
         Trip[] trips = {
                 // meses de 0 - 11
-                new Trip(new GregorianCalendar(2021, 11, 1), "Coimbra", "Ponta Delgada", 30, 29.99),
-                new Trip(new GregorianCalendar(1995, 5, 15), "Lisboa", "Porto", 100, 19.99),
-                new Trip(new GregorianCalendar(2000, 11, 1), "Faro", "Berlim", 30, 39.99) };
+                new Trip(new GregorianCalendar(2021, 11, 1, 12, 30), "Coimbra", "Ponta Delgada", 30, 29.99),
+                new Trip(new GregorianCalendar(1995, 5, 15, 11, 45), "Lisboa", "Porto", 100, 19.99),
+                new Trip(new GregorianCalendar(2000, 11, 1, 23, 30), "Faro", "Berlim", 30, 39.99) };
 
         Passenger[] passengers = { new Passenger("1@jospy.com", hashPassword("123"), "NotAdmin1", "933333331", 100.0),
                 new Passenger("goncalomarcos@hotmail.com", hashPassword("123"), "NotAdmin2", "933333332", 100.0),
@@ -257,10 +257,10 @@ public class StatelessBean {
 
         Trip t = q.getSingleResult();
 
-        return new TripInfoDTO(
-                new GregorianCalendarDTO(t.getDepartureDate().get(GregorianCalendar.YEAR),
-                        t.getDepartureDate().get(GregorianCalendar.MONTH),
-                        t.getDepartureDate().get(GregorianCalendar.DAY_OF_MONTH)),
+        return new TripInfoDTO(new GregorianCalendarDTO(t.getDepartureDate().get(GregorianCalendar.YEAR),
+                t.getDepartureDate().get(GregorianCalendar.MONTH),
+                t.getDepartureDate().get(GregorianCalendar.DAY_OF_MONTH),
+                t.getDepartureDate().get(GregorianCalendar.HOUR), t.getDepartureDate().get(GregorianCalendar.MINUTE)),
                 t.getDeparturePoint(), t.getDestinationPoint(), t.getCapacity(), t.getTicketPrice(), t.getId());
     }
 
@@ -269,8 +269,10 @@ public class StatelessBean {
                 "from Trip t where t.departureDate >= :start and t.departureDate <= :end order by t.departureDate asc",
                 Trip.class);
 
-        GregorianCalendar startGreg = new GregorianCalendar(start.getYear(), start.getMonth(), start.getDay());
-        GregorianCalendar endGreg = new GregorianCalendar(end.getYear(), end.getMonth(), end.getDay());
+        GregorianCalendar startGreg = new GregorianCalendar(start.getYear(), start.getMonth(), start.getDay(),
+                start.getHours(), start.getMinutes());
+        GregorianCalendar endGreg = new GregorianCalendar(end.getYear(), end.getMonth(), end.getDay(), end.getHours(),
+                end.getMinutes());
 
         q.setParameter("start", startGreg);
         q.setParameter("end", endGreg);
@@ -281,7 +283,8 @@ public class StatelessBean {
             GregorianCalendar departureDateGreg = t.getDepartureDate();
             GregorianCalendarDTO departureDateDTO = new GregorianCalendarDTO(
                     departureDateGreg.get(GregorianCalendar.YEAR), departureDateGreg.get(GregorianCalendar.MONTH),
-                    departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH));
+                    departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH),
+                    departureDateGreg.get(GregorianCalendar.HOUR), departureDateGreg.get(GregorianCalendar.MINUTE));
             tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
                     t.getCapacity(), t.getTicketPrice(), t.getId()));
         }
@@ -295,8 +298,10 @@ public class StatelessBean {
                 "from Trip t where t.departureDate >= :start and t.departureDate <= :end order by t.departureDate asc",
                 Trip.class);
 
-        GregorianCalendar startGreg = new GregorianCalendar(start.getYear(), start.getMonth(), start.getDay());
-        GregorianCalendar endGreg = new GregorianCalendar(end.getYear(), end.getMonth(), end.getDay());
+        GregorianCalendar startGreg = new GregorianCalendar(start.getYear(), start.getMonth(), start.getDay(),
+                start.getHours(), start.getMinutes());
+        GregorianCalendar endGreg = new GregorianCalendar(end.getYear(), end.getMonth(), end.getDay(), end.getHours(),
+                end.getMinutes());
 
         q.setParameter("start", startGreg);
         q.setParameter("end", endGreg);
@@ -307,11 +312,12 @@ public class StatelessBean {
 
         for (Trip t : trips) {
 
-            if (t.getDepartureDate().compareTo(nowCal) > 0) {
+            if (t.getDepartureDate().compareTo(nowCal) >= 0) {
                 GregorianCalendar departureDateGreg = t.getDepartureDate();
                 GregorianCalendarDTO departureDateDTO = new GregorianCalendarDTO(
                         departureDateGreg.get(GregorianCalendar.YEAR), departureDateGreg.get(GregorianCalendar.MONTH),
-                        departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH));
+                        departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH),
+                        departureDateGreg.get(GregorianCalendar.HOUR), departureDateGreg.get(GregorianCalendar.MINUTE));
                 tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
                         t.getCapacity(), t.getTicketPrice(), t.getId()));
             }
@@ -335,7 +341,7 @@ public class StatelessBean {
         Double ticketPrice = trip.getTicketPrice();
         Calendar nowCal = new GregorianCalendar();
 
-        if (p.getBalance() > ticketPrice && trip.getDepartureDate().compareTo(nowCal) > 0) {
+        if (p.getBalance() > ticketPrice && trip.getDepartureDate().compareTo(nowCal) >= 0) {
 
             p.addBalance(ticketPrice * -1);
             Ticket t = new Ticket(p, trip);
@@ -355,7 +361,7 @@ public class StatelessBean {
         Trip trip = t.getTrip();
         Calendar nowCal = new GregorianCalendar();
 
-        if (trip.getDepartureDate().compareTo(nowCal) > 0) {
+        if (trip.getDepartureDate().compareTo(nowCal) >= 0) {
             p.addBalance(t.getTrip().getTicketPrice());
             em.remove(t);
             return 0;
@@ -385,10 +391,11 @@ public class StatelessBean {
         int capacity = tripInfo.getCapacity();
         double ticketPrice = tripInfo.getTicketPrice();
 
-        GregorianCalendar g = new GregorianCalendar(depCal.getYear(), depCal.getMonth(), depCal.getDay());
+        GregorianCalendar g = new GregorianCalendar(depCal.getYear(), depCal.getMonth(), depCal.getDay(),
+                depCal.getHours(), depCal.getMinutes());
         Calendar nowCal = new GregorianCalendar();
 
-        if (g.compareTo(nowCal) > 0) {
+        if (g.compareTo(nowCal) >= 0) {
             Trip t = new Trip(g, departurePoint, destinationPoint, capacity, ticketPrice);
             em.persist(t);
             return 0;
@@ -397,7 +404,7 @@ public class StatelessBean {
         return 1;
     }
 
-    public void deleteTrip(int id) {
+    public int deleteTrip(int id) {
         Trip t = em.find(Trip.class, id);
 
         List<Ticket> tickets = t.getTickets();
@@ -405,22 +412,28 @@ public class StatelessBean {
         String emailSubject, emailContent;
         Passenger p;
 
-        for (Ticket ticket : tickets) {
-            pId = ticket.getPassenger().getId();
-            refundTicket(pId, ticket.getId());
+        Calendar nowCal = new GregorianCalendar();
 
-            // send email
-            p = em.find(Passenger.class, pId);
-            emailSubject = "IS2021 Refund Ticket ->  " + t.getDeparturePoint() + " to " + t.getDestinationPoint();
-            emailContent = "Greetings " + p.getName().split(" ")[0]
-                    + ",\n\nA manager has just deleted a future bus trip you had planned. Here's the info about the trip:\n"
-                    + t.toString() + "\nYou will be refunded with " + t.getTicketPrice()
-                    + " EUR.\nSorry for the inconvenience.\n\nBest Regards,\nIS2021 Team";
-            sendEmail(p.getEmail(), this.emailFrom, emailSubject, emailContent);
+        if (t.getDepartureDate().compareTo(nowCal) >= 0) {
+            for (Ticket ticket : tickets) {
+                pId = ticket.getPassenger().getId();
+                refundTicket(pId, ticket.getId());
 
-            em.remove(ticket);
+                // send email
+                p = em.find(Passenger.class, pId);
+                emailSubject = "IS2021 Refund Ticket ->  " + t.getDeparturePoint() + " to " + t.getDestinationPoint();
+                emailContent = "Greetings " + p.getName().split(" ")[0]
+                        + ",\n\nA manager has just deleted a future bus trip you had planned. Here's the info about the trip:\n"
+                        + t.toString() + "\nYou will be refunded with " + t.getTicketPrice()
+                        + " EUR.\nSorry for the inconvenience.\n\nBest Regards,\nIS2021 Team";
+                sendEmail(p.getEmail(), this.emailFrom, emailSubject, emailContent);
+
+                em.remove(ticket);
+            }
+            em.remove(t);
+            return 0;
         }
-        em.remove(t);
+        return 1;
     }
 
     public void deleteTripForEraseAllData(int id) {
@@ -438,12 +451,39 @@ public class StatelessBean {
         em.remove(t);
     }
 
-    public List<Integer> listTop5Passengers() {
+    public List<UserInfoDTO> listTop5Passengers() {
         TypedQuery<Integer> q = em.createQuery(
                 "select t.passenger.id from Ticket t group by (t.passenger.id) order by count(t.passenger.id) DESC",
                 Integer.class).setMaxResults(5);
 
-        return q.getResultList();
+        List<Integer> top = q.getResultList();
+
+        TypedQuery<Long> qq = em.createQuery(
+                "select count(t.passenger.id) from Ticket t group by (t.passenger.id) order by count(t.passenger.id) DESC",
+                Long.class).setMaxResults(5);
+
+        List<Long> ticketCount = qq.getResultList();
+        List<UserInfoDTO> topInfo = new ArrayList<>();
+
+        for (int i = 0; i < top.size(); i++) {
+
+            UserInfoDTO userInfo = getPassengerInfoById(top.get(i));
+            userInfo.setNumberOfTickets(ticketCount.get(i).intValue());
+            topInfo.add(userInfo);
+        }
+
+        return topInfo;
+    }
+
+    public Integer getNumberOfTickets(Integer uId) {
+
+        TypedQuery<Integer> q = em.createQuery(
+                "select count(t.passenger.id) from Ticket t group by (t.passenger.id) having t.passenger.id = :uId order by count(t.passenger.id) DESC",
+                Integer.class);
+
+        q.setParameter("uId", uId);
+
+        return q.getSingleResult();
     }
 
     public List<Integer> listTripsByDepartureDate(GregorianCalendar departureDate) {
@@ -456,21 +496,31 @@ public class StatelessBean {
         return q.getResultList();
     }
 
+    // Does not use hours and minutes!
     public List<TripInfoDTO> listTripInfoByDepartureDate(GregorianCalendarDTO departureDate) {
 
-        TypedQuery<Trip> q = em.createQuery("from Trip t where t.departureDate = :departureDate", Trip.class);
+        TypedQuery<Trip> q = em.createQuery(
+                "from Trip t where t.departureDate >= :departureStartDate and t.departureDate <= :departureEndDate",
+                Trip.class);
 
-        GregorianCalendar departureDateGregorian = new GregorianCalendar(departureDate.getYear(),
-                departureDate.getMonth(), departureDate.getDay());
-        q.setParameter("departureDate", departureDateGregorian);
+        GregorianCalendar departureStartDateGregorian = new GregorianCalendar(departureDate.getYear(),
+                departureDate.getMonth(), departureDate.getDay(), 0, 0);
+
+        GregorianCalendar departureEndDateGregorian = new GregorianCalendar(departureDate.getYear(),
+                departureDate.getMonth(), departureDate.getDay(), 23, 59);
+
+        q.setParameter("departureStartDate", departureStartDateGregorian);
+        q.setParameter("departureEndDate", departureEndDateGregorian);
 
         List<Trip> trips = q.getResultList();
         List<TripInfoDTO> tripsDTO = new ArrayList<TripInfoDTO>();
+
         for (Trip t : trips) {
             GregorianCalendar departureDateGreg = t.getDepartureDate();
             GregorianCalendarDTO departureDateDTO = new GregorianCalendarDTO(
                     departureDateGreg.get(GregorianCalendar.YEAR), departureDateGreg.get(GregorianCalendar.MONTH),
-                    departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH));
+                    departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH),
+                    departureDateGreg.get(GregorianCalendar.HOUR), departureDateGreg.get(GregorianCalendar.MINUTE));
             tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
                     t.getCapacity(), t.getTicketPrice(), t.getId()));
         }
@@ -478,7 +528,7 @@ public class StatelessBean {
         return tripsDTO;
     }
 
-    public List<Integer> listPassengersByTripId(int tripId) {
+    public List<UserInfoDTO> listPassengersByTripId(int tripId) {
         /*
          * Trip t = em.find(Trip.class, tripId); List<Ticket> allTripTickets =
          * t.getTickets();
@@ -493,11 +543,15 @@ public class StatelessBean {
         // linhas a inuteis
 
         List<Integer> passengerIds = new ArrayList<Integer>();
+        List<UserInfoDTO> passengerInfos = new ArrayList<>();
 
         for (Ticket ticket : em.find(Trip.class, tripId).getTickets())
             passengerIds.add(ticket.getPassenger().getId());
 
-        return passengerIds;
+        for (Integer uId : passengerIds)
+            passengerInfos.add(getPassengerInfoById(uId));
+
+        return passengerInfos;
     }
 
     public List<TripInfoDTO> listTripsByPassengerId(Integer id) {
@@ -512,7 +566,8 @@ public class StatelessBean {
             GregorianCalendar departureDateGreg = t.getDepartureDate();
             GregorianCalendarDTO departureDateDTO = new GregorianCalendarDTO(
                     departureDateGreg.get(GregorianCalendar.YEAR), departureDateGreg.get(GregorianCalendar.MONTH),
-                    departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH));
+                    departureDateGreg.get(GregorianCalendar.DAY_OF_MONTH),
+                    departureDateGreg.get(GregorianCalendar.HOUR), departureDateGreg.get(GregorianCalendar.MINUTE));
             tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
                     t.getCapacity(), t.getTicketPrice(), t.getId()));
         }

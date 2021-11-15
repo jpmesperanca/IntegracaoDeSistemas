@@ -9,6 +9,7 @@ public class UserInfoDTO implements Serializable {
     private String name;
     private String phoneNumber;
     private Double balance;
+    private Integer numberOfTickets;
 
     public UserInfoDTO() {
     }
@@ -25,6 +26,14 @@ public class UserInfoDTO implements Serializable {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.password = password;
+    }
+
+    public UserInfoDTO(String email, String name, String phoneNumber, Double balance, Integer numberOfTickets) {
+        this.email = email;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.balance = balance;
+        this.numberOfTickets = numberOfTickets;
     }
 
     public String getEmail() {
@@ -65,6 +74,14 @@ public class UserInfoDTO implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getNumberOfTickets() {
+        return numberOfTickets;
+    }
+
+    public void setNumberOfTickets(Integer numberOfTickets) {
+        this.numberOfTickets = numberOfTickets;
     }
 
     @Override

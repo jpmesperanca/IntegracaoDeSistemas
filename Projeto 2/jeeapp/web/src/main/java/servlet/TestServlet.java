@@ -299,17 +299,17 @@ public class TestServlet extends HttpServlet {
 		// -------------------- 15 --------------------
 		// As a company manager I want to list the passengers that have made more trips
 		// (e.g., the top 5).
-		response.getWriter().print("\n-------------------- 15 --------------------\n");
-		response.getWriter().print(
-				"\"As a company manager I want to list the passengers that have made more trips (e.g., the top 5).\"\n\n");
-
-		List<Integer> top5 = slb.listTop5Passengers();
-		response.getWriter().print("----------\n");
-		for (Integer pId : top5) {
-			response.getWriter().print(slb.getPassengerInfoById(pId).toString());
-			response.getWriter().print("\n----------\n");
-		}
-
+		/*
+		 * response.getWriter().print("\n-------------------- 15 --------------------\n"
+		 * ); response.getWriter().print(
+		 * "\"As a company manager I want to list the passengers that have made more trips (e.g., the top 5).\"\n\n"
+		 * );
+		 * 
+		 * List<Integer> top5 = slb.listTop5Passengers();
+		 * response.getWriter().print("----------\n"); for (Integer pId : top5) {
+		 * response.getWriter().print(slb.getPassengerInfoById(pId).toString());
+		 * response.getWriter().print("\n----------\n"); }
+		 */
 		// -------------------- 16 --------------------
 		// As a company manager I want to search for all bus trips sorted by date
 		// between two date limits.
@@ -346,24 +346,25 @@ public class TestServlet extends HttpServlet {
 		// -------------------- 18 --------------------
 		// As a company manager I want to list all passengers on a given trip listed
 		// during one of the previous searches.
-		response.getWriter().print("\n-------------------- 18 --------------------\n");
-		response.getWriter().print(
-				"\"As a company manager I want to list all passengers on a given trip listed during one of the previous searches.\"\n\n");
-
-		availableTrips = slb.listTripInfoBetweenStartEndDate(new GregorianCalendarDTO(1990, 0, 1),
-				new GregorianCalendarDTO(2022, 0, 1));
-		List<Integer> passengers = slb.listPassengersByTripId(availableTrips.get(1).getTripId());
-
-		for (Integer pId : passengers) {
-			response.getWriter().print("\n----------\n");
-			response.getWriter().print(slb.getPassengerInfoById(pId).toString());
-		}
-		response.getWriter().print("----------\n");
-
-		// fim
-		slb.eraseAllData();
-		response.getWriter().print("\n\nDados apagados!\n");
-
+		/*
+		 * response.getWriter().print("\n-------------------- 18 --------------------\n"
+		 * ); response.getWriter().print(
+		 * "\"As a company manager I want to list all passengers on a given trip listed during one of the previous searches.\"\n\n"
+		 * );
+		 * 
+		 * availableTrips = slb.listTripInfoBetweenStartEndDate(new
+		 * GregorianCalendarDTO(1990, 0, 1), new GregorianCalendarDTO(2022, 0, 1));
+		 * List<Integer> passengers =
+		 * slb.listPassengersByTripId(availableTrips.get(1).getTripId());
+		 * 
+		 * for (Integer pId : passengers) {
+		 * response.getWriter().print("\n----------\n");
+		 * response.getWriter().print(slb.getPassengerInfoById(pId).toString()); }
+		 * response.getWriter().print("----------\n");
+		 * 
+		 * // fim slb.eraseAllData();
+		 * response.getWriter().print("\n\nDados apagados!\n");
+		 */
 	}
 
 }
