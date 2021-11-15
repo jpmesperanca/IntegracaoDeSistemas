@@ -35,5 +35,17 @@
             <input type="submit" name="createTrip" value="Create Trip">
         </form>
     </div>
+    &nbsp;
+    <div>
+        <form action="main" method="get">
+            <input type="submit" name="delete" value="Delete Account" />
+        </form>
+    </div> 
+    &nbsp;
+    <div>
+        <form action="main" method="get">
+            <input type="submit" name="logout" value="Logout" />
+        </form>
+    </div>  
 </body>
 </html>
