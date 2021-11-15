@@ -20,6 +20,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.Query;
@@ -88,16 +89,18 @@ public class StatelessBean {
         Trip[] trips = {
                 // meses de 0 - 11
                 new Trip(new GregorianCalendar(2021, 11, 1, 12, 30), "Coimbra", "Ponta Delgada", 30, 29.99),
-                new Trip(new GregorianCalendar(1995, 5, 15, 11, 45), "Lisboa", "Porto", 100, 19.99),
-                new Trip(new GregorianCalendar(2000, 11, 1, 23, 30), "Faro", "Berlim", 30, 39.99) };
+                new Trip(new GregorianCalendar(2021, 5, 15, 11, 45), "Lisboa", "Porto", 100, 19.99),
+                new Trip(new GregorianCalendar(2020, 11, 1, 23, 30), "Faro", "Berlim", 30, 39.99) };
 
-        Passenger[] passengers = { new Passenger("1@jospy.com", hashPassword("123"), "NotAdmin1", "933333331", 100.0),
-                new Passenger("goncalomarcos@hotmail.com", hashPassword("123"), "NotAdmin2", "933333332", 100.0),
-                new Passenger("3@jospy.com", hashPassword("123"), "NotAdmin3", "933333333", 0.0) };
+        Passenger[] passengers = {
+                new Passenger("1@teste.com", hashPassword("123"), "TestPassenger1", "933333331", 100.0),
+                new Passenger("goncalomarcos@hotmail.com", hashPassword("123"), "Goncalo", "933333332", 100.0),
+                new Passenger("2@teste.com", hashPassword("123"), "TestPassenger2", "933333332", 100.0),
+                new Passenger("3@teste.com", hashPassword("123"), "TestPassenger3", "933333333", 0.0) };
 
-        Manager[] managers = { new Manager("4@jospy.com", hashPassword("123"), "Admin1", "933333333"),
-                new Manager("5@jospy.com", hashPassword("123"), "Admin2", "933333334"),
-                new Manager("6@jospy.com", hashPassword("admin"), "Admin3", "933333335") };
+        Manager[] managers = { new Manager("4@teste.com", hashPassword("123"), "TestManager1", "933333334"),
+                new Manager("5@teste.com", hashPassword("123"), "TestManager2", "933333335"),
+                new Manager("6@teste.com", hashPassword("123"), "TestManager3", "933333336") };
 
         Ticket[] tickets = { new Ticket(passengers[0], trips[0]), new Ticket(passengers[1], trips[1]),
                 new Ticket(passengers[2], trips[2]) };
@@ -113,6 +116,8 @@ public class StatelessBean {
 
         for (Ticket t : tickets)
             em.persist(t);
+
+        logger.info("Dados criados!");
     }
 
     public void eraseAllData() {
@@ -131,25 +136,36 @@ public class StatelessBean {
 
     public List<Passenger> listPassengers() {
 
-        logger.info("O LOGGER ESTA A FUNCIONAR!");
+        logger.info("Listing passengers...");
 
         TypedQuery<Passenger> q = em.createQuery("from Passenger p", Passenger.class);
+
         List<Passenger> l = q.getResultList();
+
+        logger.info("Passengers listed successfully!");
 
         return l;
     }
 
-    public void addPassenger(UserInfoDTO userInfo) {
+    public int addPassenger(UserInfoDTO userInfo) {
 
-        Passenger p = new Passenger(userInfo.getEmail(), userInfo.getPassword(), userInfo.getName(),
-                userInfo.getPhoneNumber(), 0.0);
-        em.persist(p);
-    }
+        logger.info("Adding passenger...");
 
-    public void addManager(String email, String password, String name, String phoneNumber) {
+        TypedQuery<Passenger> q = em.createQuery("from Passenger p where p.email = :email", Passenger.class);
+        q.setParameter("email", userInfo.getEmail());
 
-        Manager m = new Manager(email, password, name, phoneNumber);
-        em.persist(m);
+        try {
+            q.getSingleResult();
+            logger.info("Passenger already exists, aborting!");
+            return 1;
+        } catch (NoResultException e) {
+            Passenger p = new Passenger(userInfo.getEmail(), userInfo.getPassword(), userInfo.getName(),
+                    userInfo.getPhoneNumber(), 0.0);
+            em.persist(p);
+            logger.info("Passengers added successfully!");
+            return 0;
+        }
+
     }
 
     public String authenticate(String email, String password) {
@@ -160,8 +176,11 @@ public class StatelessBean {
         q.setParameter("email", email);
         q.setParameter("password", password);
 
+        logger.info("Authenticating...");
+
         try {
             q.getSingleResult();
+            logger.info("Logged in passenger!");
             return "passenger";
 
         } catch (Exception e) {
@@ -174,9 +193,12 @@ public class StatelessBean {
 
                 q.getSingleResult();
 
+                logger.info("Logged in manager!");
+
                 return "manager";
 
             } catch (Exception ex) {
+                logger.error("LINE 199 ERROR!!");
                 return "";
             }
         }
@@ -187,6 +209,8 @@ public class StatelessBean {
         TypedQuery<Passenger> q = em.createQuery("from Passenger p where p.email = :email", Passenger.class);
 
         q.setParameter("email", email);
+
+        logger.info("Got passenger's id by email!");
 
         return q.getSingleResult().getId();
     }
@@ -199,6 +223,8 @@ public class StatelessBean {
 
         Passenger p = q.getSingleResult();
 
+        logger.info("Got passenger's info by id!");
+
         return new UserInfoDTO(p.getEmail(), p.getName(), p.getPhoneNumber(), p.getBalance());
     }
 
@@ -207,6 +233,8 @@ public class StatelessBean {
         TypedQuery<Manager> q = em.createQuery("from Manager m where m.email = :email", Manager.class);
 
         q.setParameter("email", email);
+
+        logger.info("Got manager's id by email!");
 
         return q.getSingleResult().getId();
     }
@@ -220,37 +248,35 @@ public class StatelessBean {
 
         Passenger p = em.find(Passenger.class, id);
 
-        if (email != null)
+        if (email != null) {
             p.setEmail(email);
+            logger.info("Changed passenger " + id + "'s email!");
+        }
 
-        if (password != null)
+        if (password != null) {
             p.setPassword(password);
+            logger.info("Changed passenger " + id + "'s password!");
+        }
 
-        if (name != null)
+        if (name != null) {
             p.setName(name);
+            logger.info("Changed passenger " + id + "'s name!");
+        }
 
-        if (phoneNumber != null)
+        if (phoneNumber != null) {
             p.setPhoneNumber(phoneNumber);
-
+            logger.info("Changed passenger " + id + "'s phoneNumber!");
+        }
     }
 
     public void deletePassenger(int id) {
+        logger.info("Passenger " + id + " deleted");
         em.remove(em.find(Passenger.class, id));
     }
 
     public void deleteManager(int id) {
+        logger.info("Manager " + id + " deleted");
         em.remove(em.find(Manager.class, id));
-    }
-
-    public List<Integer> listTripsBetweenStartEndDate(GregorianCalendar start, GregorianCalendar end) {
-
-        TypedQuery<Integer> q = em.createQuery(
-                "select t.id from Trip t where t.departureDate >= :start and t.departureDate <= :end", Integer.class);
-
-        q.setParameter("start", start);
-        q.setParameter("end", end);
-
-        return q.getResultList();
     }
 
     public TripInfoDTO getTripInfo(Integer id) {
@@ -260,6 +286,8 @@ public class StatelessBean {
         q.setParameter("id", id);
 
         Trip t = q.getSingleResult();
+
+        logger.info("Trip " + id + "'s info successfully returned!");
 
         return new TripInfoDTO(new GregorianCalendarDTO(t.getDepartureDate().get(GregorianCalendar.YEAR),
                 t.getDepartureDate().get(GregorianCalendar.MONTH),
@@ -292,6 +320,8 @@ public class StatelessBean {
             tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
                     t.getCapacity(), t.getTicketPrice(), t.getId()));
         }
+
+        logger.info("Trips between dates listed successfully!");
 
         return tripsDTO;
     }
@@ -327,6 +357,8 @@ public class StatelessBean {
             }
         }
 
+        logger.info("Future trips between dates listed successfully!");
+
         return tripsDTO;
     }
 
@@ -334,6 +366,8 @@ public class StatelessBean {
 
         Passenger p = em.find(Passenger.class, id);
         p.addBalance(amount);
+
+        logger.info("Passenger " + id + "'s wallet charged with " + amount + " EUR.");
     }
 
     // 0 == successful, 1 == unsuccessful
@@ -345,15 +379,18 @@ public class StatelessBean {
         Double ticketPrice = trip.getTicketPrice();
         Calendar nowCal = new GregorianCalendar();
 
-        if (p.getBalance() >= ticketPrice && trip.getDepartureDate().compareTo(nowCal) > 0) {
+        if (p.getBalance() >= ticketPrice && trip.getDepartureDate().compareTo(nowCal) > 0 && trip.getCapacity() > 0) {
 
             p.addBalance(ticketPrice * -1);
             Ticket t = new Ticket(p, trip);
 
             em.persist(t);
+
+            trip.setCapacity(trip.getCapacity() - 1);
+            logger.info("Ticket purchase sucessful");
             return 0;
         }
-
+        logger.info("Ticket purchase unsuccessful - not enough money, no capacity or past trip.");
         return 1;
     }
 
@@ -368,9 +405,10 @@ public class StatelessBean {
         if (trip.getDepartureDate().compareTo(nowCal) >= 0) {
             p.addBalance(t.getTrip().getTicketPrice());
             em.remove(t);
+            logger.info("Ticket refund sucessful");
             return 0;
         }
-
+        logger.info("Ticket refund unsuccessful - past trip.");
         return 1;
     }
 
@@ -384,6 +422,7 @@ public class StatelessBean {
         for (Ticket ticket : tickets)
             t.add(ticket.getTrip().getId());
 
+        logger.info("Trips retrieved successfully!");
         return t;
     }
 
@@ -402,9 +441,11 @@ public class StatelessBean {
         if (g.compareTo(nowCal) >= 0) {
             Trip t = new Trip(g, departurePoint, destinationPoint, capacity, ticketPrice);
             em.persist(t);
+            logger.info("Trip added successfully!");
             return 0;
         }
 
+        logger.info("Trips added unsuccessfully - past trip.");
         return 1;
     }
 
@@ -435,8 +476,11 @@ public class StatelessBean {
                 em.remove(ticket);
             }
             em.remove(t);
+            logger.info("Trip deleted successfully!");
             return 0;
         }
+
+        logger.info("Can't delete past trip.");
         return 1;
     }
 
@@ -453,6 +497,7 @@ public class StatelessBean {
             em.remove(ticket);
         }
         em.remove(t);
+        logger.info("Trip deleted successfully!");
     }
 
     public List<UserInfoDTO> listTop5Passengers() {
@@ -476,6 +521,7 @@ public class StatelessBean {
             topInfo.add(userInfo);
         }
 
+        logger.info("Top 5 listed successfully!");
         return topInfo;
     }
 
@@ -487,6 +533,8 @@ public class StatelessBean {
 
         q.setParameter("uId", uId);
 
+        logger.info("Calculated number of tickets successfully!");
+
         return q.getSingleResult();
     }
 
@@ -496,6 +544,8 @@ public class StatelessBean {
                 Integer.class);
 
         q.setParameter("departureDate", departureDate);
+
+        logger.info("Retrieved trips by date successfully!");
 
         return q.getResultList();
     }
@@ -529,6 +579,8 @@ public class StatelessBean {
                     t.getCapacity(), t.getTicketPrice(), t.getId()));
         }
 
+        logger.info("Retrieved trip info by date successfully!");
+
         return tripsDTO;
     }
 
@@ -555,6 +607,8 @@ public class StatelessBean {
         for (Integer uId : passengerIds)
             passengerInfos.add(getPassengerInfoById(uId));
 
+        logger.info("Retrieved user info by trip id successfully!");
+
         return passengerInfos;
     }
 
@@ -575,6 +629,8 @@ public class StatelessBean {
             tripsDTO.add(new TripInfoDTO(departureDateDTO, t.getDeparturePoint(), t.getDestinationPoint(),
                     t.getCapacity(), t.getTicketPrice(), t.getId()));
         }
+
+        logger.info("Retrieved all trips for passenger " + id + " successfully!");
         return tripsDTO;
     }
 
@@ -588,6 +644,7 @@ public class StatelessBean {
         for (Ticket t : tickets)
             ticketsDTO.add(new TicketInfoDTO(t.getId(), t.getTrip().getId(), t.getPassenger().getId()));
 
+        logger.info("Retrieved tickets by passenger id successfully!");
         return ticketsDTO;
     }
 
@@ -599,6 +656,8 @@ public class StatelessBean {
         q.setMaxResults(1);
         q.setParameter("userId", userId);
         q.setParameter("tripId", tripId);
+
+        logger.info("Retrieved ticket from trip successfully");
 
         return q.getSingleResult();
     }
@@ -624,7 +683,7 @@ public class StatelessBean {
 
             // Envio da mensagem
             Transport.send(message);
-            logger.debug("Email enviado");
+            logger.info("Email enviado");
         } catch (MessagingException e) {
             logger.error("Erro a enviar o email : " + e.getMessage());
         }
@@ -661,42 +720,7 @@ public class StatelessBean {
             emailContent = "Greetings " + m.getName().split(" ")[0] + ",\n\nToday's total revenue was: " + totalRevenue
                     + "EUR.\n\nBest Regards,\nIS2021 Team";
             sendEmail(m.getEmail(), "integracaodesistemas2021@gmail.com", emailSubject, emailContent);
+            logger.info("Email timed event completed successfully!");
         }
-
     }
-
-    public void dailyRevenueReportNonScheduled() {
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDateTime today = LocalDateTime.now();
-        GregorianCalendar today00 = new GregorianCalendar(today.getYear(), today.getMonthValue() - 1,
-                today.getDayOfMonth(), 00, 00);
-        GregorianCalendar tomorrow00 = new GregorianCalendar(today.getYear(), today.getMonthValue() - 1,
-                today.getDayOfMonth() + 1, 23, 59);
-
-        TypedQuery<Manager> q1 = em.createQuery("from Manager m", Manager.class);
-        List<Manager> managers = q1.getResultList();
-
-        Query q2 = em.createQuery(
-                "SELECT SUM(tr.ticketPrice) FROM Ticket ti INNER JOIN Trip tr ON tr.id = ti.trip.id WHERE tr.departureDate >= :today and tr.departureDate <= :tomorrow");
-
-        q2.setParameter("today", today00);
-        q2.setParameter("tomorrow", tomorrow00);
-
-        Number totalRevenue = (Number) q2.getSingleResult();
-
-        if (totalRevenue == null)
-            totalRevenue = 0;
-
-        String emailSubject, emailContent;
-        emailSubject = "Daily Revenue Report -> " + dtf.format(today);
-
-        for (Manager m : managers) {
-            emailContent = "Greetings " + m.getName().split(" ")[0] + ",\n\nToday's total revenue was: " + totalRevenue
-                    + "EUR.\n\nBest Regards,\nIS2021 Team";
-            sendEmail(m.getEmail(), "integracaodesistemas2021@gmail.com", emailSubject, emailContent);
-        }
-
-    }
-
 }

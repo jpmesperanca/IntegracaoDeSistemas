@@ -36,9 +36,9 @@
     &nbsp;
     <div>
         <strong>CHANGE INFORMATION</strong>
-        <form action="main" method="post">
+        <form action="main" method="get">
             <strong style="display:inline" >Email: </strong>
-            <input name="email" type="text" />
+            <input name="email" type="email" />
 
             <strong style="display:inline" >Password: </strong>
             <input name="key" type="password" />
@@ -47,7 +47,7 @@
             <input name="name" type="text" />
 
             <strong style="display:inline" >Phone number: </strong>
-            <input name="phone" type="text" />
+            <input name="phone" type="number" />
 
             <input type="submit" name="changeInfo" value="Change Info">
         </form>
@@ -55,7 +55,7 @@
     &nbsp;
     <div>
         <strong>SEARCH TRIPS BETWEEN DATES</strong>
-        <form action="main" method="post">
+        <form action="main" method="get">
             <strong style="display:inline" >Start Date: </strong>
             <input type="date" name="startDate">
 
@@ -106,8 +106,8 @@
                     <p>-------------</p>
                 </c:forEach>
 
-                <strong>CHOOSE TRIP TO BUY</strong>
-                <form action="main" method="post">
+                <strong>Choose trip to buy</strong>
+                <form action="main" method="get">
                     <select name="tripToBuy">
                         <c:forEach var="item" items="${searchTrips}">
                         <option value="${item.getTripId()}">${item.getDestinationPoint()}</option>
@@ -157,8 +157,8 @@
                     <p>-------------</p>
                 </c:forEach>
 
-                <strong>CHOOSE TRIP TO REFUND</strong>
-                <form action="main" method="post">
+                <strong>Choose trip to refund</strong>
+                <form action="main" method="get">
                     <select name="tripToRefund">
                         <c:forEach var="item" items="${myTrips}">
                             <option value="${item.getTripId()}">${item.getDestinationPoint()}</option>
@@ -172,7 +172,7 @@
     </div>
     &nbsp;
     <div>
-        <form action="main" method="post">
+        <form action="main" method="get">
             <select name="chargeAmount">
                 <option value="10">10 EUR</option>
                 <option value="25">25 EUR</option>
@@ -185,12 +185,12 @@
     &nbsp;
     <div>
         <form action="main" method="get">
-            <input type="submit" name="delete" value="Delete Account" />
+            <input type="submit" name="deleteP" value="Delete Account" />
         </form>
     </div> 
     &nbsp;
     <div>
-        <form action="main" method="get">
+        <form action="main" method="post">
             <input type="submit" name="logout" value="Logout" />
         </form>
     </div>  

@@ -15,7 +15,7 @@
     &nbsp;
     <div>
         <strong>CREATE TRIP</strong>
-        <form action="main" method="post">
+        <form action="main" method="get">
 
             <strong style="display:inline" >Departure Date: </strong>
             <input name="departureDate" type="date" />
@@ -31,11 +31,11 @@
             <p></p>
 
             <strong style="display:inline" >Capacity: </strong>
-            <input name="capacity" type="text" placeholder="capacity" />
+            <input name="capacity" type="number" placeholder="capacity" />
             <p></p>
 
             <strong style="display:inline" >Ticket Price: </strong>
-            <input name="price" type="text" placeholder="price">
+            <input name="price" type="number" placeholder="price">
             <p></p>
 
             <input type="submit" name="createTrip" value="Create Trip">
@@ -44,7 +44,7 @@
     &nbsp;
     <div>
         <strong>SEARCH TRIPS BETWEEN DATES</strong>
-        <form action="main" method="post">
+        <form action="main" method="get">
             <strong style="display:inline" >Start Date: </strong>
             <input type="date" name="startDate">
             <input type="time" name="startTime">
@@ -93,8 +93,8 @@
                     <p>-------------</p>
                 </c:forEach>
                 
-                <strong>CHOOSE TRIP TO DELETE</strong>
-                <form action="main" method="post">
+                <strong>Choose trip to delete</strong>
+                <form action="main" method="get">
                     <select name="tripToDelete">
                         <c:forEach var="item" items="${searchTrips}">
                             <option value="${item.getTripId()}">${item.getDestinationPoint()}</option>
@@ -105,8 +105,8 @@
 
                 <p></p>
                 
-                <strong>CHOOSE TRIP TO SHOW PASSENGERS</strong>
-                <form action="main" method="post">
+                <strong>Choose trip to show passengers</strong>
+                <form action="main" method="get">
                     <select name="trip">
                         <c:forEach var="item" items="${searchTrips}">
                             <option value="${item.getTripId()}">${item.getDestinationPoint()}</option>
@@ -146,7 +146,7 @@
     &nbsp;
     <div>
         <strong>SEARCH TRIPS SPECIFIC DATE</strong>
-        <form action="main" method="post">
+        <form action="main" method="get">
             <strong style="display:inline" >Date: </strong>
             <input type="date" name="date">
             <p></p>
@@ -188,8 +188,8 @@
                     <p>-------------</p>
                 </c:forEach>
                 
-                <strong>CHOOSE TRIP TO DELETE</strong>
-                <form action="main" method="post">
+                <strong>Choose trip to delete</strong>
+                <form action="main" method="get">
                     <select name="tripToDelete">
                         <c:forEach var="item" items="${specificSearchTrips}">
                             <option value="${item.getTripId()}">${item.getDestinationPoint()}</option>
@@ -200,8 +200,8 @@
 
                 <p></p>
 
-                <strong>CHOOSE TRIP TO SHOW PASSENGERS</strong>
-                <form action="main" method="post">
+                <strong>Choose trip to show passengers</strong>
+                <form action="main" method="get">
                     <select name="trip">
                         <c:forEach var="item" items="${specificSearchTrips}">
                             <option value="${item.getTripId()}">${item.getDestinationPoint()}</option>
@@ -239,7 +239,7 @@
     &nbsp;
     <div>
         <strong>SHOW TOP 5 FREQUENT PASSENGERS</strong>
-        <form action="main" method="post">
+        <form action="main" method="get">
             <input type="submit" name="listTop" value="Show">
         </form>
         <c:choose>
@@ -280,12 +280,12 @@
     &nbsp;
     <div>
         <form action="main" method="get">
-            <input type="submit" name="delete" value="Delete Account" />
+            <input type="submit" name="deleteM" value="Delete Account" />
         </form>
     </div> 
     &nbsp;
     <div>
-        <form action="main" method="get">
+        <form action="main" method="post">
             <input type="submit" name="logout" value="Logout" />
         </form>
     </div>  

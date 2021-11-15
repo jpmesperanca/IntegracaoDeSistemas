@@ -9,19 +9,19 @@
 <body>
     <strong>Super secret ${role} page</strong>
     <div>
-        <form action="main" method="post">
+        <form action="main" method="get">
             <input type="submit" name="createData" value="Create Data" />
         </form>
     </div>
     &nbsp;
     <div>
-        <form action="main" method="post">
+        <form action="main" method="get">
             <input type="submit" name="eraseData" value="Erase Data" />
         </form>
     </div>  
     &nbsp;
     <div>
-        <form action="main" method="get">
+        <form action="main" method="post">
             <input type="submit" name="logout" value="Logout" />
         </form>
     </div>  

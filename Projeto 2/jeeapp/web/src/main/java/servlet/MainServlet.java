@@ -25,35 +25,10 @@ public class MainServlet extends HttpServlet {
     @EJB
     private StatelessBean slb;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (request.getParameter("register") != null) {
-
-            String email = request.getParameter("email");
-            String key = request.getParameter("key");
-            String name = request.getParameter("name");
-            String phone = request.getParameter("phone");
-
-            // Add passenger to database
-            UserInfoDTO userInfo = new UserInfoDTO(email, name, phone, hashPassword(key));
-            slb.addPassenger(userInfo);
-
-            Integer uId = slb.getPassengerByEmail(email);
-
-            request.getSession(true).setAttribute("role", "passenger");
-            request.getSession(true).setAttribute("uId", uId);
-
-            // Set display variables
-            request.getSession(true).setAttribute("email", email);
-            request.getSession(true).setAttribute("name", name);
-            request.getSession(true).setAttribute("phone", phone);
-            request.getSession(true).setAttribute("balance", 0.0);
-
-            request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
-        }
-
-        else if (request.getParameter("createData") != null) {
+        if (request.getParameter("createData") != null) {
             slb.createData();
             request.getRequestDispatcher("/secured/admin.jsp").forward(request, response);
         }
@@ -61,6 +36,26 @@ public class MainServlet extends HttpServlet {
         else if (request.getParameter("eraseData") != null) {
             slb.eraseAllData();
             request.getRequestDispatcher("/secured/admin.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("deleteP") != null) {
+
+            Integer userId = (Integer) request.getSession(false).getAttribute("uId");
+
+            slb.deletePassenger(userId);
+
+            request.getSession().invalidate();
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
+        }
+
+        else if (request.getParameter("deleteM") != null) {
+
+            Integer userId = (Integer) request.getSession(false).getAttribute("uId");
+
+            slb.deleteManager(userId);
+
+            request.getSession().invalidate();
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
 
         else if (request.getParameter("changeInfo") != null) {
@@ -160,7 +155,7 @@ public class MainServlet extends HttpServlet {
 
             else
                 request.getSession().setAttribute("errorMessage",
-                        "Invalid purchase, make sure you have enough money and that you're purchasing a future trip's ticket.");
+                        "Invalid purchase, make sure you have enough money, that you're purchasing a future trip's ticket and that the trip has available capacity.");
 
             request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
         }
@@ -336,10 +331,47 @@ public class MainServlet extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (request.getParameter("login") != null) {
+        if (request.getParameter("register") != null) {
+
+            String email = request.getParameter("email");
+            String key = request.getParameter("key");
+            String name = request.getParameter("name");
+            String phone = request.getParameter("phone");
+
+            if (!email.equals("") && !key.equals("") && !name.equals("") && !phone.equals("")) {
+                // Add passenger to database
+                UserInfoDTO userInfo = new UserInfoDTO(email, name, phone, hashPassword(key));
+                if (slb.addPassenger(userInfo) == 0) {
+
+                    Integer uId = slb.getPassengerByEmail(email);
+
+                    request.getSession(true).setAttribute("role", "passenger");
+                    request.getSession(true).setAttribute("uId", uId);
+
+                    // Set display variables
+                    request.getSession(true).setAttribute("email", email);
+                    request.getSession(true).setAttribute("name", name);
+                    request.getSession(true).setAttribute("phone", phone);
+                    request.getSession(true).setAttribute("balance", 0.0);
+                    request.getRequestDispatcher("/secured/passenger.jsp").forward(request, response);
+
+                } else {
+                    request.getSession().setAttribute("errorMessage",
+                            "Invalid register, make sure you aren't already registered.");
+                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                }
+            } else {
+                request.getSession().setAttribute("errorMessage",
+                        "Invalid register, make sure you filled every parameter.");
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
+            }
+
+        }
+
+        else if (request.getParameter("login") != null) {
             String email = request.getParameter("email");
             String key = request.getParameter("key");
 
@@ -391,7 +423,7 @@ public class MainServlet extends HttpServlet {
 
         else if (request.getParameter("logout") != null) {
             request.getSession().invalidate();
-            request.getRequestDispatcher("/login.html").forward(request, response);
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }
 
