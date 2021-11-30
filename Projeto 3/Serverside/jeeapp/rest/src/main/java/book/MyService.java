@@ -1,17 +1,13 @@
 package book;
 
 import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import data.Student;
 
 @RequestScoped
 @Path("/myservice")
@@ -34,12 +30,15 @@ public class MyService {
         return name;
     }
 
-    @GET
-    @Path("/list")
-    public List<Student> method3() {
-        System.out.println("M3 executing....");
-        List<Student> list = new ArrayList<>();
-        // manageStudents.listStudents();
-        return list;
-    }
+    /*
+     * @GET
+     * 
+     * @Path("/list")
+     * public List<Student> method3() {
+     * System.out.println("M3 executing....");
+     * List<Student> list = new ArrayList<>();
+     * // manageStudents.listStudents();
+     * return list;
+     * }
+     */
 }

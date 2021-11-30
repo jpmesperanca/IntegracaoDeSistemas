@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres # The PostgreSQL user (useful to connect to the database)
       POSTGRES_PASSWORD: My01pass # The PostgreSQL password (useful to connect to the database)
-      POSTGRES_DB: school # The PostgreSQL default database (automatically created at first launch)
+      POSTGRES_DB: proj3 # The PostgreSQL default database (automatically created at first launch)
   wildfly:
     build:
       context: .
