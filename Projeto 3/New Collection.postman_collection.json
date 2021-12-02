@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "8b5af4de-5b56-4ded-b6bf-b0b65463680e",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Manager",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"testManager\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/services/myservice/addManager",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"services",
+						"myservice",
+						"addManager"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Client",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"testClient\",\r\n    \"balance\": 20.0,\r\n    \"manager\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/services/myservice/addClient",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"services",
+						"myservice",
+						"addClient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Currency",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Pilim\",\r\n    \"conversionRate\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/services/myservice/addCurrency",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"services",
+						"myservice",
+						"addCurrency"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Clients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/services/myservice/listClients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"services",
+						"myservice",
+						"listClients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Managers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/services/myservice/listManagers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"services",
+						"myservice",
+						"listManagers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Currency",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/services/myservice/listCurrency",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"services",
+						"myservice",
+						"listCurrency"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

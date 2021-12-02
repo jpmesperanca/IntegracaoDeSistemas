@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Client implements Serializable {
@@ -18,14 +18,13 @@ public class Client implements Serializable {
     private String name;
     private Double balance;
 
-    @OneToOne
+    @ManyToOne
     private Manager manager;
 
     public Client() {
     }
 
-    public Client(int id, String name, Double balance, Manager manager) {
-        this.id = id;
+    public Client(String name, Double balance, Manager manager) {
         this.name = name;
         this.balance = balance;
         this.manager = manager;

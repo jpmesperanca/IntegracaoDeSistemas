@@ -1,71 +1,101 @@
 package book;
 
-import java.util.Map;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import org.json.JSONObject;
+import data.Client;
+import data.Currency;
+import data.Manager;
 
 @RequestScoped
 @Path("/myservice")
 @Produces(MediaType.APPLICATION_JSON)
 public class MyService {
 
+    @PersistenceContext(name = "proj3", type = javax.persistence.PersistenceContextType.EXTENDED)
+    EntityManager em;
+
     @GET
-    @Path("/test")
-    public String method1() {
-        System.out.println("M1 executing...."); // Nao sei para onde isto vai
-        return "M1 baixo...";
+    @Path("/listClients")
+    public List<Client> listClients() {
+
+        TypedQuery<Client> q = em.createQuery("from Client c", Client.class);
+
+        List<Client> l = q.getResultList();
+
+        return l;
     }
 
     @GET
+    @Path("/listManagers")
+    public List<Manager> listManagers() {
+
+        TypedQuery<Manager> q = em.createQuery("from Manager m", Manager.class);
+
+        List<Manager> l = q.getResultList();
+
+        return l;
+    }
+
+    @GET
+    @Path("/listCurrency")
+    public List<Currency> listCurrency() {
+
+        TypedQuery<Currency> q = em.createQuery("from Currency c", Currency.class);
+
+        List<Currency> l = q.getResultList();
+
+        return l;
+    }
+
+    @POST
+    @Transactional
     @Path("/addManager")
-    public Map<String, Object> addManager() {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addManager(Manager m) {
 
-        JSONObject jo = new JSONObject();
-        jo.put("name", "jon doe");
-        jo.put("age", "22");
-        jo.put("city", "chicago");
+        // TODO - Add protections de parametros nulos
 
-        return jo.toMap(); // Works
+        em.persist(m);
+
+        return Response.ok().entity(m).build();
     }
 
-    @GET
-    @Path("/addManager2")
-    public JSONObject addManager2() {
+    @POST
+    @Transactional
+    @Path("/addClient")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addClient(Client c) {
 
-        JSONObject jo = new JSONObject();
-        jo.put("name", "jon doe");
-        jo.put("age", "22");
-        jo.put("city", "chicago");
+        // TODO - Add protections de parametros nulos
 
-        return jo; // returns {"empty": false}
+        em.persist(c);
+
+        return Response.ok().entity(c).build();
     }
 
-    /*
-     * @GET
-     * 
-     * @Path("/add")
-     * public String method2() {
-     * System.out.println("M2 executing....");
-     * String name = "name_" + new Time(Calendar.getInstance().getTimeInMillis());
-     * // manageStudents.addStudent(name);
-     * return name;
-     * }
-     * 
-     * 
-     * @GET
-     * 
-     * @Path("/list")
-     * public List<Student> method3() {
-     * System.out.println("M3 executing....");
-     * List<Student> list = new ArrayList<>();
-     * // manageStudents.listStudents();
-     * return list;
-     * }
-     */
+    @POST
+    @Transactional
+    @Path("/addCurrency")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addCurrency(Currency c) {
+
+        // TODO - Add protections de parametros nulos
+
+        em.persist(c);
+
+        return Response.ok().entity(c).build();
+    }
 }
