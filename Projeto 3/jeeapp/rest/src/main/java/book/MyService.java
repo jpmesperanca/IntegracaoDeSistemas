@@ -1,5 +1,6 @@
 package book;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.Response;
 import data.Client;
 import data.Currency;
 import data.Manager;
+import data.ManagerInfo;
 
 @RequestScoped
 @Path("/myservice")
@@ -26,6 +28,12 @@ public class MyService {
 
     @PersistenceContext(name = "proj3", type = javax.persistence.PersistenceContextType.EXTENDED)
     EntityManager em;
+
+    @GET
+    @Path("/test")
+    public String test() {
+        return "Success";
+    }
 
     @GET
     @Path("/listClients")
@@ -40,13 +48,17 @@ public class MyService {
 
     @GET
     @Path("/listManagers")
-    public List<Manager> listManagers() {
+    public List<ManagerInfo> listManagers() {
 
         TypedQuery<Manager> q = em.createQuery("from Manager m", Manager.class);
 
         List<Manager> l = q.getResultList();
 
-        return l;
+        List<ManagerInfo> managers = new ArrayList<>();
+        for (Manager m : l)
+            managers.add(new ManagerInfo(m.getName()));
+
+        return managers;
     }
 
     @GET

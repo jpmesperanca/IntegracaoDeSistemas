@@ -1,3 +1,5 @@
 data/Currency.class
 data/Manager.class
+data/ClientInfo.class
+data/ManagerInfo.class
 data/Client.class

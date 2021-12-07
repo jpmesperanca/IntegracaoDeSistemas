@@ -12,14 +12,11 @@ import org.apache.kafka.streams.kstream.KTable;
 
 public class Stream {
     public static void main(String[] args) throws InterruptedException, IOException {
-        if (args.length != 2) {
-            System.err.println("Wrong arguments. Please run the class as follows:");
-            System.err.println(Stream.class.getName() + " input-topic output-topic");
-            System.exit(1);
-        }
 
-        String topicName = args[0].toString();
-        String outtopicname = args[1].toString();
+        String creditsTopic = "Credits";
+        // String paymentsTopic = "Payments";
+        // String dbinfoTopic = "DB Info";
+        String resultsTopic = "Results";
 
         java.util.Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "exercises-application-a");
@@ -28,14 +25,14 @@ public class Stream {
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
 
         StreamsBuilder builder = new StreamsBuilder();
-        KStream<String, Long> lines = builder.stream(topicName);
+        KStream<String, Long> lines = builder.stream(creditsTopic);
 
         KTable<String, Long> outlines = lines.groupByKey().count();
-        outlines.toStream().to(outtopicname);
+        outlines.toStream().to(resultsTopic);
 
         KafkaStreams streams = new KafkaStreams(builder.build(), props);
         streams.start();
 
-        System.out.println("Reading stream from topic " + topicName);
+        System.out.println("Reading stream from topic " + creditsTopic);
     }
 }
