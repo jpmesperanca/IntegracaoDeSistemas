@@ -1,8 +1,11 @@
 package kafka;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -15,35 +18,92 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 public class Client {
+
     public static void main(String[] args) throws Exception {
 
         String creditsTopic = "Credits";
+        String dbinfoTopic = "DBInfo";
         // String paymentsTopic = "Payments";
-        // String dbinfoTopic = "DB Info";
 
-        Properties propsProducer = createPropertiesProducer();
+        // Create consumer
         Properties propsConsumer = createPropertiesConsumer();
+        Consumer<String, String> consumer = new KafkaConsumer<>(propsConsumer);
+        consumer.subscribe(Collections.singletonList(dbinfoTopic));
 
-        Producer<String, Long> producer = new KafkaProducer<>(propsProducer);
+        // Create Producers
+        // TODO - Add payments
+        Properties propsProducer = createPropertiesProducer();
+        Producer<String, String> producer = new KafkaProducer<>(propsProducer);
 
-        for (int i = 0; i < 1000; i++) {
-            producer.send(new ProducerRecord<String, Long>(creditsTopic, Integer.toString(i),
-                    (long) i));
-            if (i % 100 == 0)
-                System.out.println("Sending message " + (i + 1) + " to topic " + creditsTopic);
-        }
+        Scanner scan = new Scanner(System.in);
+        int num;
+        List<String> clients = new ArrayList<>();
 
-        producer.close();
+        do {
 
-        Consumer<String, Long> consumer = new KafkaConsumer<>(propsConsumer);
-        consumer.subscribe(Collections.singletonList(creditsTopic));
+            System.out.println("1. Generate Credits");
+            System.out.println("2. Generate Payments");
+            System.out.println("3. Update Client List");
+            System.out.println("4. Update Currency List");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
 
-        ConsumerRecords<String, Long> records = consumer.poll(Duration.ofMillis(Long.MAX_VALUE));
-        for (ConsumerRecord<String, Long> record : records) {
-            System.out.println(record.key() + " => " + record.value());
-        }
+            num = scan.nextInt();
 
+            switch (num) {
+                case 1:
+                    generateCredits(producer, clients, creditsTopic);
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    clients = updateClients(consumer);
+                    for (String c : clients)
+                        System.out.println(c);
+                    break;
+
+                case 4:
+                    break;
+
+                default:
+                    break;
+            }
+
+        } while (num != 5);
+
+        scan.close();
         consumer.close();
+        producer.close();
+    }
+
+    private static void generateCredits(Producer<String, String> producer, List<String> clients, String creditsTopic) {
+        int i = 0;
+
+        for (String client : clients)
+            producer.send(new ProducerRecord<String, String>(creditsTopic, Integer.toString(i++), client));
+    }
+
+    private static List<String> updateClients(Consumer<String, String> consumer) {
+
+        List<String> clients = new ArrayList<>();
+
+        while (true) {
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
+
+            // Continua a dar poll até ter clientes válidos
+            if (records.isEmpty() && !clients.isEmpty())
+                return clients;
+
+            long now = System.currentTimeMillis();
+
+            for (ConsumerRecord<String, String> record : records) {
+
+                if (now - record.timestamp() < 60000)
+                    clients.add(record.value());
+            }
+        }
     }
 
     private static Properties createPropertiesProducer() {
@@ -64,7 +124,7 @@ public class Client {
         // producer for buffering
         props.put("buffer.memory", 33554432);
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.LongSerializer");
+        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
         return props;
     }
@@ -87,12 +147,9 @@ public class Client {
         // producer for buffering
         props.put("buffer.memory", 33554432);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaExampleConsumer");
-        // Not sure se precisamos de consultar sempre desde o inicio
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.LongDeserializer");
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
         return props;
     }
