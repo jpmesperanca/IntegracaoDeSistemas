@@ -17,7 +17,6 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -103,18 +102,23 @@ public class Client {
 
             Random rand = new Random();
 
-            rand.nextInt(10000);
+            for (int i = 0; i < 5; i++) {
 
-            HashMap<String, Object> map = new HashMap<>();
+                HashMap<String, Object> map = new HashMap<>();
 
-            map.put("Client", clients.get(rand.nextInt(clients.size())));
-            map.put("Amount", rand.nextInt(10000));
-            map.put("Currency", currencies.get(rand.nextInt(currencies.size())));
+                String client = clients.get(rand.nextInt(clients.size()));
+                int amount = rand.nextInt(10000);
 
-            JSONObject obj = new JSONObject(map);
+                map.put("Client", client);
+                map.put("Currency", currencies.get(rand.nextInt(currencies.size())));
+                map.put("Amount", amount);
 
-            for (String client : clients)
+                JSONObject obj = new JSONObject(map);
+
+                System.out.println(getIdFromJsonString(client) + " -> " + amount);
+
                 producer.send(new ProducerRecord<String, String>(topic, getIdFromJsonString(client), obj.toString()));
+            }
         }
     }
 
