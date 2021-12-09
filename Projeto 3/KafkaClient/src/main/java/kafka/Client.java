@@ -3,8 +3,10 @@ package kafka;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Scanner;
 
 import org.apache.kafka.clients.consumer.Consumer;
@@ -12,10 +14,13 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-
-import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Client {
 
@@ -24,21 +29,24 @@ public class Client {
         String creditsTopic = "Credits";
         String dbClients = "DBInfoClients";
         String dbCurr = "DBInfoCurr";
-        // String paymentsTopic = "Payments";
+        String paymentsTopic = "Payments";
 
         // Create consumers
-        Properties propsConsumer = createPropertiesConsumer();
-
-        Consumer<String, String> consumerCurr = new KafkaConsumer<>(propsConsumer);
-        consumerCurr.subscribe(Collections.singletonList(dbCurr));
+        Properties propsConsumer = createPropertiesConsumer("KafkaConsumerClients");
+        Properties propsConsumer2 = createPropertiesConsumer("KafkaConsumerCurr");
 
         Consumer<String, String> consumerClients = new KafkaConsumer<>(propsConsumer);
         consumerClients.subscribe(Collections.singletonList(dbClients));
 
+        Consumer<String, String> consumerCurr = new KafkaConsumer<>(propsConsumer2);
+        consumerCurr.subscribe(Collections.singletonList(dbCurr));
+
         // Create Producers
-        // TODO - Add payments
         Properties propsProducer = createPropertiesProducer();
-        Producer<String, String> producer = new KafkaProducer<>(propsProducer);
+        Producer<String, String> producerCredits = new KafkaProducer<>(propsProducer);
+
+        Properties propsProducer2 = createPropertiesProducer();
+        Producer<String, String> producerPayments = new KafkaProducer<>(propsProducer2);
 
         Scanner scan = new Scanner(System.in);
         int num;
@@ -55,28 +63,24 @@ public class Client {
             System.out.println("5. Exit");
             System.out.print("Choose an option: ");
 
+            // TODO - crasha se n for numero lol
             num = scan.nextInt();
 
             switch (num) {
                 case 1:
-                    generateCredits(producer, clients, creditsTopic);
+                    generateCredits(producerCredits, clients, currencies, creditsTopic);
                     break;
 
                 case 2:
+                    generateCredits(producerPayments, clients, currencies, paymentsTopic);
                     break;
 
                 case 3:
                     clients = updateInfo(consumerClients, clients);
-                    for (String c : clients)
-                        System.out.println(c);
                     break;
 
                 case 4:
-
                     currencies = updateInfo(consumerCurr, currencies);
-                    for (String c : currencies)
-                        System.out.println(c);
-
                     break;
 
                 default:
@@ -88,20 +92,50 @@ public class Client {
         scan.close();
         consumerClients.close();
         consumerCurr.close();
-        producer.close();
+        producerCredits.close();
+        producerPayments.close();
     }
 
-    private static void generateCredits(Producer<String, String> producer, List<String> clients, String creditsTopic) {
+    private static void generateCredits(Producer<String, String> producer, List<String> clients,
+            List<String> currencies, String topic) {
 
-        if (!clients.isEmpty()) {
-            int i = 0;
+        if (!clients.isEmpty() && !currencies.isEmpty()) {
+
+            Random rand = new Random();
+
+            rand.nextInt(10000);
+
+            HashMap<String, Object> map = new HashMap<>();
+
+            map.put("Client", clients.get(rand.nextInt(clients.size())));
+            map.put("Amount", rand.nextInt(10000));
+            map.put("Currency", currencies.get(rand.nextInt(currencies.size())));
+
+            JSONObject obj = new JSONObject(map);
 
             for (String client : clients)
-                producer.send(new ProducerRecord<String, String>(creditsTopic, Integer.toString(i++), client));
+                producer.send(new ProducerRecord<String, String>(topic, getIdFromJsonString(client), obj.toString()));
+        }
+    }
+
+    private static String getIdFromJsonString(String clientJson) {
+
+        try {
+
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(clientJson);
+
+            JSONObject payload = (JSONObject) obj.get("payload");
+
+            return String.valueOf(payload.get("id"));
+
+        } catch (ParseException pe) {
+            return "";
         }
     }
 
     // TODO - Stays infinite polling if the table is empty.
+    // https://stackoverflow.com/questions/36709740/alter-retention-ms-property-for-kafka-topic-deletes-the-old-data
     private static List<String> updateInfo(Consumer<String, String> consumer, List<String> current) {
 
         List<String> l = new ArrayList<>();
@@ -110,7 +144,6 @@ public class Client {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
 
             System.out.println(records.isEmpty());
-
             // Evita o utilizador ter de esperar pelo próximo successful poll
             if (records.isEmpty() && !current.isEmpty())
                 return current;
@@ -123,7 +156,7 @@ public class Client {
 
             for (ConsumerRecord<String, String> record : records) {
 
-                if (now - record.timestamp() < 60000)
+                if (now - record.timestamp() < 20000)
                     l.add(record.value());
             }
         }
@@ -152,7 +185,7 @@ public class Client {
         return props;
     }
 
-    private static Properties createPropertiesConsumer() {
+    private static Properties createPropertiesConsumer(String grpId) {
 
         Properties props = new Properties();
 
@@ -169,7 +202,7 @@ public class Client {
         // The buffer.memory controls the total amount of memory available to the
         // producer for buffering
         props.put("buffer.memory", 33554432);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "ClientGenConsumers");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, grpId);
 
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
