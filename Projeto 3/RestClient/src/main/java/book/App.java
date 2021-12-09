@@ -1,27 +1,31 @@
 package book;
 
 import java.util.List;
+import java.util.Scanner;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-//import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
-//import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public class App {
     public static void main(String[] args) {
 
-        Client client = ClientBuilder.newClient();
+        // Client client = ClientBuilder.newClient();
 
-        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/listManagers");
-        Response response = target.request().get();
-        List<ManagerInfo> personList = response.readEntity(new GenericType<List<ManagerInfo>>() {
-        });
-        for (ManagerInfo m : personList) {
-            System.out.println("Name: " + m.getName());
-        }
-        response.close();
+        // WebTarget target =
+        // client.target("http://localhost:8080/rest/services/myservice/listManagers");
+        // Response response = target.request().get();
+        // List<ManagerInfo> personList = response.readEntity(new
+        // GenericType<List<ManagerInfo>>() {
+        // });
+        // for (ManagerInfo m : personList) {
+        // System.out.println("Name: " + m.getName());
+        // }
+        // response.close();
 
         /*
          * WebTarget target =
@@ -86,5 +90,256 @@ public class App {
          * response.close();
          */
 
+        String _div = "--------------------------------------------------";
+        Client client = ClientBuilder.newClient();
+
+        Scanner scan = new Scanner(System.in);
+        int num, i;
+
+        do {
+
+            System.out.println("1. Add manager");
+            System.out.println("2. Add client");
+            System.out.println("3. Add curency");
+            System.out.println();
+            System.out.println("4. List managers");
+            System.out.println("5. List clients");
+            System.out.println("6. List currencies");
+            System.out.println();
+            System.out.println("7. Get credit per client");
+            System.out.println("8. Get payments per client");
+            System.out.println("9. Get current balance of a client");
+            System.out.println("10. Get total sum of credits");
+            System.out.println("11. Get total sum of payments");
+            System.out.println("12. Get total balance");
+            System.out.println("13. Compute bill of each client for the last \"month\"");
+            System.out.println("14. Get list of clients without payments (last two \"months\")");
+            System.out.println("15. Get person with highest outstanding debt");
+            System.out.println("16. Get manager with highest revenue in payments");
+
+            System.out.println();
+            System.out.println("17. Exit");
+            System.out.print("Choose an option: ");
+
+            try {
+                num = scan.nextInt();
+            } catch (Exception e) {
+                num = -1;
+            }
+
+            switch (num) {
+                case 1: // Add Manager
+                    // To simplify managers cannot be deleted and optionally not changed.
+                    System.out.println(_div);
+                    System.out.print("Name: ");
+                    // TODO - protecao contra nomes ilegais
+                    String managerName = scan.nextLine();
+                    ManagerInfo newManager = new ManagerInfo(managerName);
+                    addManager(client, newManager);
+
+                    System.out.println("* Manager sucessfuly added! *");
+                    System.out.println(_div);
+                    break;
+
+                case 2: // Add Client
+                    // Again, these cannot be deleted and optionally not changed. Each client has a
+                    // manager
+                    int managerId;
+                    System.out.println(_div);
+                    System.out.print("Name: ");
+                    String clientName = scan.nextLine(); // TODO - protecao contra nomes ilegais
+                    System.out.print("Select the client's manager (insert number): ");
+
+                    List<ManagerInfo> lManagers = listManagers(client);
+                    i = 1;
+                    for (ManagerInfo m : lManagers)
+                        System.out.println(i++ + ". " + m.getName());
+
+                    do {
+                        try {
+                            managerId = scan.nextInt();
+                        } catch (Exception e) {
+                            managerId = -1;
+                        }
+                        if (managerId <= 0 || managerId > lManagers.size())
+                            managerId = -1;
+
+                    } while (managerId == -1);
+
+                    ClientInfo newClient = new ClientInfo(clientName, 0.0, lManagers.get(managerId - 1).getId());
+                    // TODO balance set a 0 por default
+
+                    addClient(client, newClient);
+
+                    System.out.println("* Client sucessfuly added! *");
+                    System.out.println(_div);
+                    break;
+
+                case 3: // Add Currency
+                    // Add a currency and respective exchange rate for the euro to the database.
+                    System.out.println(_div);
+                    System.out.print("Name: ");
+                    // TODO - protecao contra nomes ilegais
+                    String currencyName = scan.nextLine();
+                    Double conversionRate = -1.0;
+
+                    do {
+                        try {
+                            System.out.print("Conversion Rate: ");
+                            conversionRate = scan.nextDouble();
+                        } catch (Exception e) {
+                            System.out.println("* Ilegal input *");
+                            conversionRate = -1.0;
+                        }
+
+                    } while (conversionRate == -1.0);
+
+                    CurrencyInfo newCurrency = new CurrencyInfo(currencyName, conversionRate);
+                    addCurrency(client, newCurrency);
+
+                    System.out.println("* Manager sucessfuly added! *");
+                    System.out.println(_div);
+                    break;
+
+                case 4: // List Managers
+                    // List managers from the database.
+                    lManagers = listManagers(client);
+                    System.out.println(_div);
+                    System.out.println("List of Managers:");
+                    i = 1;
+                    for (ManagerInfo m : lManagers)
+                        System.out.println(i++ + ". " + m.getName());
+                    System.out.println(_div);
+                    break;
+                case 5: // List clients
+                    // List clients from the database.
+                    List<ClientInfo> lClients = listClients(client);
+                    System.out.println(_div);
+                    System.out.println("List of Clients:");
+                    i = 1;
+                    for (ClientInfo c : lClients)
+                        System.out.println(i++ + ". " + c.getName());
+                    System.out.println(_div);
+                    break;
+                case 6: // List currencies
+                    // List currencies from the database.
+                    List<CurrencyInfo> lCurrencies = listCurrencies(client);
+                    System.out.println(_div);
+                    System.out.println("List of Currencies:");
+                    i = 1;
+                    for (CurrencyInfo cur : lCurrencies)
+                        System.out.println(i++ + ". " + cur.getName() + ": 1.00" + cur.getName() + " = "
+                                + cur.getConversionRate() + "EUR");
+                    System.out.println(_div);
+                    break;
+                case 7: // Get credit per client
+                    // Get the credit per client (students should compute this and the following
+                    // values in euros).
+                    break;
+                case 8: // Get payments per client
+                    // Get the payments (i.e., credit reimbursements) per client.
+                    break;
+                case 9: // Get the current balance of a client.
+                    break;
+                case 10: // Get total sum of credits
+                    // Get the total (i.e., sum of all persons) credits.
+                    break;
+                case 11: // Get total sum of payments
+                    // Get the total payments.
+                    break;
+                case 12: // Get total balance.
+                    // Get the total balance.
+                    break;
+                case 13: // Compute bill of each client for the last "month"
+                    // Compute the bill for each client for the last month1 (use a tumbling time
+                    // window).
+                    break;
+                case 14: // Get list of clients without payments (last two \"months\")
+                    // Get the list of clients without payments for the last two months.
+                    break;
+                case 15: // Get person with highest outstanding debt
+                    // Get the data of the person with the highest outstanding debt (i.e., the most
+                    // negative current balance).
+                    break;
+                case 16: // Get manager with highest revenue in payments
+                    // Get the data of the manager who has made the highest revenue in payments from
+                    // his or her clients.
+                    break;
+
+                default:
+                    System.out.print("\n\n****** Illegal option selected. ******\n\n");
+                    break;
+            }
+
+        } while (num != 17);
+
+        scan.close();
     }
+
+    public static List<ManagerInfo> listManagers(Client client) {
+
+        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/listManagers");
+        Response response = target.request().get();
+        List<ManagerInfo> personList = response.readEntity(new GenericType<List<ManagerInfo>>() {
+        });
+        response.close();
+        return personList;
+    }
+
+    public static List<ClientInfo> listClients(Client client) {
+
+        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/listClients");
+        Response response = target.request().get();
+        List<ClientInfo> personList = response.readEntity(new GenericType<List<ClientInfo>>() {
+        });
+        response.close();
+        return personList;
+    }
+
+    public static List<CurrencyInfo> listCurrencies(Client client) {
+
+        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/listCurrency");
+        Response response = target.request().get();
+        List<CurrencyInfo> currencyList = response.readEntity(new GenericType<List<CurrencyInfo>>() {
+        });
+        response.close();
+        return currencyList;
+    }
+
+    public static void addManager(Client client, ManagerInfo m) {
+
+        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/addManager");
+
+        Entity<ManagerInfo> input = Entity.entity(m, MediaType.APPLICATION_JSON);
+        // System.out.println(input);
+        Response response = target.request().post(input);
+        // String value = response.readEntity(String.class);
+        // System.out.println("RESPONSE4: " + value);
+        response.close();
+    }
+
+    public static void addClient(Client client, ClientInfo c) {
+
+        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/addClient");
+
+        Entity<ClientInfo> input = Entity.entity(c, MediaType.APPLICATION_JSON);
+        // System.out.println(input);
+        Response response = target.request().post(input);
+        // String value = response.readEntity(String.class);
+        // System.out.println("RESPONSE4: " + value);
+        response.close();
+    }
+
+    public static void addCurrency(Client client, CurrencyInfo cur) {
+
+        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/addCurrency");
+
+        Entity<CurrencyInfo> input = Entity.entity(cur, MediaType.APPLICATION_JSON);
+        // System.out.println(input);
+        Response response = target.request().post(input);
+        // String value = response.readEntity(String.class);
+        // System.out.println("RESPONSE4: " + value);
+        response.close();
+    }
+
 }
