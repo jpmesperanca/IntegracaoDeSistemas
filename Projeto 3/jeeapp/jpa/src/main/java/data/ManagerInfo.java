@@ -10,6 +10,10 @@ public class ManagerInfo implements Serializable {
     public ManagerInfo() {
     }
 
+    public ManagerInfo(String name) {
+        this.name = name;
+    }
+
     public ManagerInfo(String name, int id) {
         this.name = name;
         this.id = id;

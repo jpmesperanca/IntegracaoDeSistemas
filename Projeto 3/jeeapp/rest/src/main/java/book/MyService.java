@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import data.Client;
+import data.ClientInfo;
 import data.Currency;
 import data.Manager;
 import data.ManagerInfo;
@@ -37,13 +38,18 @@ public class MyService {
 
     @GET
     @Path("/listClients")
-    public List<Client> listClients() {
+    public List<ClientInfo> listClients() {
 
         TypedQuery<Client> q = em.createQuery("from Client c", Client.class);
 
         List<Client> l = q.getResultList();
 
-        return l;
+        List<ClientInfo> clients = new ArrayList<>();
+
+        for (Client c : l)
+            clients.add(new ClientInfo(c.getName(), c.getBalance(), c.getManager().getId()));
+
+        return clients;
     }
 
     @GET
@@ -89,9 +95,15 @@ public class MyService {
     @Transactional
     @Path("/addClient")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addClient(Client c) {
+    public Response addClient(ClientInfo ci) {
 
         // TODO - Add protections de parametros nulos
+
+        TypedQuery<Manager> q = em.createQuery("from Manager c where id = :id", Manager.class);
+
+        q.setParameter("id", ci.getManager());
+
+        Client c = new Client(ci.getName(), ci.getBalance(), q.getSingleResult());
 
         em.persist(c);
 

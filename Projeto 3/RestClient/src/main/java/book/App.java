@@ -14,20 +14,22 @@ import javax.ws.rs.core.Response;
 public class App {
     public static void main(String[] args) {
 
-        // Client client = ClientBuilder.newClient();
-
-        // WebTarget target =
-        // client.target("http://localhost:8080/rest/services/myservice/listManagers");
-        // Response response = target.request().get();
-        // List<ManagerInfo> personList = response.readEntity(new
-        // GenericType<List<ManagerInfo>>() {
-        // });
-        // for (ManagerInfo m : personList) {
-        // System.out.println("Name: " + m.getName());
-        // }
-        // response.close();
-
         /*
+         * // Client client = ClientBuilder.newClient();
+         * 
+         * // WebTarget target =
+         * //
+         * client.target("http://localhost:8080/rest/services/myservice/listManagers");
+         * // Response response = target.request().get();
+         * // List<ManagerInfo> personList = response.readEntity(new
+         * // GenericType<List<ManagerInfo>>() {
+         * // });
+         * // for (ManagerInfo m : personList) {
+         * // System.out.println("Name: " + m.getName());
+         * // }
+         * // response.close();
+         * 
+         * 
          * WebTarget target =
          * client.target("http://localhost:8080/restws/rest/myservice/person1");
          * Response response = target.request().get();
@@ -67,6 +69,7 @@ public class App {
          * // System.out.println("RESPONSE6: " + personList);
          * response.close();
          */
+
         /*
          * WebTarget target =
          * client.target("http://localhost:8080/rest/services/myservice/addManager");
@@ -133,6 +136,7 @@ public class App {
                     System.out.println(_div);
                     System.out.print("Name: ");
                     // TODO - protecao contra nomes ilegais
+                    scan.nextLine();
                     String managerName = scan.nextLine();
                     ManagerInfo newManager = new ManagerInfo(managerName);
                     addManager(client, newManager);
@@ -147,8 +151,8 @@ public class App {
                     int managerId;
                     System.out.println(_div);
                     System.out.print("Name: ");
+                    scan.nextLine();
                     String clientName = scan.nextLine(); // TODO - protecao contra nomes ilegais
-                    System.out.print("Select the client's manager (insert number): ");
 
                     List<ManagerInfo> lManagers = listManagers(client);
                     i = 1;
@@ -166,6 +170,8 @@ public class App {
 
                     } while (managerId == -1);
 
+                    System.out.print("Select the client's manager (insert number): ");
+
                     ClientInfo newClient = new ClientInfo(clientName, 0.0, lManagers.get(managerId - 1).getId());
                     // TODO balance set a 0 por default
 
@@ -180,6 +186,7 @@ public class App {
                     System.out.println(_div);
                     System.out.print("Name: ");
                     // TODO - protecao contra nomes ilegais
+                    scan.nextLine();
                     String currencyName = scan.nextLine();
                     Double conversionRate = -1.0;
 
@@ -232,6 +239,7 @@ public class App {
                                 + cur.getConversionRate() + "EUR");
                     System.out.println(_div);
                     break;
+
                 case 7: // Get credit per client
                     // Get the credit per client (students should compute this and the following
                     // values in euros).
@@ -266,6 +274,9 @@ public class App {
                     // his or her clients.
                     break;
 
+                case 17:
+                    break;
+
                 default:
                     System.out.print("\n\n****** Illegal option selected. ******\n\n");
                     break;
@@ -278,7 +289,7 @@ public class App {
 
     public static List<ManagerInfo> listManagers(Client client) {
 
-        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/listManagers");
+        WebTarget target = client.target("http://wildfly:8080/rest/services/myservice/listManagers");
         Response response = target.request().get();
         List<ManagerInfo> personList = response.readEntity(new GenericType<List<ManagerInfo>>() {
         });
@@ -288,7 +299,7 @@ public class App {
 
     public static List<ClientInfo> listClients(Client client) {
 
-        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/listClients");
+        WebTarget target = client.target("http://wildfly:8080/rest/services/myservice/listClients");
         Response response = target.request().get();
         List<ClientInfo> personList = response.readEntity(new GenericType<List<ClientInfo>>() {
         });
@@ -298,7 +309,7 @@ public class App {
 
     public static List<CurrencyInfo> listCurrencies(Client client) {
 
-        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/listCurrency");
+        WebTarget target = client.target("http://wildfly:8080/rest/services/myservice/listCurrency");
         Response response = target.request().get();
         List<CurrencyInfo> currencyList = response.readEntity(new GenericType<List<CurrencyInfo>>() {
         });
@@ -308,7 +319,7 @@ public class App {
 
     public static void addManager(Client client, ManagerInfo m) {
 
-        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/addManager");
+        WebTarget target = client.target("http://wildfly:8080/rest/services/myservice/addManager");
 
         Entity<ManagerInfo> input = Entity.entity(m, MediaType.APPLICATION_JSON);
         // System.out.println(input);
@@ -320,7 +331,7 @@ public class App {
 
     public static void addClient(Client client, ClientInfo c) {
 
-        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/addClient");
+        WebTarget target = client.target("http://wildfly:8080/rest/services/myservice/addClient");
 
         Entity<ClientInfo> input = Entity.entity(c, MediaType.APPLICATION_JSON);
         // System.out.println(input);
@@ -332,7 +343,7 @@ public class App {
 
     public static void addCurrency(Client client, CurrencyInfo cur) {
 
-        WebTarget target = client.target("http://localhost:8080/rest/services/myservice/addCurrency");
+        WebTarget target = client.target("http://wildfly:8080/rest/services/myservice/addCurrency");
 
         Entity<CurrencyInfo> input = Entity.entity(cur, MediaType.APPLICATION_JSON);
         // System.out.println(input);
