@@ -107,22 +107,24 @@ public class Client {
                 HashMap<String, Object> map = new HashMap<>();
 
                 String client = clients.get(rand.nextInt(clients.size()));
+                String curr = currencies.get(rand.nextInt(currencies.size()));
                 int amount = rand.nextInt(10000);
 
-                map.put("Client", client);
-                map.put("Currency", currencies.get(rand.nextInt(currencies.size())));
-                map.put("Amount", amount);
+                map.put("Currency", getValueFromJsonString(curr, "conversionrate"));
+                map.put("Amount", String.valueOf(amount));
 
                 JSONObject obj = new JSONObject(map);
 
-                System.out.println(getIdFromJsonString(client) + " -> " + amount);
+                System.out.println(getValueFromJsonString(client, "id") + " -> " + amount + " * "
+                        + getValueFromJsonString(curr, "conversionrate"));
 
-                producer.send(new ProducerRecord<String, String>(topic, getIdFromJsonString(client), obj.toString()));
+                producer.send(new ProducerRecord<String, String>(topic, getValueFromJsonString(client, "id"),
+                        obj.toString()));
             }
         }
     }
 
-    private static String getIdFromJsonString(String clientJson) {
+    private static String getValueFromJsonString(String clientJson, String value) {
 
         try {
 
@@ -131,7 +133,7 @@ public class Client {
 
             JSONObject payload = (JSONObject) obj.get("payload");
 
-            return String.valueOf(payload.get("id"));
+            return String.valueOf(payload.get(value));
 
         } catch (ParseException pe) {
             return "";
@@ -147,6 +149,7 @@ public class Client {
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
 
+            // TODO - Remove?
             System.out.println(records.isEmpty());
             // Evita o utilizador ter de esperar pelo próximo successful poll
             if (records.isEmpty() && !current.isEmpty())

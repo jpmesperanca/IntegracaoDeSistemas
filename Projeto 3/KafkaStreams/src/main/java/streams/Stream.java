@@ -8,9 +8,11 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.kstream.Grouped;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
@@ -36,52 +38,55 @@ public class Stream {
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
         StreamsBuilder builder = new StreamsBuilder();
-
         KStream<String, String> lines = builder.stream(creditsTopic);
+        KTable<String, Double> countlines = lines.mapValues(v -> multiplyJson(v))
+                .groupByKey(Grouped.with(Serdes.String(), Serdes.Double())).reduce(
+                        (v1, v2) -> v1 + v2);
 
-        lines.groupByKey().reduce(
-                (oldval, newval) -> oldval + newval, Materialized.as(creditsTable)).toStream().to(resultsTopic);
-
-        // KTable<String, String> credits =
-        // credits.mapValues(v -> "" + v)
-
-        // countlines.mapValues(v -> "" + v).toStream().to(resultsTopic,
-        // Produced.with(Serdes.String(), Serdes.String()));
+        countlines.mapValues(v -> "Total: " + v).toStream().to(resultsTopic,
+                Produced.with(Serdes.String(), Serdes.String()));
+        // ^^ convert to json
 
         KafkaStreams streams = new KafkaStreams(builder.build(), props);
         streams.start();
-
-        System.out.println("Press enter when ready...");
-        System.in.read();
-
-        while (true) {
-
-            ReadOnlyKeyValueStore<String, String> keyValueStore = streams.store(creditsTable,
-                    QueryableStoreTypes.keyValueStore());
-
-            KeyValueIterator<String, String> range = keyValueStore.range("1", "6");
-            while (range.hasNext()) {
-                KeyValue<String, String> next = range.next();
-                System.out.println("count for " + next.key + ": " + next.value);
-            }
-            range.close();
-
-            System.out.println("\n\n\n");
-            Thread.sleep(10000);
-        }
+        /*
+         * System.out.println("Press enter when ready...");
+         * System.in.read();
+         * 
+         * while (true) {
+         * ReadOnlyKeyValueStore<String, String> keyValueStore =
+         * streams.store(creditsTable,
+         * QueryableStoreTypes.keyValueStore());
+         * 
+         * KeyValueIterator<String, String> range = keyValueStore.range("0", "3");
+         * while (range.hasNext()) {
+         * KeyValue<String, String> next = range.next();
+         * System.out.println("count for " + next.key + ": " + next.value);
+         * }
+         * range.close();
+         * Thread.sleep(30000);
+         * }
+         */
     }
 
-    private static Long getValueFromJson(String input) {
+    private static Double multiplyJson(String input) {
 
         try {
-
+            System.out.println(input);
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(input);
 
-            return (Long) obj.get("Amount");
+            String amount = (String) obj.get("Amount");
+            String conversionRate = (String) obj.get("Currency");
+
+            System.out.println(amount);
+            System.out.println(conversionRate);
+            System.out.println(Double.parseDouble(amount) * Double.parseDouble(conversionRate));
+
+            return Double.parseDouble(amount) * Double.parseDouble(conversionRate);
 
         } catch (ParseException pe) {
-            return 0L;
+            return 0.0;
         }
     }
 }

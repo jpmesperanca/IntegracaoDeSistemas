@@ -153,15 +153,18 @@ public class App {
                     System.out.print("Name: ");
                     scan.nextLine();
                     String clientName = scan.nextLine(); // TODO - protecao contra nomes ilegais
+                    scan.nextLine();
 
                     List<ManagerInfo> lManagers = listManagers(client);
                     i = 1;
                     for (ManagerInfo m : lManagers)
                         System.out.println(i++ + ". " + m.getName());
 
+                    System.out.print("Select the client's manager (insert number): ");
                     do {
                         try {
                             managerId = scan.nextInt();
+                            scan.nextLine();
                         } catch (Exception e) {
                             managerId = -1;
                         }
@@ -169,8 +172,6 @@ public class App {
                             managerId = -1;
 
                     } while (managerId == -1);
-
-                    System.out.print("Select the client's manager (insert number): ");
 
                     ClientInfo newClient = new ClientInfo(clientName, 0.0, lManagers.get(managerId - 1).getId());
                     // TODO balance set a 0 por default
