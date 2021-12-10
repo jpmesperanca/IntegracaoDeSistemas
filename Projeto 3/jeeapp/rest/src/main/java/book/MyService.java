@@ -47,7 +47,7 @@ public class MyService {
         List<ClientInfo> clients = new ArrayList<>();
 
         for (Client c : l)
-            clients.add(new ClientInfo(c.getName(), c.getBalance(), c.getManager().getId()));
+            clients.add(new ClientInfo(c.getName(), c.getManager().getId()));
 
         return clients;
     }
@@ -103,7 +103,7 @@ public class MyService {
 
         q.setParameter("id", ci.getManager());
 
-        Client c = new Client(ci.getName(), ci.getBalance(), q.getSingleResult());
+        Client c = new Client(ci.getName(), q.getSingleResult());
 
         em.persist(c);
 

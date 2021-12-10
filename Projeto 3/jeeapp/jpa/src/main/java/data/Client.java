@@ -17,17 +17,24 @@ public class Client implements Serializable {
 
     private String name;
     private Double balance;
+    private Double payments;
+    private Double credits;
 
     @ManyToOne
     private Manager manager;
 
     public Client() {
+        this.balance = 0.0;
+        this.payments = 0.0;
+        this.credits = 0.0;
     }
 
-    public Client(String name, Double balance, Manager manager) {
+    public Client(String name, Manager manager) {
         this.name = name;
-        this.balance = balance;
         this.manager = manager;
+        this.balance = 0.0;
+        this.payments = 0.0;
+        this.credits = 0.0;
     }
 
     public int getId() {
@@ -52,6 +59,22 @@ public class Client implements Serializable {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public Double getPayments() {
+        return this.payments;
+    }
+
+    public void setPayments(Double amount) {
+        this.payments = amount;
+    }
+
+    public Double getCredits() {
+        return this.credits;
+    }
+
+    public void setCredits(Double credits) {
+        this.credits = credits;
     }
 
     public Manager getManager() {

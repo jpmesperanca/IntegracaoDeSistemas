@@ -5,16 +5,25 @@ import java.io.Serializable;
 public class ClientInfo implements Serializable {
 
     private String name;
+
     private Double balance;
+    private Double payments;
+    private Double credits;
+
     private Integer manager;
 
     public ClientInfo() {
+        this.balance = 0.0;
+        this.payments = 0.0;
+        this.credits = 0.0;
     }
 
-    public ClientInfo(String name, Double balance, Integer manager) {
+    public ClientInfo(String name, Integer manager) {
         this.name = name;
-        this.balance = balance;
         this.manager = manager;
+        this.balance = 0.0;
+        this.payments = 0.0;
+        this.credits = 0.0;
     }
 
     public String getName() {
@@ -31,6 +40,22 @@ public class ClientInfo implements Serializable {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public Double getPayments() {
+        return this.payments;
+    }
+
+    public void setPayments(Double amount) {
+        this.payments = amount;
+    }
+
+    public Double getCredits() {
+        return this.credits;
+    }
+
+    public void setCredits(Double credits) {
+        this.credits = credits;
     }
 
     public Integer getManager() {

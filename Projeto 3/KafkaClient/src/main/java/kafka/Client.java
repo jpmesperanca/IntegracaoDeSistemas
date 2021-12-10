@@ -149,8 +149,7 @@ public class Client {
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
 
-            // TODO - Remove?
-            System.out.println(records.isEmpty());
+            // TODO - Remove? Acho que isto lixa os updates
             // Evita o utilizador ter de esperar pelo próximo successful poll
             if (records.isEmpty() && !current.isEmpty())
                 return current;
