@@ -94,6 +94,7 @@ public class App {
          */
 
         String _div = "--------------------------------------------------";
+        String _lotsOfWhiteSpaces = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
         Client client = ClientBuilder.newClient();
 
         Scanner scan = new Scanner(System.in);
@@ -101,6 +102,7 @@ public class App {
 
         do {
 
+            System.out.println("-------- ADMIN CLI --------");
             System.out.println("1. Add manager");
             System.out.println("2. Add client");
             System.out.println("3. Add curency");
@@ -133,7 +135,9 @@ public class App {
             switch (num) {
                 case 1: // Add Manager
                     // To simplify managers cannot be deleted and optionally not changed.
-                    System.out.println(_div);
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    System.out.println("-------- New Manager --------\n");
                     System.out.print("Name: ");
                     // TODO - protecao contra nomes ilegais
                     scan.nextLine();
@@ -142,23 +146,28 @@ public class App {
                     addManager(client, newManager);
 
                     System.out.println("* Manager sucessfuly added! *");
-                    System.out.println(_div);
+
+                    // Enter to continue
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
 
                 case 2: // Add Client
                     // Again, these cannot be deleted and optionally not changed. Each client has a
                     // manager
+                    System.out.println(_lotsOfWhiteSpaces);
                     int managerId;
-                    System.out.println(_div);
+
+                    System.out.println("-------- New Client --------\n");
                     System.out.print("Name: ");
                     scan.nextLine();
                     String clientName = scan.nextLine(); // TODO - protecao contra nomes ilegais
-                    scan.nextLine();
-
+                    System.out.println("List of available managers:");
                     List<ManagerInfo> lManagers = listManagers(client);
                     i = 1;
                     for (ManagerInfo m : lManagers)
-                        System.out.println(i++ + ". " + m.getName());
+                        System.out.println(i++ + ". " + m.getName() + " -> ID = " + m.getId());
 
                     System.out.print("Select the client's manager (insert number): ");
                     do {
@@ -179,12 +188,18 @@ public class App {
                     addClient(client, newClient);
 
                     System.out.println("* Client sucessfuly added! *");
-                    System.out.println(_div);
+
+                    // Enter to continue
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
 
                 case 3: // Add Currency
                     // Add a currency and respective exchange rate for the euro to the database.
-                    System.out.println(_div);
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    System.out.println("-------- New currency --------\n");
                     System.out.print("Name: ");
                     // TODO - protecao contra nomes ilegais
                     scan.nextLine();
@@ -206,11 +221,17 @@ public class App {
                     addCurrency(client, newCurrency);
 
                     System.out.println("* Manager sucessfuly added! *");
-                    System.out.println(_div);
+
+                    // Enter to continue
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
 
                 case 4: // List Managers
                     // List managers from the database.
+                    System.out.println(_lotsOfWhiteSpaces);
+
                     lManagers = listManagers(client);
                     System.out.println(_div);
                     System.out.println("List of Managers:");
@@ -218,9 +239,17 @@ public class App {
                     for (ManagerInfo m : lManagers)
                         System.out.println(i++ + ". " + m.getName());
                     System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 5: // List clients
                     // List clients from the database.
+                    System.out.println(_lotsOfWhiteSpaces);
+
                     List<ClientInfo> lClients = listClients(client);
                     System.out.println(_div);
                     System.out.println("List of Clients:");
@@ -228,9 +257,17 @@ public class App {
                     for (ClientInfo c : lClients)
                         System.out.println(i++ + ". " + c.getName());
                     System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 6: // List currencies
                     // List currencies from the database.
+                    System.out.println(_lotsOfWhiteSpaces);
+
                     List<CurrencyInfo> lCurrencies = listCurrencies(client);
                     System.out.println(_div);
                     System.out.println("List of Currencies:");
@@ -239,6 +276,12 @@ public class App {
                         System.out.println(i++ + ". " + cur.getName() + ": 1.00" + cur.getName() + " = "
                                 + cur.getConversionRate() + "EUR");
                     System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
 
                 case 7: // Get credit per client
