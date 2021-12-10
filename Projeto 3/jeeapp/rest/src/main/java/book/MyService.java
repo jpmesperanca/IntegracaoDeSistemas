@@ -62,7 +62,7 @@ public class MyService {
 
         List<ManagerInfo> managers = new ArrayList<>();
         for (Manager m : l)
-            managers.add(new ManagerInfo(m.getName()));
+            managers.add(new ManagerInfo(m.getName(), m.getId()));
 
         return managers;
     }
@@ -99,9 +99,9 @@ public class MyService {
 
         // TODO - Add protections de parametros nulos
 
-        TypedQuery<Manager> q = em.createQuery("from Manager c where id = :id", Manager.class);
+        TypedQuery<Manager> q = em.createQuery("from Manager m where m.id = :managerId", Manager.class);
 
-        q.setParameter("id", ci.getManager());
+        q.setParameter("managerId", ci.getManager());
 
         Client c = new Client(ci.getName(), ci.getBalance(), q.getSingleResult());
 
