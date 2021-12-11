@@ -110,6 +110,9 @@ public class Client {
                 String curr = currencies.get(rand.nextInt(currencies.size()));
                 int amount = rand.nextInt(10000);
 
+                if (topic.equals("Credits"))
+                    amount *= -1;
+
                 map.put("Currency", getValueFromJsonString(curr, "conversionrate"));
                 map.put("Amount", String.valueOf(amount));
 
