@@ -117,8 +117,8 @@ public class Stream {
 						Serdes.Double()))
 				.reduce((v1, v2) -> v1 + v2);
 
-		countlinesTC.mapValues((k, v) -> insertCreditsInClientJson(k,
-				v)).toStream().to("teste",
+		countlinesTC.mapValues((k, v) -> insertInTopic("\"Total credits\"",
+				v)).toStream().to("Totais",
 						Produced.with(Serdes.String(), Serdes.String()));
 
 		KafkaStreams streamsTC = new KafkaStreams(builder4.build(), props4);
@@ -142,9 +142,8 @@ public class Stream {
 						Serdes.Double()))
 				.reduce((v1, v2) -> v1 + v2);
 
-		countlinesTP.mapValues((k, v) -> insertCreditsInClientJson(k,
-				v)).toStream().to("teste",
-						Produced.with(Serdes.String(), Serdes.String()));
+		countlinesTP.mapValues((k, v) -> insertInTopic("\"Total payments\"", v)).toStream().to("Totais",
+				Produced.with(Serdes.String(), Serdes.String()));
 
 		KafkaStreams streamsTP = new KafkaStreams(builder5.build(), props5);
 
@@ -167,7 +166,7 @@ public class Stream {
 		KTable<String, Double> countlinesTB = linesTB.mapValues(v -> multiplyJson(v))
 				.groupBy((k, v) -> "3", Grouped.with(Serdes.String(), Serdes.Double())).reduce((v1, v2) -> v1 + v2);
 
-		countlinesTB.mapValues((k, v) -> insertCreditsInClientJson(k, v)).toStream().to("teste",
+		countlinesTB.mapValues((k, v) -> insertInTopic("\"Total balance\"", v)).toStream().to("Totais",
 				Produced.with(Serdes.String(), Serdes.String()));
 
 		KafkaStreams streamsTB = new KafkaStreams(builder6.build(), props6);
@@ -253,6 +252,14 @@ public class Stream {
 
 		String json = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"int32\",\"optional\":false,\"field\":\"id\"},{\"type\":\"double\",\"optional\":true,\"field\":\"balance\"}],\"optional\":false},\"payload\":{\"id\":"
 				+ key + ",\"balance\":" + String.valueOf(value) + "}}";
+
+		return json;
+	}
+
+	private static String insertInTopic(String key, Double value) {
+
+		String json = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"topic\"},{\"type\":\"double\",\"optional\":true,\"field\":\"value\"}],\"optional\":false},\"payload\":{\"topic\":"
+				+ key + ",\"value\":" + String.valueOf(value) + "}}";
 
 		return json;
 	}

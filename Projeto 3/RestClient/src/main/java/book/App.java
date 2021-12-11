@@ -183,7 +183,6 @@ public class App {
                     } while (managerId == -1);
 
                     ClientInfo newClient = new ClientInfo(clientName, lManagers.get(managerId - 1).getId());
-                    // TODO balance set a 0 por default
 
                     addClient(client, newClient);
 
