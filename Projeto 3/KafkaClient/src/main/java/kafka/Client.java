@@ -25,6 +25,9 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
 
+        String _div = "--------------------------------------------------";
+        String _lotsOfWhiteSpaces = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+
         String creditsTopic = "Credits";
         String dbClients = "DBInfoClients";
         String dbCurr = "DBInfoCurr";
@@ -54,11 +57,14 @@ public class Client {
         List<String> currencies = new ArrayList<>();
 
         do {
+            System.out.println(_lotsOfWhiteSpaces);
+            System.out.println("-------- CLIENT GENERATOR CLI --------");
 
             System.out.println("1. Generate Credits");
             System.out.println("2. Generate Payments");
             System.out.println("3. Update Client List");
             System.out.println("4. Update Currency List");
+            System.out.println();
             System.out.println("5. Exit");
             System.out.print("Choose an option: ");
 
@@ -67,19 +73,49 @@ public class Client {
 
             switch (num) {
                 case 1:
+                    System.out.println(_lotsOfWhiteSpaces);
                     generateCredits(producerCredits, clients, currencies, creditsTopic);
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
 
                 case 2:
+                    System.out.println(_lotsOfWhiteSpaces);
                     generateCredits(producerPayments, clients, currencies, paymentsTopic);
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
 
                 case 3:
+                    System.out.println(_lotsOfWhiteSpaces);
+                    System.out.println("\nUpdating client list.......");
                     clients = updateInfo(consumerClients, clients);
+                    System.out.println(_lotsOfWhiteSpaces);
+                    System.out.println("\nClient list updated!");
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
 
                 case 4:
+                    System.out.println(_lotsOfWhiteSpaces);
+                    System.out.println("\nUpdating currency list.......");
                     currencies = updateInfo(consumerCurr, currencies);
+                    System.out.println(_lotsOfWhiteSpaces);
+                    System.out.println("\nCurrency list updated!");
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
 
                 default:

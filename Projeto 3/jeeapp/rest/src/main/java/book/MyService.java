@@ -47,7 +47,8 @@ public class MyService {
         List<ClientInfo> clients = new ArrayList<>();
 
         for (Client c : l)
-            clients.add(new ClientInfo(c.getName(), c.getManager().getId()));
+            clients.add(new ClientInfo(c.getName(), c.getManager().getId(), c.getBalance(), c.getPayments(),
+                    c.getCredits()));
 
         return clients;
     }
