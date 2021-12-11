@@ -26,6 +26,14 @@ public class ClientInfo implements Serializable {
         this.credits = 0.0;
     }
 
+    public ClientInfo(String name, Integer manager, Double balance, Double payments, Double credits) {
+        this.name = name;
+        this.manager = manager;
+        this.balance = balance;
+        this.payments = payments;
+        this.credits = credits;
+    }
+
     public String getName() {
         return this.name;
     }

@@ -111,9 +111,9 @@ public class App {
             System.out.println("5. List clients");
             System.out.println("6. List currencies");
             System.out.println();
-            System.out.println("7. Get credit per client");
+            System.out.println("7. Get credits per client");
             System.out.println("8. Get payments per client");
-            System.out.println("9. Get current balance of a client");
+            System.out.println("9. Get current balance of each client");
             System.out.println("10. Get total sum of credits");
             System.out.println("11. Get total sum of payments");
             System.out.println("12. Get total balance");
@@ -121,9 +121,11 @@ public class App {
             System.out.println("14. Get list of clients without payments (last two \"months\")");
             System.out.println("15. Get person with highest outstanding debt");
             System.out.println("16. Get manager with highest revenue in payments");
-
             System.out.println();
-            System.out.println("17. Exit");
+            System.out.println("Extra features:");
+            System.out.println("17. Get credit, payments and balance per client");
+            System.out.println();
+            System.out.println("18. Exit");
             System.out.print("Choose an option: ");
 
             try {
@@ -287,11 +289,56 @@ public class App {
                 case 7: // Get credit per client
                     // Get the credit per client (students should compute this and the following
                     // values in euros).
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    List<ClientInfo> lClients2 = listClients(client);
+                    System.out.println(_div);
+                    System.out.println("Total credits per client:");
+                    i = 1;
+                    for (ClientInfo c : lClients2)
+                        System.out.println(i++ + ". " + c.getName() + "\n\tCredits: " + c.getCredits() + " EUR");
+                    System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 8: // Get payments per client
                     // Get the payments (i.e., credit reimbursements) per client.
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    List<ClientInfo> lClients3 = listClients(client);
+                    System.out.println(_div);
+                    System.out.println("Total payments per client:");
+                    i = 1;
+                    for (ClientInfo c : lClients3)
+                        System.out.println(i++ + ". " + c.getName() + "\n\tPayments: " + c.getPayments() + " EUR");
+                    System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 9: // Get the current balance of a client.
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    List<ClientInfo> lClients4 = listClients(client);
+                    System.out.println(_div);
+                    System.out.println("Total balance per client:");
+                    i = 1;
+                    for (ClientInfo c : lClients4)
+                        System.out.println(i++ + ". " + c.getName() + "\n\tBalance: " + c.getBalance() + " EUR");
+                    System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 10: // Get total sum of credits
                     // Get the total (i.e., sum of all persons) credits.
@@ -318,15 +365,41 @@ public class App {
                     // his or her clients.
                     break;
 
-                case 17:
+                case 17: // Get credits, payments, balance per client
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    List<ClientInfo> lClients5 = listClients(client);
+                    System.out.println(_div);
+                    System.out.println("Total credits, total payments and balance per client:");
+                    i = 1;
+                    for (ClientInfo c : lClients5)
+                        System.out.println(i++ + ". " + c.getName() + "\n\tCredits: " + c.getCredits()
+                                + " EUR\n\tPayments: " + c.getPayments() + " EUR\n\tBalance: " + c.getBalance()
+                                + " EUR");
+                    System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
+                    break;
+
+                case 18:
                     break;
 
                 default:
+                    System.out.println(_lotsOfWhiteSpaces);
                     System.out.print("\n\n****** Illegal option selected. ******\n\n");
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
             }
 
-        } while (num != 17);
+        } while (num != 18);
 
         scan.close();
     }
