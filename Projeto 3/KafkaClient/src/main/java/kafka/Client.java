@@ -120,7 +120,8 @@ public class Client {
                     scan.nextLine();
                     System.out.println(_lotsOfWhiteSpaces);
                     break;
-
+                case 5:
+                    break;
                 default:
                     System.out.println(_lotsOfWhiteSpaces);
                     System.out.print("\n\n****** Illegal option selected. ******\n\n");

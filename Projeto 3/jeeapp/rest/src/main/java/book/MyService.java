@@ -88,7 +88,7 @@ public class MyService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addManager(Manager m) {
 
-        if (!m.getName().equals(""))
+        if (m.getName().equals(""))
             return Response.status(Status.BAD_REQUEST).entity("Error - invalid name").build();
 
         em.persist(m);
@@ -102,7 +102,7 @@ public class MyService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addClient(ClientInfo ci) {
 
-        if (!ci.getName().equals(""))
+        if (ci.getName().equals(""))
             return Response.status(Status.BAD_REQUEST).entity("Error - invalid name").build();
 
         TypedQuery<Manager> q = em.createQuery("from Manager m where m.id = :managerId", Manager.class);
@@ -122,7 +122,7 @@ public class MyService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCurrency(Currency c) {
 
-        if (!c.getName().equals(""))
+        if (c.getName().equals(""))
             return Response.status(Status.BAD_REQUEST).entity("Error - invalid name").build();
 
         em.persist(c);

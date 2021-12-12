@@ -181,9 +181,9 @@ public class App {
                             try {
                                 System.out.println("List of available managers:");
                                 i = 1;
-                                System.out.println("Select the client's manager (insert number): ");
                                 for (ManagerInfo m : lManagers)
                                     System.out.println(i++ + ". " + m.getName() + " -> ID = " + m.getId());
+                                System.out.print("Select the client's manager (insert number): ");
                                 managerId = scan.nextInt();
                                 scan.nextLine();
                             } catch (Exception e) {
