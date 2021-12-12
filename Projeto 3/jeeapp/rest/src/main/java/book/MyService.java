@@ -51,7 +51,7 @@ public class MyService {
 
         for (Client c : l)
             clients.add(new ClientInfo(c.getName(), c.getManager().getId(), c.getBalance(), c.getPayments(),
-                    c.getCredits()));
+                    c.getCredits(), c.getCreditsTimed()));
 
         return clients;
     }

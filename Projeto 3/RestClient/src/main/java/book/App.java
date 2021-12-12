@@ -401,8 +401,24 @@ public class App {
                     System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 13: // Compute bill of each client for the last "month"
-                    // Compute the bill for each client for the last month1 (use a tumbling time
+                    // Compute the bill for each client for the last month (use a tumbling time
                     // window).
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    List<ClientInfo> lClients13 = listClients(client);
+                    System.out.println(_div);
+                    System.out.println("Bill for the last \"month\" (actually last 2 minutes)");
+                    i = 1;
+                    for (ClientInfo c : lClients13)
+                        System.out.println(i++ + ". " + c.getName() + "\n\tBill in the last 2 minutes: "
+                                + c.getCreditsTimed() + " EUR");
+                    System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 14: // Get list of clients without payments (last two \"months\")
                     // Get the list of clients without payments for the last two months.

@@ -9,6 +9,7 @@ public class ClientInfo implements Serializable {
     private Double balance;
     private Double payments;
     private Double credits;
+    private Double creditsTimed;
 
     private Integer manager;
 
@@ -26,12 +27,14 @@ public class ClientInfo implements Serializable {
         this.credits = 0.0;
     }
 
-    public ClientInfo(String name, Integer manager, Double balance, Double payments, Double credits) {
+    public ClientInfo(String name, Integer manager, Double balance, Double payments, Double credits,
+            Double creditsTimed) {
         this.name = name;
         this.manager = manager;
         this.balance = balance;
         this.payments = payments;
         this.credits = credits;
+        this.creditsTimed = creditsTimed;
     }
 
     public String getName() {
@@ -72,5 +75,13 @@ public class ClientInfo implements Serializable {
 
     public void setManager(Integer manager) {
         this.manager = manager;
+    }
+
+    public Double getCreditsTimed() {
+        return creditsTimed;
+    }
+
+    public void setCreditsTimed(Double creditsTimed) {
+        this.creditsTimed = creditsTimed;
     }
 }
