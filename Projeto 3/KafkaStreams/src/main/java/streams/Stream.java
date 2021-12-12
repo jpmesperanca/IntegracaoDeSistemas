@@ -9,7 +9,6 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.Grouped;
-import org.apache.kafka.streams.kstream.KGroupedStream;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Produced;
@@ -26,7 +25,7 @@ public class Stream {
 		String creditsTopic = "Credits";
 		String resultsTopic = "Results";
 		String paymentsTopic = "Payments";
-		Integer TIME_WINDOW_VALUE = 1; // EM MINUTOS <------
+		Integer TIME_WINDOW_VALUE = 2; // EM MINUTOS <------
 		// String dbinfoTopic = "DB Info";
 
 		// 7. Calculate credits per user
@@ -175,34 +174,27 @@ public class Stream {
 
 		// 13. Compute the bill for each client for the last month (use a tumbling time
 		// window).
-		// ----> Soma dos créditos mas com time window?? <----
-		/*
-		 * java.util.Properties props13 = new Properties();
-		 * props13.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkastreamsBwTW"); // Bill
-		 * with Time Window
-		 * props13.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
-		 * props13.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG,
-		 * Serdes.String().getClass());
-		 * props13.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,
-		 * Serdes.String().getClass());
-		 * StreamsBuilder builder13 = new StreamsBuilder();
-		 * 
-		 * KStream<String, String> lines = builder13.stream(creditsTopic);
-		 * KTable<Windowed<String>, Double> countlines = lines.mapValues(v ->
-		 * multiplyJson(v))
-		 * .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
-		 * .windowedBy(TimeWindows.of(Duration.ofMinutes(TIME_WINDOW_VALUE)))
-		 * .reduce((v1, v2) -> v1 + v2);
-		 * 
-		 * countlines.toStream((wk, v) -> wk.key()).mapValues((k, v) ->
-		 * insertCreditsInClientJson(k,
-		 * v)).to(resultsTopic,
-		 * Produced.with(Serdes.String(), Serdes.String()));
-		 * 
-		 * KafkaStreams streams = new KafkaStreams(builder13.build(), props13);
-		 * 
-		 * streams.start();
-		 */
+
+		java.util.Properties props13 = new Properties();
+		props13.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkastreamsBwTW"); // Bill with Time Window
+		props13.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+		props13.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+		props13.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+		StreamsBuilder builder13 = new StreamsBuilder();
+
+		KStream<String, String> linesBwTW = builder13.stream(creditsTopic);
+		KTable<Windowed<String>, Double> countlinesBwTW = linesBwTW.mapValues(v -> multiplyJson(v))
+				.groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
+				.windowedBy(TimeWindows.of(Duration.ofMinutes(TIME_WINDOW_VALUE)))
+				.reduce((v1, v2) -> v1 + v2);
+
+		countlinesBwTW.toStream((wk, v) -> wk.key()).mapValues((k, v) -> insertCreditsInClientJson(k,
+				v)).to("teste2", Produced.with(Serdes.String(), Serdes.String()));
+
+		KafkaStreams streamsBwTW = new KafkaStreams(builder13.build(), props13);
+
+		streamsBwTW.start();
+
 		// 14. Get the list of clients without payments for the last two months
 
 		// 15. Get the data of the person with the highest outstanding debt (i.e., the
