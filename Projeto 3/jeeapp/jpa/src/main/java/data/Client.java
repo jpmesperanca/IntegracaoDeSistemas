@@ -30,7 +30,7 @@ public class Client implements Serializable {
         this.payments = 0.0;
         this.credits = 0.0;
         this.creditsTimed = 0.0;
-        this.setPaymentsTimed(0.0);
+        this.paymentsTimed = 0.0;
     }
 
     public Client(String name, Manager manager) {
@@ -40,7 +40,7 @@ public class Client implements Serializable {
         this.payments = 0.0;
         this.credits = 0.0;
         this.creditsTimed = 0.0;
-        this.setPaymentsTimed(0.0);
+        this.paymentsTimed = 0.0;
     }
 
     public int getId() {

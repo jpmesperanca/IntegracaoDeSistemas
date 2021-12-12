@@ -422,6 +422,23 @@ public class App {
                     break;
                 case 14: // Get list of clients without payments (last two \"months\")
                     // Get the list of clients without payments for the last two months.
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    List<ClientInfo> lClients14 = listClients(client);
+                    System.out.println(_div);
+                    System.out.println("Clients without payments in the last \"month\" (actually last 2 minutes)");
+                    i = 1;
+                    for (ClientInfo c : lClients14)
+                        if (c.getPaymentsTimed() == 0.0)
+                            System.out.println(
+                                    i++ + ". " + c.getName() + "\n\tPayments: " + c.getPaymentsTimed() + " EUR");
+                    System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 15: // Get person with highest outstanding debt
                     // Get the data of the person with the highest outstanding debt (i.e., the most

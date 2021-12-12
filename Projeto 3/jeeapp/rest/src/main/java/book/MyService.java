@@ -1,6 +1,5 @@
 package book;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class MyService {
 
         for (Client c : l)
             clients.add(new ClientInfo(c.getName(), c.getManager().getId(), c.getBalance(), c.getPayments(),
-                    c.getCredits(), c.getCreditsTimed()));
+                    c.getCredits(), c.getCreditsTimed(), c.getPaymentsTimed()));
 
         return clients;
     }
