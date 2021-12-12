@@ -1,21 +1,16 @@
-package data;
+package book;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+public class ResultsInfo implements Serializable {
 
-@Entity
-public class Results implements Serializable {
-
-    @Id
     private String topic;
     private Double value;
 
-    public Results() {
+    public ResultsInfo() {
     }
 
-    public Results(String topic, Double value) {
+    public ResultsInfo(String topic, Double value) {
         this.topic = topic;
         this.value = value;
     }

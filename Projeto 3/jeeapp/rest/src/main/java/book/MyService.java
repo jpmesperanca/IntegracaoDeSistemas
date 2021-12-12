@@ -1,5 +1,6 @@
 package book;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import data.ClientInfo;
 import data.Currency;
 import data.Manager;
 import data.ManagerInfo;
+import data.Results;
+import data.ResultsInfo;
 
 @RequestScoped
 @Path("/myservice")
@@ -123,4 +126,20 @@ public class MyService {
 
         return Response.ok().entity(c).build();
     }
+
+    @GET
+    @Path("/getResults")
+    public List<ResultsInfo> getResults() {
+
+        TypedQuery<Results> q = em.createQuery("from Results r", Results.class);
+
+        List<Results> l = q.getResultList();
+
+        List<ResultsInfo> results = new ArrayList<>();
+        for (Results r : l)
+            results.add(new ResultsInfo(r.getTopic(), r.getValue()));
+
+        return results;
+    }
+
 }

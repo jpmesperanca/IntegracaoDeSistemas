@@ -14,8 +14,10 @@ README
 - Adicionar os ficheiros properties para os Kafka Connectors
 	- connect-jdbc-source-filipe.properties
 	- connect-jdbc-sink-filipe.properties
+	- connect-jdbc-sink-results.properties
 	- connect-jdbc-source-curr.properties
 	- connect-standalone-curr.properties
+	- connect-standalone-results.properties
 	
 	- colocar os ficheiros .properties na pasta "Projeto 3"
 	- dentro do containter, no diretorio "/workspace" executar
@@ -23,6 +25,9 @@ README
 		cp -v connect-jdbc-sink-filipe.properties ../opt/kafka_2.13-2.8.1/config
 		cp -v connect-jdbc-source-curr.properties ../opt/kafka_2.13-2.8.1/config
 		cp -v connect-standalone-curr.properties ../opt/kafka_2.13-2.8.1/config
+		cp -v connect-jdbc-sink-results.properties ../opt/kafka_2.13-2.8.1/config
+		cp -v connect-standalone-results.properties ../opt/kafka_2.13-2.8.1/config
+
 
 - Arrancar tudo (consolas diferentes). Dentro do containter, no diretorio "/workspace" executar, por esta ordem:
 		1 ----------
@@ -47,6 +52,10 @@ README
 		bin/connect-standalone.sh config/connect-standalone-curr.properties config/connect-jdbc-source-curr.properties
 
 		6 ----------
+		cd ../opt/kafka_2.13-2.8.1
+		bin/connect-standalone.sh config/connect-standalone-results.properties config/connect-jdbc-sink-results.properties
+		
+		7 ----------
 		-> Começar Cliente da REST (Administrator CLI) -> "/KafkaStreams/src/main/java/streams/Stream.java"
 		-> Criar alguns dados de teste através da consola disponível (opções 1, 2 e 3). Pelo menos 1 cliente, 1 manager e 1 currency.
 

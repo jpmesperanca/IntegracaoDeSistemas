@@ -124,8 +124,9 @@ public class App {
             System.out.println();
             System.out.println("Extra features:");
             System.out.println("17. Get credit, payments and balance per client");
+            System.out.println("18. Get total credits, total payments and total balance");
             System.out.println();
-            System.out.println("18. Exit");
+            System.out.println("19. Exit");
             System.out.print("Choose an option: ");
 
             try {
@@ -341,12 +342,63 @@ public class App {
                     break;
                 case 10: // Get total sum of credits
                     // Get the total (i.e., sum of all persons) credits.
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    List<ResultsInfo> results = getResults(client);
+                    Double value = 0.0;
+                    for (ResultsInfo r : results)
+                        if (r.getTopic() == "Total credits")
+                            value = r.getValue();
+
+                    System.out.println(_div);
+                    System.out.println("Total credits: " + value + " EUR");
+                    System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 11: // Get total sum of payments
                     // Get the total payments.
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    List<ResultsInfo> results2 = getResults(client);
+                    Double value2 = 0.0;
+                    for (ResultsInfo r : results2)
+                        if (r.getTopic() == "Total payments")
+                            value = r.getValue();
+
+                    System.out.println(_div);
+                    System.out.println("Total payments: " + value2 + " EUR");
+                    System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 12: // Get total balance.
                     // Get the total balance.
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    List<ResultsInfo> results3 = getResults(client);
+                    Double value3 = 0.0;
+                    for (ResultsInfo r : results3)
+                        if (r.getTopic() == "Total balance")
+                            value = r.getValue();
+
+                    System.out.println(_div);
+                    System.out.println("Total balance: " + value3 + "EUR");
+                    System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
                 case 13: // Compute bill of each client for the last "month"
                     // Compute the bill for each client for the last month1 (use a tumbling time
@@ -384,7 +436,24 @@ public class App {
                     System.out.println(_lotsOfWhiteSpaces);
                     break;
 
-                case 18:
+                case 18: // Get total credits, total payments and total balance
+                    System.out.println(_lotsOfWhiteSpaces);
+
+                    List<ResultsInfo> results18 = getResults(client);
+
+                    System.out.println(_div);
+                    for (ResultsInfo r : results18)
+                        System.out.println(r.getTopic() + ": " + r.getValue() + " EUR");
+                    System.out.println(_div);
+
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
+                    break;
+
+                case 19:
                     break;
 
                 default:
@@ -398,7 +467,7 @@ public class App {
                     break;
             }
 
-        } while (num != 18);
+        } while (num != 19);
 
         scan.close();
     }
@@ -467,6 +536,16 @@ public class App {
         // String value = response.readEntity(String.class);
         // System.out.println("RESPONSE4: " + value);
         response.close();
+    }
+
+    public static List<ResultsInfo> getResults(Client client) {
+
+        WebTarget target = client.target("http://wildfly:8080/rest/services/myservice/getResults");
+        Response response = target.request().get();
+        List<ResultsInfo> results = response.readEntity(new GenericType<List<ResultsInfo>>() {
+        });
+        response.close();
+        return results;
     }
 
 }
