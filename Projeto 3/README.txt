@@ -68,11 +68,18 @@ README
 
 Extra:
 Pode dar jeito criar consumer simples apenas para ver o progresso de um certo tópico.
-
 - Tópico Results ->  bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic Results --from-beginning
 
-
 Delete dos tópicos:
+cd ../opt/kafka_2.13-2.8.1/bin
+./kafka-topics.sh --delete --topic Results --zookeeper 0.0.0.0:2181
+./kafka-topics.sh --delete --topic Credits --zookeeper 0.0.0.0:2181
+./kafka-topics.sh --delete --topic Payments --zookeeper 0.0.0.0:2181
+./kafka-topics.sh --delete --topic DBInfoClients --zookeeper 0.0.0.0:2181
+./kafka-topics.sh --delete --topic DBInfoCurr --zookeeper 0.0.0.0:2181
+./kafka-topics.sh --delete --topic Totais --zookeeper 0.0.0.0:2181
+
+Delete de informação nas KafkaStreams:
 cd ../opt/kafka_2.13-2.8.1/bin
 ./kafka-streams-application-reset.sh --application-id kafkastreamsBPU
 ./kafka-streams-application-reset.sh --application-id kafkastreamsPPU
@@ -80,4 +87,6 @@ cd ../opt/kafka_2.13-2.8.1/bin
 ./kafka-streams-application-reset.sh --application-id kafkastreamsTB
 ./kafka-streams-application-reset.sh --application-id kafkastreamsTP
 ./kafka-streams-application-reset.sh --application-id kafkastreamsTC
+./kafka-streams-application-reset.sh --application-id kafkastreamsBwTW
+./kafka-streams-application-reset.sh --application-id kafkastreamsPwTW
 
