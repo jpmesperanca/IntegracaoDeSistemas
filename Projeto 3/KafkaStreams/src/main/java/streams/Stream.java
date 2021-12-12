@@ -188,8 +188,8 @@ public class Stream {
 				.windowedBy(TimeWindows.of(Duration.ofMinutes(TIME_WINDOW_VALUE)))
 				.reduce((v1, v2) -> v1 + v2);
 
-		countlinesBwTW.toStream((wk, v) -> wk.key()).mapValues((k, v) -> insertCreditsInClientJson(k,
-				v)).to("teste2", Produced.with(Serdes.String(), Serdes.String()));
+		countlinesBwTW.toStream((wk, v) -> wk.key()).mapValues((k, v) -> insertCreditsTimedInClientJson(k,
+				v)).to(resultsTopic, Produced.with(Serdes.String(), Serdes.String()));
 
 		KafkaStreams streamsBwTW = new KafkaStreams(builder13.build(), props13);
 
@@ -252,6 +252,14 @@ public class Stream {
 
 		String json = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"topic\"},{\"type\":\"double\",\"optional\":true,\"field\":\"value\"}],\"optional\":false},\"payload\":{\"topic\":"
 				+ key + ",\"value\":" + String.valueOf(value) + "}}";
+
+		return json;
+	}
+
+	private static String insertCreditsTimedInClientJson(String key, Double value) {
+
+		String json = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"int32\",\"optional\":false,\"field\":\"id\"},{\"type\":\"double\",\"optional\":true,\"field\":\"creditstimed\"}],\"optional\":false},\"payload\":{\"id\":"
+				+ key + ",\"creditstimed\":" + String.valueOf(value) + "}}";
 
 		return json;
 	}

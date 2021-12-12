@@ -347,7 +347,7 @@ public class App {
                     List<ResultsInfo> results = getResults(client);
                     Double value = 0.0;
                     for (ResultsInfo r : results)
-                        if (r.getTopic() == "Total credits")
+                        if (r.getTopic().equals("Total credits"))
                             value = r.getValue();
 
                     System.out.println(_div);
@@ -367,8 +367,8 @@ public class App {
                     List<ResultsInfo> results2 = getResults(client);
                     Double value2 = 0.0;
                     for (ResultsInfo r : results2)
-                        if (r.getTopic() == "Total payments")
-                            value = r.getValue();
+                        if (r.getTopic().equals("Total payments"))
+                            value2 = r.getValue();
 
                     System.out.println(_div);
                     System.out.println("Total payments: " + value2 + " EUR");
@@ -387,8 +387,8 @@ public class App {
                     List<ResultsInfo> results3 = getResults(client);
                     Double value3 = 0.0;
                     for (ResultsInfo r : results3)
-                        if (r.getTopic() == "Total balance")
-                            value = r.getValue();
+                        if (r.getTopic().equals("Total balance"))
+                            value3 = r.getValue();
 
                     System.out.println(_div);
                     System.out.println("Total balance: " + value3 + "EUR");
