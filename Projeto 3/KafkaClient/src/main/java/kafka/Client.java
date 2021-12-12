@@ -25,7 +25,7 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
 
-        String _div = "--------------------------------------------------";
+        // String _div = "--------------------------------------------------";
         String _lotsOfWhiteSpaces = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
         String creditsTopic = "Credits";
