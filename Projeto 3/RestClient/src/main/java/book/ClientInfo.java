@@ -18,6 +18,8 @@ public class ClientInfo implements Serializable {
         this.balance = 0.0;
         this.payments = 0.0;
         this.credits = 0.0;
+        this.creditsTimed = 0.0;
+        this.paymentsTimed = 0.0;
     }
 
     public ClientInfo(String name, Integer manager) {
@@ -26,6 +28,8 @@ public class ClientInfo implements Serializable {
         this.balance = 0.0;
         this.payments = 0.0;
         this.credits = 0.0;
+        this.creditsTimed = 0.0;
+        this.paymentsTimed = 0.0;
     }
 
     public ClientInfo(String name, Integer manager, Double balance, Double payments, Double credits,

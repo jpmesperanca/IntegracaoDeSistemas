@@ -219,12 +219,10 @@ public class Stream {
 		streamsPwTW.start();
 
 		// 15. Get the data of the person with the highest outstanding debt (i.e., the
-		// most
-		// negative current balance).
+		// most current balance).
 
 		// 16. Get the data of the manager who has made the highest revenue in payments
-		// from
-		// their clients.
+		// from their clients.
 
 	}
 

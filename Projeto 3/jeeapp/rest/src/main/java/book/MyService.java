@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import data.Client;
 import data.ClientInfo;
@@ -87,7 +88,8 @@ public class MyService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addManager(Manager m) {
 
-        // TODO - Add protections de parametros nulos
+        if (!m.getName().equals(""))
+            return Response.status(Status.BAD_REQUEST).entity("Error - invalid name").build();
 
         em.persist(m);
 
@@ -100,7 +102,8 @@ public class MyService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addClient(ClientInfo ci) {
 
-        // TODO - Add protections de parametros nulos
+        if (!ci.getName().equals(""))
+            return Response.status(Status.BAD_REQUEST).entity("Error - invalid name").build();
 
         TypedQuery<Manager> q = em.createQuery("from Manager m where m.id = :managerId", Manager.class);
 
@@ -119,7 +122,8 @@ public class MyService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCurrency(Currency c) {
 
-        // TODO - Add protections de parametros nulos
+        if (!c.getName().equals(""))
+            return Response.status(Status.BAD_REQUEST).entity("Error - invalid name").build();
 
         em.persist(c);
 

@@ -137,19 +137,23 @@ public class App {
 
             switch (num) {
                 case 1: // Add Manager
-                    // To simplify managers cannot be deleted and optionally not changed.
+                        // To simplify managers cannot be deleted and optionally not changed.
                     System.out.println(_lotsOfWhiteSpaces);
 
                     System.out.println("-------- New Manager --------\n");
                     System.out.print("Name: ");
-                    // TODO - protecao contra nomes ilegais
+
                     scan.nextLine();
                     String managerName = scan.nextLine();
-                    ManagerInfo newManager = new ManagerInfo(managerName);
-                    addManager(client, newManager);
 
-                    System.out.println("* Manager sucessfuly added! *");
+                    if (managerName.equals(""))
+                        System.out.println("* Error - invalid name *");
+                    else {
+                        ManagerInfo newManager = new ManagerInfo(managerName);
+                        addManager(client, newManager);
 
+                        System.out.println("* Manager sucessfuly added! *");
+                    }
                     // Enter to continue
                     System.out.println("Press \"ENTER\" to continue...");
                     scan.nextLine();
@@ -164,37 +168,43 @@ public class App {
 
                     System.out.println("-------- New Client --------\n");
                     System.out.print("Name: ");
+
                     scan.nextLine();
-                    String clientName = scan.nextLine(); // TODO - protecao contra nomes ilegais
-                    System.out.println("List of available managers:");
-                    List<ManagerInfo> lManagers = listManagers(client);
-                    i = 1;
-                    for (ManagerInfo m : lManagers)
-                        System.out.println(i++ + ". " + m.getName() + " -> ID = " + m.getId());
+                    String clientName = scan.nextLine();
 
-                    System.out.print("Select the client's manager (insert number): ");
-                    do {
-                        try {
-                            managerId = scan.nextInt();
-                            scan.nextLine();
-                        } catch (Exception e) {
-                            managerId = -1;
-                        }
-                        if (managerId <= 0 || managerId > lManagers.size())
-                            managerId = -1;
+                    if (clientName.equals(""))
+                        System.out.println("* Error - invalid name *");
+                    else {
 
-                    } while (managerId == -1);
+                        List<ManagerInfo> lManagers = listManagers(client);
+                        do {
+                            try {
+                                System.out.println("List of available managers:");
+                                i = 1;
+                                System.out.println("Select the client's manager (insert number): ");
+                                for (ManagerInfo m : lManagers)
+                                    System.out.println(i++ + ". " + m.getName() + " -> ID = " + m.getId());
+                                managerId = scan.nextInt();
+                                scan.nextLine();
+                            } catch (Exception e) {
+                                managerId = -1;
+                            }
+                            if (managerId <= 0 || managerId > lManagers.size())
+                                managerId = -1;
 
-                    ClientInfo newClient = new ClientInfo(clientName, lManagers.get(managerId - 1).getId());
+                        } while (managerId == -1);
 
-                    addClient(client, newClient);
+                        ClientInfo newClient = new ClientInfo(clientName, lManagers.get(managerId - 1).getId());
 
-                    System.out.println("* Client sucessfuly added! *");
+                        addClient(client, newClient);
 
+                        System.out.println("* Client sucessfuly added! *");
+                    }
                     // Enter to continue
                     System.out.println("Press \"ENTER\" to continue...");
                     scan.nextLine();
                     System.out.println(_lotsOfWhiteSpaces);
+
                     break;
 
                 case 3: // Add Currency
@@ -203,27 +213,30 @@ public class App {
 
                     System.out.println("-------- New currency --------\n");
                     System.out.print("Name: ");
-                    // TODO - protecao contra nomes ilegais
                     scan.nextLine();
                     String currencyName = scan.nextLine();
-                    Double conversionRate = -1.0;
 
-                    do {
-                        try {
-                            System.out.print("Conversion Rate: ");
-                            conversionRate = scan.nextDouble();
-                        } catch (Exception e) {
-                            System.out.println("* Ilegal input *");
-                            conversionRate = -1.0;
-                        }
+                    if (currencyName.equals(""))
+                        System.out.println("* Error - invalid name *");
+                    else {
+                        Double conversionRate = -1.0;
 
-                    } while (conversionRate == -1.0);
+                        do {
+                            try {
+                                System.out.print("Conversion Rate: ");
+                                conversionRate = scan.nextDouble();
+                            } catch (Exception e) {
+                                System.out.println("* Ilegal input *");
+                                conversionRate = -1.0;
+                            }
 
-                    CurrencyInfo newCurrency = new CurrencyInfo(currencyName, conversionRate);
-                    addCurrency(client, newCurrency);
+                        } while (conversionRate == -1.0);
 
-                    System.out.println("* Manager sucessfuly added! *");
+                        CurrencyInfo newCurrency = new CurrencyInfo(currencyName, conversionRate);
+                        addCurrency(client, newCurrency);
 
+                        System.out.println("* Currency sucessfuly added! *");
+                    }
                     // Enter to continue
                     System.out.println("Press \"ENTER\" to continue...");
                     scan.nextLine();
@@ -234,7 +247,7 @@ public class App {
                     // List managers from the database.
                     System.out.println(_lotsOfWhiteSpaces);
 
-                    lManagers = listManagers(client);
+                    List<ManagerInfo> lManagers = listManagers(client);
                     System.out.println(_div);
                     System.out.println("List of Managers:");
                     i = 1;
@@ -426,7 +439,7 @@ public class App {
 
                     List<ClientInfo> lClients14 = listClients(client);
                     System.out.println(_div);
-                    System.out.println("Clients without payments in the last \"month\" (actually last 2 minutes)");
+                    System.out.println("Clients without payments in the last 2 \"months\" (actually last 3 minutes)");
                     i = 1;
                     for (ClientInfo c : lClients14)
                         if (c.getPaymentsTimed() == 0.0)

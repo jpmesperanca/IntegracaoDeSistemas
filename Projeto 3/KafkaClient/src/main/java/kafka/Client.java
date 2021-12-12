@@ -68,8 +68,11 @@ public class Client {
             System.out.println("5. Exit");
             System.out.print("Choose an option: ");
 
-            // TODO - crasha se n for numero lol
-            num = scan.nextInt();
+            try {
+                num = scan.nextInt();
+            } catch (Exception e) {
+                num = -1;
+            }
 
             switch (num) {
                 case 1:
@@ -119,6 +122,13 @@ public class Client {
                     break;
 
                 default:
+                    System.out.println(_lotsOfWhiteSpaces);
+                    System.out.print("\n\n****** Illegal option selected. ******\n\n");
+                    // Enter to continue
+                    scan.nextLine();
+                    System.out.println("Press \"ENTER\" to continue...");
+                    scan.nextLine();
+                    System.out.println(_lotsOfWhiteSpaces);
                     break;
             }
 
@@ -179,19 +189,12 @@ public class Client {
         }
     }
 
-    // TODO - Stays infinite polling if the table is empty.
-    // https://stackoverflow.com/questions/36709740/alter-retention-ms-property-for-kafka-topic-deletes-the-old-data
     private static List<String> updateInfo(Consumer<String, String> consumer, List<String> current) {
 
         List<String> l = new ArrayList<>();
 
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
-
-            // TODO - Remove? Acho que isto lixa os updates
-            // Evita o utilizador ter de esperar pelo próximo successful poll
-            if (records.isEmpty() && !current.isEmpty())
-                return current;
 
             // Continua a dar poll ate ter resultados validos.
             if (records.isEmpty() && !l.isEmpty())
