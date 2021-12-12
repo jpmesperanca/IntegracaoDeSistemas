@@ -26,6 +26,7 @@ public class Stream {
 		String resultsTopic = "Results";
 		String paymentsTopic = "Payments";
 		Integer TIME_WINDOW_VALUE = 2; // EM MINUTOS <------
+		Integer TIME_WINDOW_P_VALUE = 3; // EM MINUTOS <------
 		// String dbinfoTopic = "DB Info";
 
 		// 7. Calculate credits per user
@@ -197,6 +198,26 @@ public class Stream {
 
 		// 14. Get the list of clients without payments for the last two months
 
+		java.util.Properties props14 = new Properties();
+		props14.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkastreamsPwTW"); // Bill with Time Window
+		props14.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+		props14.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+		props14.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+		StreamsBuilder builder14 = new StreamsBuilder();
+
+		KStream<String, String> linesPwTW = builder14.stream(paymentsTopic);
+		KTable<Windowed<String>, Double> countlinesPwTW = linesPwTW.mapValues(v -> multiplyJson(v))
+				.groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
+				.windowedBy(TimeWindows.of(Duration.ofMinutes(TIME_WINDOW_P_VALUE)))
+				.reduce((v1, v2) -> v1 + v2);
+
+		countlinesPwTW.toStream((wk, v) -> wk.key()).mapValues((k, v) -> insertPaymentsTimedInClientJson(k,
+				v)).to(resultsTopic, Produced.with(Serdes.String(), Serdes.String()));
+
+		KafkaStreams streamsPwTW = new KafkaStreams(builder14.build(), props14);
+
+		streamsPwTW.start();
+
 		// 15. Get the data of the person with the highest outstanding debt (i.e., the
 		// most
 		// negative current balance).
@@ -260,6 +281,14 @@ public class Stream {
 
 		String json = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"int32\",\"optional\":false,\"field\":\"id\"},{\"type\":\"double\",\"optional\":true,\"field\":\"creditstimed\"}],\"optional\":false},\"payload\":{\"id\":"
 				+ key + ",\"creditstimed\":" + String.valueOf(value) + "}}";
+
+		return json;
+	}
+
+	private static String insertPaymentsTimedInClientJson(String key, Double value) {
+
+		String json = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"int32\",\"optional\":false,\"field\":\"id\"},{\"type\":\"double\",\"optional\":true,\"field\":\"paymentstimed\"}],\"optional\":false},\"payload\":{\"id\":"
+				+ key + ",\"paymentstimed\":" + String.valueOf(value) + "}}";
 
 		return json;
 	}

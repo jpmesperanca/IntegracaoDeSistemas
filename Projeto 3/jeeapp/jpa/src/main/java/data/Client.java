@@ -20,6 +20,7 @@ public class Client implements Serializable {
     private Double payments;
     private Double credits;
     private Double creditsTimed;
+    private Double paymentsTimed;
 
     @ManyToOne
     private Manager manager;
@@ -29,6 +30,7 @@ public class Client implements Serializable {
         this.payments = 0.0;
         this.credits = 0.0;
         this.creditsTimed = 0.0;
+        this.setPaymentsTimed(0.0);
     }
 
     public Client(String name, Manager manager) {
@@ -38,6 +40,7 @@ public class Client implements Serializable {
         this.payments = 0.0;
         this.credits = 0.0;
         this.creditsTimed = 0.0;
+        this.setPaymentsTimed(0.0);
     }
 
     public int getId() {
@@ -94,5 +97,13 @@ public class Client implements Serializable {
 
     public void setCreditsTimed(Double creditsTimed) {
         this.creditsTimed = creditsTimed;
+    }
+
+    public Double getPaymentsTimed() {
+        return paymentsTimed;
+    }
+
+    public void setPaymentsTimed(Double paymentsTimed) {
+        this.paymentsTimed = paymentsTimed;
     }
 }
