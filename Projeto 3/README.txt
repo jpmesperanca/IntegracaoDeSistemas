@@ -1,3 +1,8 @@
+Projeto 3 -> Integração de Sistemas Ano Letivo 2021/2022
+
+Gonçalo São Marcos -> 2018284198
+José Esperança -> 2018278596
+
 Notas iniciais:
 	- Visual Studio Code
 	- Docker
