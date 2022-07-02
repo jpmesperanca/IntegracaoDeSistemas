@@ -6,14 +6,12 @@ Projeto 1 -> Data Representation and Serialization Formats: Comparing JSON and M
 
 Projeto 2 -> Three-tier	Programming	with Object-Relational Mapping. This includes:
 
-              - Java/Jakarta EE model
-              
+              - Java/Jakarta EE model       
               - Enterprise JavaBeans
-              
               - JPA and JPQL  
               
-              
 Projeto 3 -> Message-Oriented Middleware and Kafka Streams. This includes:
+
               - Java/Jakarta EE model
               - JPA and JPQL 
               - Apache Kafka and Kafka Streams
